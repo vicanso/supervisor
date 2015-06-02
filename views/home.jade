@@ -1,0 +1,14 @@
+extends ./layout
+block bodyContainer
+  .homePage(ng-controller='HomePageController')
+    include ./nav
+    header.headerContainer
+      ul.pull-right.functions
+        li.login: a(href='javascript:;', ng-click='app.login()') 登录
+        li.register: a(href='javascript:;', ng-click='app.register()') 注册
+      h3.text-center Backend Supervisor
+
+  
+  
+  - importer.import('/js/home.js');
+  - importer.import('/css/home.css');

@@ -1,0 +1,16 @@
+{
+  "path" : "/merge",
+  "except" : [
+    "/component/debug.js",
+    "/component/angular.js",
+    "/component/lodash.js",
+    "/component/jquery.js"
+  ],
+  "files" : [
+    [
+      "/component/angular-local-storage.js",
+      "/service/http-log.js",
+      "/service/debug.js"
+    ]
+  ]
+}

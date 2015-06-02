@@ -1,0 +1,11 @@
+extends ./layout
+block bodyContainer
+  .homePage(ng-controller='VarnishPageController')
+    include ./nav
+    header.headerContainer
+      h3.text-center Varnish List
+
+  
+  
+  - importer.import('/js/varnish.js');
+  - importer.import('/css/varnish.css');
