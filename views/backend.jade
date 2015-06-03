@@ -1,0 +1,90 @@
+extends ./layout
+
+
+mixin BackendList(backendList)
+  if _.get(backendList, 'length')
+    .panel.panel-default
+      .panel-heading Backend List
+      table.table
+        thead: tr
+          th 名称
+          th IP
+          th 端口
+          th 类型
+          th url前缀
+          th 版本
+          th 操作
+        tbody
+          each backend in backendList
+            tr
+              td #{backend.name}
+              td #{backend.ip}
+              td #{backend.port}
+              td #{backend.category}
+              td #{backend.prefix}
+              td --
+              td
+                a.glyphicon.glyphicon-remove(href='javascript:;')
+
+
+
+    //-   [ { name: 'supervisor',
+    //- category: 'web',
+    //- prefix: '/supervisor',
+    //- port: '10010',
+    //- ip: '120.24.102.161' } ]
+
+mixin addBackend()
+  .row(ng-init='backend = backendPage.backend')
+    .col-xs-4: .input-group
+      span.input-group-addon Name
+      input.form-control(type='text', placeholder='please input the backend name', ng-model='backend.config.name')
+    .col-xs-4: .input-group
+      span.input-group-addon IP
+      input.form-control(type='text', placeholder='please input the backend ip', ng-model='backend.config.ip')
+    .col-xs-4: .input-group
+      span.input-group-addon Port
+      input.form-control(type='text', placeholder='please input the backend port', ng-model='backend.config.port')
+    .col-xs-4: .input-group
+      span.input-group-addon Category
+      input.form-control(type='text', placeholder='please input the backend category', ng-model='backend.config.category')
+    .col-xs-4: .input-group
+      span.input-group-addon Prefix
+      input.form-control(type='text', placeholder='please input the url prefix, optional', ng-model='backend.config.prefix')
+    .col-xs-2: a.btn.btn-success(ng-click='backendPage.save()') save
+    .col-xs-2: a.btn.btn-default(ng-click='backendPage.mode = "view"') cancel
+  .alert.alert-danger.hidden(ng-class='{hidden : backendPage.backend.status != "error"}', ng-bind='backendPage.backend.error')
+
+//-   <div class="input-group">
+//-   <span class="input-group-addon" id="basic-addon1">@</span>
+//-   <input type="text" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+//- </div>
+
+block bodyContainer
+  .backendPage(ng-controller='BackendPageController as backendPage')
+    include ./nav
+    header.headerContainer
+      h3.text-center Backend
+
+    .contentContainer
+      .backendList
+        +BackendList(viewData.backendList)
+
+      .addBackend.hidden(ng-class='{hidden : backendPage.mode != "add"}')
+        +addBackend()
+      a.btn.btn-primary.add(href='javascript:;', ng-click='backendPage.mode = "add"', ng-class='{hidden : backendPage.mode == "add"}') add
+  
+  - importer.import('/js/backend.js')
+  - importer.import('/css/backend.css')
+
+
+
+//-   <div class="panel panel-default">
+//-   <!-- Default panel contents -->
+//-   <div class="panel-heading">Panel heading</div>
+
+//-   <!-- Table -->
+//-   <table class="table">
+//-     ...
+//-   </table>
+//- </div>

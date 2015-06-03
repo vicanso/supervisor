@@ -45,7 +45,7 @@ function convertRouterSetting(routes){
   var arr = [];
   _.forEach(routes, function(route){
     var result = _.pick(route, ['method', 'template', 'route']);
-    result.handler = controllers[route.handler];
+    result.handler = _.get(controllers, route.handler);
     if(_.isArray(route.middleware)){
       result.middleware = _.map(route.middleware, function(name){
         return middlewares[name]

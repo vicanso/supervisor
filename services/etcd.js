@@ -5,11 +5,59 @@ var util = require('util');
 var request = require('superagent');
 var _ = require('lodash');
 var etcdInfo = url.parse(config.etcdServer);
-var ectdUrl = util.format('http://%s:%s/v2', etcdInfo.hostname, etcdInfo.port);
+var etcdUrl = util.format('http://%s:%s/v2', etcdInfo.hostname, etcdInfo.port);
 var parallel = require('co-parallel');
 var debug = require('../helpers/debug');
 
 exports.varnishList = varnishList;
+exports.backendList = backendList;
+exports.addBackend = addBackend;
+
+/**
+ * [*backendList 获取backend list]
+ * @yield {[type]} [description]
+ */
+function *backendList(){
+  var nodes;
+  try{
+    var result = yield function(done){
+      request.get(etcdUrl + '/keys/backend').end(done);
+    };
+    nodes = _.get(result, 'body.node.nodes');
+  }catch(err){
+    console.error(err);
+  }
+  nodes = _.map(nodes, function(tmp){
+    var data;
+    try{
+      data = JSON.parse(tmp.value);
+      data.key = tmp.key
+    }catch(err){
+      console.error(err);
+    }
+    return data;
+  });
+  
+  return _.uniq(nodes);
+}
+
+/**
+ * [*addBackend 添加backend服务器]
+ * @yield {[type]} [description]
+ */
+function *addBackend(data){
+  return yield function(done){
+    request.post(etcdUrl + '/keys/backend')
+      .send('value=' + JSON.stringify(data))
+      .end(done);
+  }
+}
+
+function *deleteBackend(key){
+  return yield function(done){
+    request.delete(etcdUrl + '/keys/' + key).end(done);
+  }
+}
 
 /**
  * [*varnishList 获取varnish服务器列表的信息]
@@ -17,7 +65,7 @@ exports.varnishList = varnishList;
  */
 function *varnishList(){
   var result = yield function(done){
-    request.get(ectdUrl + '/keys/varnish').end(done);
+    request.get(etcdUrl + '/keys/varnish').end(done);
   };
   var list = [];
   var pingList = [];
@@ -28,9 +76,6 @@ function *varnishList(){
       v.name = key;
       v.ttl = item.ttl;
       list.push(v)
-
-      v.ip = '120.24.102.161';
-
       pingList.push(util.format('http://%s:%s/ping', v.ip, v.port));
     }catch(err){
       console.error(err);

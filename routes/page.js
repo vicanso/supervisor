@@ -11,5 +11,16 @@ module.exports = [
     route : '/varnish',
     template : 'varnish',
     handler : 'varnish'
+  },
+  {
+    middleware : 'addImporter',
+    route : '/backend',
+    template : 'backend',
+    handler : 'backend.view'
+  },
+  {
+    method : 'post',
+    route : '/backend',
+    handler : 'backend.save'
   }
 ];

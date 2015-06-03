@@ -3,4 +3,11 @@ nav.navContainer
   ul
     li(class='#{page == "home"? "active" : ""}'): a.text-center.logo(href='#{APP_URL_PREFIX}/', title='TimTam'): i.glyphicon.glyphicon-align-left
     li(class='#{page == "varnish"? "active" : ""}'): a.text-center(href='#{APP_URL_PREFIX}/varnish') Varnish
+    li(class='#{page == "backend"? "active" : ""}'): a.text-center(href='#{APP_URL_PREFIX}/backend') 
+      i.glyphicon.glyphicon-plus
+      | Backend
+
+
+
+
 - importer.import('/css/nav.css');

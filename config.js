@@ -8,7 +8,7 @@ exports.port = 10000;
 
 exports.env = env;
 
-exports.appUrlPrefix = env === 'development'? '/supervisor' : '/supervisor';
+exports.appUrlPrefix = env === 'development'? '' : '/supervisor';
 
 //静态文件源码目录
 exports.staticSrcPath = path.join(__dirname, 'statics/src');
