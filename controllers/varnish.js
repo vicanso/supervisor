@@ -4,6 +4,7 @@ var etcd = require('../services/etcd');
 module.exports = function *(){
   var varnishList = yield etcd.varnishList();
   this.state.viewData = {
-    page : 'varnish'
+    page : 'varnish',
+    varnishList : varnishList
   };
 };

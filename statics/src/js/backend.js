@@ -5,6 +5,7 @@ var module = angular.module('jt.service.backend', []);
 module.factory('backendService', ['$http', function($http){
   var backend = {
     statu : '',
+    op : '',
     config : {}
   };
 
@@ -42,10 +43,11 @@ module.factory('backendService', ['$http', function($http){
     }
     var promise = $http.post('/backend', backend.config);
     backend.status = 'submiting';
+    backend.op = 'save';
     promise.then(function(res){
-      console.dir(res);
+      backend.status = 'success';
     }, function(res){
-      console.dir(res);
+      backend.status = 'error';
     });
     return promise;
   }
@@ -55,7 +57,13 @@ module.factory('backendService', ['$http', function($http){
    * @return {[type]} [description]
    */
   function remove(key){
-    var promise = $http.delete('/backend/' + key);
+    var promise = $http['delete']('/backend' + key);
+    backend.op = 'remove';
+    promise.then(function(){
+      backend.status = 'success';
+    }, function(res){
+      backend.status = 'error';
+    });
     return promise;
   }
 
@@ -71,9 +79,21 @@ var fn = function($scope, $http, debug, backendService){
   // 保存backend的配置信息
   self.backend = backendService.init();
 
+  // 保存backend
+  self.save = function(){
+    backendService.save().then(function(){
+      setTimeout(function(){
+        location.reload();
+      }, 3000);
+    });
+  };
 
-  self.save = backendService.save;
-  self.remove = backendService.remove;
+  // 删除backend
+  self.remove = function(key, e){
+    backendService.remove(key).then(function(){
+      angular.element(e.target).closest('tr').remove();
+    });
+  }
 
   $scope.$watch('backendPage.backend.config', function(){
     self.backend.status = '';

@@ -4,7 +4,7 @@ extends ./layout
 mixin BackendList(backendList)
   if _.get(backendList, 'length')
     .panel.panel-default
-      .panel-heading Backend List
+      .panel-heading 服务器列表
       table.table
         thead: tr
           th 名称
@@ -22,38 +22,32 @@ mixin BackendList(backendList)
               td #{backend.port}
               td #{backend.category}
               td #{backend.prefix}
-              td --
+              td #{backend.version || '--'}
               td
-                a.glyphicon.glyphicon-remove(href='javascript:;')
+                a.glyphicon.glyphicon-remove(href='javascript:;', ng-click='backendPage.remove("#{backend.key}", $event)')
 
-
-
-    //-   [ { name: 'supervisor',
-    //- category: 'web',
-    //- prefix: '/supervisor',
-    //- port: '10010',
-    //- ip: '120.24.102.161' } ]
-
-mixin addBackend()
+mixin AddBackend()
   .row(ng-init='backend = backendPage.backend')
-    .col-xs-4: .input-group
-      span.input-group-addon Name
-      input.form-control(type='text', placeholder='please input the backend name', ng-model='backend.config.name')
-    .col-xs-4: .input-group
+    .col-xs-6.col-sm-4: .input-group
+      span.input-group-addon 名称
+      input.form-control(type='text', placeholder='请输入名称', ng-model='backend.config.name')
+    .col-xs-6.col-sm-4: .input-group
       span.input-group-addon IP
-      input.form-control(type='text', placeholder='please input the backend ip', ng-model='backend.config.ip')
-    .col-xs-4: .input-group
-      span.input-group-addon Port
-      input.form-control(type='text', placeholder='please input the backend port', ng-model='backend.config.port')
-    .col-xs-4: .input-group
-      span.input-group-addon Category
-      input.form-control(type='text', placeholder='please input the backend category', ng-model='backend.config.category')
-    .col-xs-4: .input-group
-      span.input-group-addon Prefix
-      input.form-control(type='text', placeholder='please input the url prefix, optional', ng-model='backend.config.prefix')
-    .col-xs-2: a.btn.btn-success(ng-click='backendPage.save()') save
-    .col-xs-2: a.btn.btn-default(ng-click='backendPage.mode = "view"') cancel
-  .alert.alert-danger.hidden(ng-class='{hidden : backendPage.backend.status != "error"}', ng-bind='backendPage.backend.error')
+      input.form-control(type='text', placeholder='请输入ip地址', ng-model='backend.config.ip')
+    .col-xs-6.col-sm-4: .input-group
+      span.input-group-addon 端口
+      input.form-control(type='text', placeholder='请输入绑定的端口', ng-model='backend.config.port')
+    .col-xs-6.col-sm-4: .input-group
+      span.input-group-addon 分类
+      input.form-control(type='text', placeholder='请输入该服务的类别', ng-model='backend.config.category')
+    .col-xs-6.col-sm-4: .input-group
+      span.input-group-addon url前缀
+      input.form-control(type='text', placeholder='请输入url的前缀，可选', ng-model='backend.config.prefix')
+    .col-xs-3.col-sm-2: a.btn.btn-success(ng-click='backendPage.save()') 保存
+    .col-xs-3.col-sm-2: a.btn.btn-default(ng-click='backendPage.mode = "view"') 取消
+  .alert.alert-success.hidden(ng-class='{hidden : backendPage.backend.status != "success" && backendPage.backend.op == "save"}') 已成功保存，3秒后将刷新页面！
+  .alert.alert-info.hidden(ng-class='{hidden : backendPage.backend.status != "submiting" && backendPage.backend.op == "save"}') 正在提交中，请稍候...
+  .alert.alert-danger.hidden(ng-class='{hidden : backendPage.backend.status != "error" && backendPage.backend.op == "save"}', ng-bind='backendPage.backend.error')
 
 //-   <div class="input-group">
 //-   <span class="input-group-addon" id="basic-addon1">@</span>
@@ -66,13 +60,12 @@ block bodyContainer
     header.headerContainer
       h3.text-center Backend
 
-    .contentContainer
-      .backendList
-        +BackendList(viewData.backendList)
+    .backendList
+      +BackendList(viewData.backendList)
 
-      .addBackend.hidden(ng-class='{hidden : backendPage.mode != "add"}')
-        +addBackend()
-      a.btn.btn-primary.add(href='javascript:;', ng-click='backendPage.mode = "add"', ng-class='{hidden : backendPage.mode == "add"}') add
+    .addBackend.hidden(ng-class='{hidden : backendPage.mode != "add"}')
+      +AddBackend()
+    a.btn.btn-primary.add(href='javascript:;', ng-click='backendPage.mode = "add"', ng-class='{hidden : backendPage.mode == "add"}') 添加
   
   - importer.import('/js/backend.js')
   - importer.import('/css/backend.css')

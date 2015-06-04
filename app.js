@@ -59,6 +59,7 @@ function initServer(port){
   var mount = require('koa-mount');
   var requireTree = require('require-tree');
   var middlewares = requireTree('./middlewares');
+  var methodOverride = require('koa-methodoverride');
   var app = koa();
 
   wrapOnError(app.context);
@@ -68,7 +69,7 @@ function initServer(port){
     timeout = 5 * 1000;
   }
 
-
+  app.use(methodOverride());
 
   // 增加一个timeout的middleware
   app.use(require('koa-timeout')(timeout));

@@ -22,5 +22,10 @@ module.exports = [
     method : 'post',
     route : '/backend',
     handler : 'backend.save'
+  },
+  {
+    method : 'delete',
+    route : '/backend/:key/:index',
+    handler : 'backend.remove'
   }
 ];

@@ -1,11 +1,33 @@
 extends ./layout
+
+mixin VarnishList(list)
+  .panel.panel-default
+    .panel-heading 服务器列表
+    table.table
+      thead: tr
+        th 名称
+        th IP
+        th 端口
+        th ttl
+        th 更新时间
+        th 版本
+      tbody
+        each item in list
+          tr
+            td #{item.name}
+            td #{item.ip}
+            td #{item.port}
+            td #{item.ttl}
+            td #{item.createdAt}
+            td #{item.version || '--'}
+
 block bodyContainer
   .homePage(ng-controller='VarnishPageController')
     include ./nav
     header.headerContainer
-      h3.text-center Varnish List
+      h3.text-center Varnish服务器列表
+    +VarnishList(viewData.varnishList)
 
-  
   
   - importer.import('/js/varnish.js');
   - importer.import('/css/varnish.css');

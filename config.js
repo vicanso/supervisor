@@ -31,7 +31,7 @@ exports.uuidKey = 'jtuuid';
 
 exports.keys = [exports.sessionKey, exports.uuidKey];
 
-exports.etcdServer = 'etcd://vicanso.com:4001';
+exports.etcdServer = 'etcd://192.168.2.1:4001';
 
 exports.redisOptions = {
   ttl : 3600 * 1000,
