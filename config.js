@@ -31,7 +31,7 @@ exports.uuidKey = 'jtuuid';
 
 exports.keys = [exports.sessionKey, exports.uuidKey];
 
-exports.etcdServer = 'etcd://127.0.0.1:4001';
+exports.etcdServer = process.env.ETCD || 'etcd://127.0.0.1:4001';
 
 exports.redisOptions = {
   ttl : 3600 * 1000,
