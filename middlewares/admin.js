@@ -6,7 +6,6 @@ var fs = require('fs');
 var _ = require('lodash');
 var config = require('../config');
 var versionFile = path.join(__dirname, '../version');
-var pm2 = require('../helpers/pm2');
 
 
 module.exports = function(){
@@ -35,7 +34,6 @@ function *validate(next){
  * @return {[type]} [description]
  */
 function *allInfos(){
-  var processInfos = yield pm2.list();
   var codeVersion = yield function(done){
     fs.readFile(versionFile, 'utf8', done);
   };
