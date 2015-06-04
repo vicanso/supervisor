@@ -4,13 +4,25 @@
     "/component/debug.js",
     "/component/angular.js",
     "/component/lodash.js",
-    "/component/jquery.js"
+    "/component/jquery.js",
+    "/component/bootstrap.css"
   ],
   "files" : [
     [
       "/component/angular-local-storage.js",
+      "/component/sha1.js"
+    ],
+    [
+      "/service/const.js",
       "/service/http-log.js",
-      "/service/debug.js"
+      "/service/debug.js",
+      "/service/user.js",
+      "/js/directive.js",
+      "/js/global.js"
+    ],
+    [
+      "/css/global.css",
+      "/css/nav.css"
     ]
   ]
 }

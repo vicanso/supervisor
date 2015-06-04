@@ -24,6 +24,9 @@ module.exports = function(){
       var tag = crc32Infos[file] || defaultVersion;
       return url + '?v=' + tag;
     };
+    state.URL = function(url){
+      return path.join(config.appUrlPrefix, url)
+    };
     yield* next;
   };
 }

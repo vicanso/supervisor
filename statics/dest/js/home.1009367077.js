@@ -1,0 +1,1 @@
+!function(t){"use strict";var e=function(t,e,o,n){};e.$inject=["$scope","$http","debug","user"],angular.module("jtApp").controller("HomePageController",e)}(this);

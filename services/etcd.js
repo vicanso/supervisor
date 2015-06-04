@@ -23,7 +23,7 @@ function *backendList(){
   var nodes;
   try{
     var result = yield function(done){
-      request.get(etcdUrl + '/keys/backend').end(done);
+      request.get(etcdUrl + '/keys/backend').timeout(3000).end(done);
     };
     nodes = _.get(result, 'body.node.nodes');
   }catch(err){
@@ -50,6 +50,7 @@ function *backendList(){
 function *addBackend(data){
   return yield function(done){
     request.post(etcdUrl + '/keys/backend')
+      .timeout(3000)
       .send('value=' + JSON.stringify(data))
       .end(done);
   }
@@ -69,7 +70,7 @@ function *deleteBackend(key){
  */
 function *varnishList(){
   var result = yield function(done){
-    request.get(etcdUrl + '/keys/varnish').end(done);
+    request.get(etcdUrl + '/keys/varnish').timeout(3000).end(done);
   };
   var list = [];
   _.each(_.get(result, 'body.node.nodes'), function(item){
@@ -88,7 +89,7 @@ function *varnishList(){
   function *ping(varnishServer){
     return yield function(done){
       varnishServer.ping = 'http://192.168.2.1:10001/ping'
-      request.get(varnishServer.ping).end(function(err, res){
+      request.get(varnishServer.ping).timeout(3000).end(function(err, res){
         var txt = _.get(res, 'res.statusMessage');
         if(txt){
           var arr = txt.split(' ');
@@ -99,7 +100,6 @@ function *varnishList(){
       });
     };
   }
-
   yield parallel(list.map(ping));
   return list;
 }
