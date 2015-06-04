@@ -47,30 +47,6 @@
     ],
     "modifiedAt": "2015-06-02T21:13:21.676"
   },
-  "add-backend": {
-    "css": [
-      "/component/bootstrap.css",
-      "/css/global.css",
-      "/css/nav.css",
-      "/css/add-backend.css"
-    ],
-    "js": [
-      "/component/debug.js",
-      "/component/jquery.js",
-      "/component/angular.js",
-      "/component/lodash.js",
-      "/component/angular-local-storage.js",
-      "/component/sha1.js",
-      "/service/const.js",
-      "/service/http-log.js",
-      "/service/debug.js",
-      "/service/user.js",
-      "/js/directive.js",
-      "/js/global.js",
-      "/js/add-backend.js"
-    ],
-    "modifiedAt": "2015-06-03T20:19:41.078"
-  },
   "backend": {
     "css": [
       "/component/bootstrap.css",

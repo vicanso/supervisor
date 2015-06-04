@@ -74,7 +74,7 @@ var fn = function($scope, $http, debug, backendService){
 
   var self = this;
 
-  self.mode = 'view'
+  self.mode = 'view';
 
   // 保存backend的配置信息
   self.backend = backendService.init();
@@ -93,7 +93,7 @@ var fn = function($scope, $http, debug, backendService){
     backendService.remove(key).then(function(){
       angular.element(e.target).closest('tr').remove();
     });
-  }
+  };
 
   $scope.$watch('backendPage.backend.config', function(){
     self.backend.status = '';

@@ -5,7 +5,7 @@
 ;(function(global){
 'use strict';
 var module = angular.module('jt.service.debug', []);
-function noop(){};
+function noop(){}
 function debugFn(CONST){
   var debug = window.debug;
   if(debug){
