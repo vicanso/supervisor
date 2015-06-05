@@ -1,6 +1,6 @@
 {
-  "name": "backend-supervisor",
-  "description": "backend supervisor",
+  "name": "supervisor",
+  "description": "supervisor",
   "version": "0.0.1",
   "author": {
     "name": "vicanso 小墨鱼",
@@ -8,12 +8,12 @@
   },
   "keywords": [
     "koa",
-    "backend-supervisor"
+    "supervisor"
   ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vicanso/backend-supervisor.git"
+    "url": "https://github.com/vicanso/supervisor.git"
   },
   "main": "app",
   "readmeFilename": "README.md",
