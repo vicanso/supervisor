@@ -26,7 +26,8 @@ block bodyContainer
     include ./nav
     header.headerContainer
       h3.text-center Varnish服务器列表
-    +VarnishList(viewData.varnishList)
+    if viewData.varnishList
+      +VarnishList(viewData.varnishList)
 
   
   - importer.import('/js/varnish.js');

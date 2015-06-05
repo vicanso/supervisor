@@ -2,7 +2,11 @@
 var debug = require('../helpers/debug');
 var etcd = require('../services/etcd');
 module.exports = function *(){
-  var varnishList = yield etcd.varnishList();
+  try{
+    var varnishList = yield etcd.varnishList();
+  }catch(err){
+    console.error(err);
+  }
   this.state.viewData = {
     page : 'varnish',
     varnishList : varnishList

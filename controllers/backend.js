@@ -33,7 +33,7 @@ function *view(){
     return yield function(done){
       if(backend.category === 'web'){
         var url = util.format('http://%s:%s/ping', backend.ip, backend.port);
-        request.get(url).end(function(err, res){
+        request.get(url).timeout(3000).end(function(err, res){
           backend.version = res && res.text;
           done();
         });
@@ -44,6 +44,7 @@ function *view(){
   }
 
   var backendList = yield etcd.backendList();
+  console.dir(backendList);
   yield parallel(backendList.map(getVersion));
 
   this.set('Cache-Control', 'public, max-age=10');

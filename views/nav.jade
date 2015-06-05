@@ -1,9 +1,15 @@
 - var page = viewData.page;
 nav.navContainer
   ul
-    li(class='#{page == "home"? "active" : ""}'): a.text-center.logo(href='#{URL("/")}', title='TimTam'): i.glyphicon.glyphicon-align-left
-    li(class='#{page == "varnish"? "active" : ""}'): a.text-center(href='#{URL("/varnish")}') Varnish
-    li(class='#{page == "backend"? "active" : ""}'): a.text-center(href='#{URL("/backend")}') Backend
+    li(class='#{page == "home"? "active" : ""}'): a.text-center.logo(href='#{URL("/")}', title='TimTam')
+      i.glyphicon.glyphicon-dashboard
+      | Home
+    li(class='#{page == "varnish"? "active" : ""}'): a.text-center(href='#{URL("/varnish")}')
+      i.glyphicon.glyphicon-oil
+      | Varnish
+    li(class='#{page == "backend"? "active" : ""}'): a.text-center(href='#{URL("/backend")}')
+      i.glyphicon.glyphicon-hdd
+      | Backend
 
 
 

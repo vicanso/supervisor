@@ -41,6 +41,9 @@ mixin AddBackend()
       span.input-group-addon 分类
       input.form-control(type='text', placeholder='请输入该服务的类别', ng-model='backend.config.category')
     .col-xs-6.col-sm-4: .input-group
+      span.input-group-addon 域名
+      input.form-control(type='text', placeholder='请输入域名，可选', ng-model='backend.config.host')
+    .col-xs-6.col-sm-4: .input-group
       span.input-group-addon url前缀
       input.form-control(type='text', placeholder='请输入url的前缀，可选', ng-model='backend.config.prefix')
     .col-xs-3.col-sm-2: a.btn.btn-success(ng-click='backendPage.save()') 保存
