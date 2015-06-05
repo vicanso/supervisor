@@ -44,7 +44,6 @@ function *view(){
   }
 
   var backendList = yield etcd.backendList();
-  console.dir(backendList);
   yield parallel(backendList.map(getVersion));
 
   this.set('Cache-Control', 'public, max-age=10');

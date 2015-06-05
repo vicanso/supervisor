@@ -7,6 +7,7 @@ module.exports = function *(){
   }catch(err){
     console.error(err);
   }
+  this.set('Cache-Control', 'public, max-age=60');
   this.state.viewData = {
     page : 'varnish',
     varnishList : varnishList

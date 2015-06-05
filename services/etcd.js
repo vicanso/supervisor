@@ -88,7 +88,6 @@ function *varnishList(){
   debug('varnish list:%j', list);
   function *ping(varnishServer){
     return yield function(done){
-      varnishServer.ping = 'http://192.168.2.1:10001/ping'
       request.get(varnishServer.ping).timeout(3000).end(function(err, res){
         var txt = _.get(res, 'res.statusMessage');
         if(txt){
