@@ -151,7 +151,7 @@ gulp.task('version', function(cbf){
   var version = moment().format('YYYY-MM-DDTHH:mm:ss.SSS');
   fs.writeFileSync('./version', version);
   var pm2Json = JSON.parse(fs.readFileSync('./pm2.json'));
-  pm2Json.env.appVersion = version;
+  pm2Json.env.APP_VERSION = version;
   fs.writeFileSync('./pm2.json', JSON.stringify(pm2Json, null, 2));
   cbf();
 });
