@@ -10,7 +10,7 @@ module.exports = [
     middleware : 'addImporter',
     route : '/varnish',
     template : 'varnish',
-    handler : 'varnish'
+    handler : 'varnish.view'
   },
   {
     middleware : 'addImporter',

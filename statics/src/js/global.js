@@ -92,7 +92,7 @@ function error($log, $injector, CONST){
  */
 function run($http, $timeout, $window, CONST, debug){
   TIMING.end('js');
-  debug = debug('app.run');
+  debug = debug('jt.run');
   var statistics = function(){
     var result = angular.extend({
       timeline : TIMING.getLogs(),

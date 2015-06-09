@@ -11,6 +11,7 @@ mixin VarnishList(list)
         th ttl
         th 更新时间
         th 版本
+        th 其它
       tbody
         each item in list
           tr
@@ -20,9 +21,12 @@ mixin VarnishList(list)
             td #{item.ttl}
             td #{item.createdAt}
             td #{item.version || '--'}
+            td
+              a.glyphicons.glyphicons-list(href='javascript:;', ng-click='varnishPage.showBackendList("#{item.ip}", #{item.port})', title='显示backend列表')
+
 
 block bodyContainer
-  .homePage(ng-controller='VarnishPageController')
+  .varnishPage(ng-controller='VarnishPageController as varnishPage')
     include ./nav
     header.headerContainer
       h3.text-center Varnish服务器列表

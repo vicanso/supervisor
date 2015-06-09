@@ -1,14 +1,12 @@
 ;(function(global){
 'use strict';
 
-var module = angular.module('jt.service.backend', []);
-module.factory('backendService', ['$http', function($http){
+angular.module('jtApp').factory('backendService', ['$http', function($http){
   var backend = {
     statu : '',
     op : '',
     config : {}
   };
-
 
   var backendService = {
     init : function(){
@@ -17,6 +15,7 @@ module.factory('backendService', ['$http', function($http){
     save : save,
     remove : remove
   };
+  return backendService;
 
   // 检测字段是否有为空
   function checkFields(){
@@ -67,7 +66,6 @@ module.factory('backendService', ['$http', function($http){
     return promise;
   }
 
-  return backendService;
 }]);
 
 var fn = function($scope, $http, debug, backendService){
@@ -106,7 +104,6 @@ var fn = function($scope, $http, debug, backendService){
 fn.$inject = ['$scope', '$http', 'debug', 'backendService'];
 
 angular.module('jtApp')
-  .addRequires('jt.service.backend')
   .controller('BackendPageController', fn);
 
 })(this);

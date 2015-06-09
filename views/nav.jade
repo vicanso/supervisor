@@ -2,13 +2,13 @@
 nav.navContainer
   ul
     li(class='#{page == "home"? "active" : ""}'): a.text-center.logo(href='#{URL("/")}', title='TimTam')
-      i.glyphicon.glyphicon-dashboard
+      span.glyphicons.glyphicons-home
       | Home
     li(class='#{page == "varnish"? "active" : ""}'): a.text-center(href='#{URL("/varnish")}')
-      i.glyphicon.glyphicon-oil
+      i.glyphicons.glyphicons-magic
       | Varnish
     li(class='#{page == "backend"? "active" : ""}'): a.text-center(href='#{URL("/backend")}')
-      i.glyphicon.glyphicon-hdd
+      i.glyphicons.glyphicons-imac
       | Backend
 
 

@@ -1,7 +1,14 @@
 'use strict';
 var debug = require('../helpers/debug');
 var etcd = require('../services/etcd');
-module.exports = function *(){
+
+exports.view = view;
+
+/**
+ * [*view description]
+ * @yield {[type]} [description]
+ */
+function *view(){
   try{
     var varnishList = yield etcd.varnishList();
   }catch(err){
@@ -13,3 +20,7 @@ module.exports = function *(){
     varnishList : varnishList
   };
 };
+
+function *backendList(){
+  
+}
