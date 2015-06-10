@@ -11,9 +11,9 @@ mixin VarnishList(list)
         th ttl
         th 更新时间
         th 版本
-        th 其它
+        th.opList 其它
       tbody
-        each item in list
+        each item, i in list
           tr
             td #{item.name}
             td #{item.ip}
@@ -21,8 +21,10 @@ mixin VarnishList(list)
             td #{item.ttl}
             td #{item.createdAt}
             td #{item.version || '--'}
-            td
-              a.glyphicons.glyphicons-list.glyphicons-roundabout(href='javascript:;', ng-click='varnishPage.showBackends("#{item.ip}", #{item.port})', title='显示backend列表', ng-class='{"glyphicons-roundabout" : loading}')
+            td.opList
+              a.glyphicons.glyphicons-list(href='javascript:;', ng-click='varnishPage.showBackends(#{i}, "#{item.ip}", #{item.port})', title='显示backend列表', ng-class='{"glyphicons-roundabout" : varnishPage.opList[#{i}] === 0, "glyphicons-list" : varnishPage.opList[#{i}] !== 0}')
+              a.glyphicons.glyphicons-text-underline(href='javascript:;', ng-click='varnishPage.showVcl(#{i}, "#{item.ip}", #{item.port})', title='显示varnish配置', ng-class='{"glyphicons-roundabout" : varnishPage.opList[#{i}] === 1, "glyphicons-text-underline" : varnishPage.opList[#{i}] !== 1}')
+                
 
 
 block append templateContainer
@@ -31,13 +33,7 @@ block append templateContainer
       .title 服务器列表
         a.pull-right.destroy(href='javascript:;'): span.glyphicons.glyphicons-remove-2
       .content
-        p.text-center(ng-show='action == "loading"') 
-          span.glyphicons.glyphicons-roundabout.mrgith5
-          | 正在加载数据，请稍候...
-        .alert.alert-danger.hidden(ng-class='{hidden : action != "fail"}')
-          span.glyphicons.glyphicons-circle-exclamation-mark.mrgith5
-          span(ng-bind='error')
-        .panel.panel-default.hidden(ng-class='{hidden : action != "completed"}')
+        .panel.panel-default
           table.table
             thead: tr
               th 名称
@@ -59,7 +55,8 @@ block bodyContainer
     header.headerContainer
       h3.text-center Varnish服务器列表
     if viewData.varnishList
-      +VarnishList(viewData.varnishList)
+      .varnishList
+        +VarnishList(viewData.varnishList)
 
   
   - importer.import('/js/varnish.js');

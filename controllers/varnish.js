@@ -20,7 +20,10 @@ function *view(){
   this.set('Cache-Control', 'public, max-age=60');
   this.state.viewData = {
     page : 'varnish',
-    varnishList : varnishList
+    varnishList : varnishList,
+    globals : {
+      varnishList : varnishList
+    }
   };
 };
 
