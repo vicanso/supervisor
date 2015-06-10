@@ -22,7 +22,7 @@ mixin VarnishList(list)
             td #{item.createdAt}
             td #{item.version || '--'}
             td
-              a.glyphicons.glyphicons-list(href='javascript:;', ng-click='varnishPage.showBackendList("#{item.ip}", #{item.port})', title='显示backend列表')
+              a.glyphicons.glyphicons-list(href='javascript:;', ng-click='varnishPage.showBackends("#{item.ip}", #{item.port})', title='显示backend列表')
 
 
 block bodyContainer

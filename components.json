@@ -3,6 +3,7 @@
     "css": [
       "/component/bootstrap.css",
       "/css/global.css",
+      "/css/widget.css",
       "/css/nav.css",
       "/css/home.css"
     ],
@@ -17,16 +18,17 @@
       "/service/http-log.js",
       "/service/debug.js",
       "/service/user.js",
-      "/js/directive.js",
+      "/directive/widget.js",
       "/js/global.js",
       "/js/home.js"
     ],
-    "modifiedAt": "2015-05-06T20:14:33.410"
+    "modifiedAt": "2015-06-10T18:44:16.790"
   },
   "varnish": {
     "css": [
       "/component/bootstrap.css",
       "/css/global.css",
+      "/css/widget.css",
       "/css/nav.css",
       "/css/varnish.css"
     ],
@@ -41,11 +43,11 @@
       "/service/http-log.js",
       "/service/debug.js",
       "/service/user.js",
-      "/js/directive.js",
+      "/directive/widget.js",
       "/js/global.js",
       "/js/varnish.js"
     ],
-    "modifiedAt": "2015-06-02T21:13:21.676"
+    "modifiedAt": "2015-06-10T18:41:10.984"
   },
   "backend": {
     "css": [

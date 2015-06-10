@@ -13,6 +13,10 @@ module.exports = [
     handler : 'varnish.view'
   },
   {
+    route : '/varnish/backends/:ip/:port',
+    handler : 'varnish.backends'
+  },
+  {
     middleware : 'addImporter',
     route : '/backend',
     template : 'backend',
