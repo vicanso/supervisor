@@ -89,7 +89,7 @@ function *varnishList(){
   function *ping(varnishServer){
     return yield function(done){
       request.get(varnishServer.ping).timeout(3000).end(function(err, res){
-        var txt = res.text;
+        var txt = _.get(res, 'text');
         if(txt){
           var arr = txt.split(' ');
           varnishServer.createdAt = arr[0];

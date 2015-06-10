@@ -28,6 +28,7 @@ function jtDialog($compile){
       scope.$destroy();
     };
 
+
     element.on('click', '.destroy', function(){
       scope.destroy();
     });
@@ -39,14 +40,22 @@ function jtDialog($compile){
     });
 
 
-    function showDialog(){
-      element.removeClass('hidden');
+    function centralize(){
       var width = element.outerWidth();
       var height = element.outerHeight();
       element.css({
         'margin-left' : -width / 2,
         'margin-top' : -height / 2
       });
+    }
+
+    /**
+     * [showDialog 显示对话框]
+     * @return {[type]} [description]
+     */
+    function showDialog(){
+      element.removeClass('hidden');
+      centralize();
       if(scope.modal){
         mask = angular.element('<div class="mask"></div>');
         element.after(mask);

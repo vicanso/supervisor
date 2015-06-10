@@ -27,11 +27,11 @@ function *view(){
 function *backends(){
   var params = this.params;
   var url = util.format('http://%s:%s/v-servers', params.ip, params.port);
-  var result = yield function(done){
-    request.get(url).timeout(3000).end(done);
-  };
-  var text = result.text;
-  text = 'supervisord,192.168.2.1,10000,,/supervisord|test,192.168.2.1,10001,,/test'
+  // var res = yield function(done){
+  //   request.get(url).timeout(3000).end(done);
+  // };
+  // var text = _.get(res, 'text');
+  var text = 'supervisord,192.168.2.1,10000,,/supervisord|test,192.168.2.1,10001,,/test'
   if(text){
     this.set('Cache-Control', 'public, max-age=60');
     this.body = _.map(text.split('|'), function(str){

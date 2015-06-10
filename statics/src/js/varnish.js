@@ -32,22 +32,22 @@ var fn = function($scope, $http, $compile, $element, debug, vs){
   return self;
 
   function showBackends(ip, port){
-    var html = '<jt-dialog class="dialog">' +
-      '<h3 class="title">服务器列表<h3>' +
-    '</jt-dialog>';
-    var obj = angular.element(html);
+    var obj = angular.element(angular.element('#backendsTpl').html());
 
     var tmpScope = $scope.$new(true);
     angular.extend(tmpScope, {
       status : 'show',
-      modal : true
+      modal : true,
+      action : 'loading'
     });
     $compile(obj)(tmpScope);
     $element.append(obj);
     vs.backends(ip, port).then(function(res){
-      var data = res.data;
+      tmpScope.backends = res.data;
+      tmpScope.action = 'completed';
     }, function(res){
-
+      tmpScope.action = 'fail';
+      tmpScope.error = res.data.error || '加载数据失败！';
     });
   }
 

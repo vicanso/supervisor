@@ -166,6 +166,8 @@ function initServer(port){
       console.error('[U-E]');
       // TODO
       // 记录未处理的error次数
+      // 对请求判断是否支持什么类型的数据对应返回json html
+
     }else{
       console.error(str);
     }

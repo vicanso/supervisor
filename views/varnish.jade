@@ -22,8 +22,36 @@ mixin VarnishList(list)
             td #{item.createdAt}
             td #{item.version || '--'}
             td
-              a.glyphicons.glyphicons-list(href='javascript:;', ng-click='varnishPage.showBackends("#{item.ip}", #{item.port})', title='显示backend列表')
+              a.glyphicons.glyphicons-list.glyphicons-roundabout(href='javascript:;', ng-click='varnishPage.showBackends("#{item.ip}", #{item.port})', title='显示backend列表', ng-class='{"glyphicons-roundabout" : loading}')
 
+
+block append templateContainer
+  script#backendsTpl(type='text/tpl')
+    jt-dialog.dialog.backendsDialog
+      .title 服务器列表
+        a.pull-right.destroy(href='javascript:;'): span.glyphicons.glyphicons-remove-2
+      .content
+        p.text-center(ng-show='action == "loading"') 
+          span.glyphicons.glyphicons-roundabout.mrgith5
+          | 正在加载数据，请稍候...
+        .alert.alert-danger.hidden(ng-class='{hidden : action != "fail"}')
+          span.glyphicons.glyphicons-circle-exclamation-mark.mrgith5
+          span(ng-bind='error')
+        .panel.panel-default.hidden(ng-class='{hidden : action != "completed"}')
+          table.table
+            thead: tr
+              th 名称
+              th IP
+              th 端口
+              th 域名
+              th url前缀
+            tbody
+                tr(ng-repeat='backend in backends')
+                  td(ng-bind='backend.name')
+                  td(ng-bind='backend.ip')
+                  td(ng-bind='backend.port')
+                  td(ng-bind='backend.host || "--"')
+                  td(ng-bind='backend.prefix || "--"')
 
 block bodyContainer
   .varnishPage(ng-controller='VarnishPageController as varnishPage')
