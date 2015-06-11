@@ -17,6 +17,14 @@ module.exports = [
     handler : 'varnish.backends'
   },
   {
+    route : '/varnish/vcl/:ip/:port',
+    handler : 'varnish.vcl'
+  },
+  {
+    route : '/varnish/stats/:ip/:port',
+    handler : 'varnish.stats'
+  },
+  {
     middleware : 'addImporter',
     route : '/backend',
     template : 'backend',

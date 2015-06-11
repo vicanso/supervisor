@@ -22,8 +22,10 @@ mixin VarnishList(list)
             td #{item.createdAt}
             td #{item.version || '--'}
             td.opList
-              a.glyphicons.glyphicons-list(href='javascript:;', ng-click='varnishPage.showBackends(#{i}, "#{item.ip}", #{item.port})', title='显示backend列表', ng-class='{"glyphicons-roundabout" : varnishPage.opList[#{i}] === 0, "glyphicons-list" : varnishPage.opList[#{i}] !== 0}')
-              a.glyphicons.glyphicons-text-underline(href='javascript:;', ng-click='varnishPage.showVcl(#{i}, "#{item.ip}", #{item.port})', title='显示varnish配置', ng-class='{"glyphicons-roundabout" : varnishPage.opList[#{i}] === 1, "glyphicons-text-underline" : varnishPage.opList[#{i}] !== 1}')
+              a.glyphicons.glyphicons-list(href='javascript:;', ng-click='varnishPage.showBackends(#{i})', title='显示backend列表', ng-class='{"glyphicons-roundabout" : varnishPage.opList[#{i}] === 0, "glyphicons-list" : varnishPage.opList[#{i}] !== 0}')
+              a.glyphicons.glyphicons-text-underline(href='javascript:;', ng-click='varnishPage.showVcl(#{i})', title='显示varnish配置', ng-class='{"glyphicons-roundabout" : varnishPage.opList[#{i}] === 1, "glyphicons-text-underline" : varnishPage.opList[#{i}] !== 1}')
+
+              a.glyphicons.glyphicons-stats(href='javascript:;', ng-click='varnishPage.showStats(#{i})', title='显示varnish统计信息' , ng-class='{"glyphicons-roundabout" : varnishPage.opList[#{i}] === 2, "glyphicons-stats" : varnishPage.opList[#{i}] !== 2}')
                 
 
 
@@ -42,12 +44,40 @@ block append templateContainer
               th 域名
               th url前缀
             tbody
-                tr(ng-repeat='backend in backends')
-                  td(ng-bind='backend.name')
-                  td(ng-bind='backend.ip')
-                  td(ng-bind='backend.port')
-                  td(ng-bind='backend.host || "--"')
-                  td(ng-bind='backend.prefix || "--"')
+                tr(ng-repeat='backend in data')
+                  td(ng-bind='::backend.name')
+                  td(ng-bind='::backend.ip')
+                  td(ng-bind='::backend.port')
+                  td(ng-bind='::backend.host || "--"')
+                  td(ng-bind='::backend.prefix || "--"')
+  script#vclTpl(type='text/tpl')
+    jt-dialog.dialog.vclDialog
+      .title varnish配置文件
+        a.pull-right.destroy(href='javascript:;'): span.glyphicons.glyphicons-remove-2
+      .content
+        pre.code(ng-bind='data')
+
+  script#statsTpl(type='text/tpl')
+    jt-dialog.dialog.statsDialog
+      .title varnish统计
+        a.pull-right.destroy(href='javascript:;'): span.glyphicons.glyphicons-remove-2
+      .content: .statsContainer
+        .panel.panel-default
+          .panel-heading 更新时间：
+            span(ng-bind='data.createdAt | date : "yyyy-MM-dd HH:mm:ss"')
+          table.table
+            thead: tr
+              th 名称
+              th.change.text-center 变化量
+              th.total.text-center 总量
+              th.desc.text-center 描述
+            tbody
+              tr(ng-repeat='item in data.items')
+                td(ng-bind='::item.name')
+                td.text-center.change(ng-bind='::item.c | number : 0')
+                td.text-center.total(ng-bind='::item.v | number : 0')
+                td.desc.text-center
+                  span.glyphicons.glyphicons-circle-question-mark(title='{{::item.desc}}')
 
 block bodyContainer
   .varnishPage(ng-controller='VarnishPageController as varnishPage')
