@@ -1,5 +1,5 @@
 @import 'nib'
-@import './constant'
+@import '../constant'
 
 headerContainerCss()
   height $HEADER_HEIGHT
@@ -34,7 +34,10 @@ headerContainerCss()
 
   .varnishList
     .opList
-      width 80px
+      width 90px
       a
-        margin-right 5px
+        margin-right 8px
         text-decoration none
+        color #4d4d4d
+        &:hover
+          color #bc2328

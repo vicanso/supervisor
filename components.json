@@ -53,6 +53,7 @@
     "css": [
       "/component/bootstrap.css",
       "/css/global.css",
+      "/css/widget.css",
       "/css/nav.css",
       "/css/backend.css"
     ],
@@ -67,10 +68,61 @@
       "/service/http-log.js",
       "/service/debug.js",
       "/service/user.js",
-      "/js/directive.js",
+      "/directive/widget.js",
       "/js/global.js",
       "/js/backend.js"
     ],
-    "modifiedAt": "2015-06-03T20:46:38.532"
+    "modifiedAt": "2015-06-11T20:55:13.968"
+  },
+  "varnish/index": {
+    "css": [
+      "/component/bootstrap.css",
+      "/css/global.css",
+      "/css/widget.css",
+      "/css/nav.css",
+      "/css/varnish/index.css"
+    ],
+    "js": [
+      "/component/debug.js",
+      "/component/jquery.js",
+      "/component/angular.js",
+      "/component/lodash.js",
+      "/component/angular-local-storage.js",
+      "/component/sha1.js",
+      "/service/const.js",
+      "/service/http-log.js",
+      "/service/debug.js",
+      "/service/user.js",
+      "/directive/widget.js",
+      "/js/global.js",
+      "/js/varnish/index.js"
+    ],
+    "modifiedAt": "2015-06-11T21:24:47.463"
+  },
+  "varnish/monitor": {
+    "css": [
+      "/component/bootstrap.css",
+      "/css/global.css",
+      "/css/widget.css",
+      "/css/nav.css",
+      "/css/varnish/monitor.css"
+    ],
+    "js": [
+      "/component/debug.js",
+      "/component/jquery.js",
+      "/component/angular.js",
+      "/component/lodash.js",
+      "/component/angular-local-storage.js",
+      "/component/sha1.js",
+      "/service/const.js",
+      "/service/http-log.js",
+      "/service/debug.js",
+      "/service/user.js",
+      "/directive/widget.js",
+      "/js/global.js",
+      "/js/varnish/service.js",
+      "/js/varnish/monitor.js"
+    ],
+    "modifiedAt": "2015-06-11T21:29:10.560"
   }
 }

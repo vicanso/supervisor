@@ -9,7 +9,7 @@ module.exports = [
   {
     middleware : 'addImporter',
     route : '/varnish',
-    template : 'varnish',
+    template : 'varnish/index',
     handler : 'varnish.view'
   },
   {
@@ -23,6 +23,12 @@ module.exports = [
   {
     route : '/varnish/stats/:ip/:port',
     handler : 'varnish.stats'
+  },
+  {
+    middleware : 'addImporter',
+    template : 'varnish/monitor',
+    route : '/varnish/monitor',
+    handler : 'varnish.monitor'
   },
   {
     middleware : 'addImporter',

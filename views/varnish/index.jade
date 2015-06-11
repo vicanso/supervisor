@@ -1,4 +1,4 @@
-extends ./layout
+extends ../layout
 
 mixin VarnishList(list)
   .panel.panel-default
@@ -11,7 +11,7 @@ mixin VarnishList(list)
         th ttl
         th 更新时间
         th 版本
-        th.opList 其它
+        th.opList.text-center 其它
       tbody
         each item, i in list
           tr
@@ -21,7 +21,7 @@ mixin VarnishList(list)
             td #{item.ttl}
             td #{item.createdAt}
             td #{item.version || '--'}
-            td.opList
+            td.opList.text-center
               a.glyphicons.glyphicons-list(href='javascript:;', ng-click='varnishPage.showBackends(#{i})', title='显示backend列表', ng-class='{"glyphicons-roundabout" : varnishPage.opList[#{i}] === 0, "glyphicons-list" : varnishPage.opList[#{i}] !== 0}')
               a.glyphicons.glyphicons-text-underline(href='javascript:;', ng-click='varnishPage.showVcl(#{i})', title='显示varnish配置', ng-class='{"glyphicons-roundabout" : varnishPage.opList[#{i}] === 1, "glyphicons-text-underline" : varnishPage.opList[#{i}] !== 1}')
 
@@ -81,13 +81,13 @@ block append templateContainer
 
 block bodyContainer
   .varnishPage(ng-controller='VarnishPageController as varnishPage')
-    include ./nav
+    include ../nav
     header.headerContainer
       h3.text-center Varnish服务器列表
     if viewData.varnishList
       .varnishList
         +VarnishList(viewData.varnishList)
 
-  
-  - importer.import('/js/varnish.js');
-  - importer.import('/css/varnish.css');
+  - importer.import('/js/varnish/service.js');
+  - importer.import('/js/varnish/index.js');
+  - importer.import('/css/varnish/index.css');

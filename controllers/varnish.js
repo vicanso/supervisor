@@ -10,6 +10,8 @@ exports.view = view;
 exports.backends = backends;
 exports.vcl = vcl;
 exports.stats = stats;
+exports.monitor = monitor;
+
 /**
  * [*view description]
  * @yield {[type]} [description]
@@ -28,7 +30,26 @@ function *view(){
       varnishList : varnishList
     }
   };
-};
+}
+
+/**
+ * [*monitor description]
+ * @yield {[type]} [description]
+ */
+function *monitor(){
+  try{
+    var varnishList = yield etcd.varnishList();
+  }catch(err){
+    console.error(err);
+  }
+  this.set('Cache-Control', 'public, max-age=60');
+  this.state.viewData = {
+    page : 'varnish/monitor',
+    globals : {
+      varnishList : varnishList
+    }
+  };
+}
 
 function *backends(){
   var params = this.params;
@@ -60,6 +81,10 @@ function *backends(){
   }  
 }
 
+/**
+ * [*vcl 获取vcl]
+ * @yield {[type]} [description]
+ */
 function *vcl(){
   var params = this.params;
   var url = util.format('http://%s:%s/v-vcl', params.ip, params.port);
@@ -75,6 +100,10 @@ function *vcl(){
   }
 }
 
+/**
+ * [*stats 获取varnish stats]
+ * @yield {[type]} [description]
+ */
 function *stats(){
   var params = this.params;
   var url = util.format('http://%s:%s/v-stats', params.ip, params.port);
