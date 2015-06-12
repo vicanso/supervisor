@@ -5,6 +5,29 @@ block bodyContainer
     include ../nav
     header.headerContainer
       h3.text-center Varnish服务器统计
+    p.text-center(ng-if='!varnishMonitor.init') 正在加载中，请稍候...
+    .statsContainer.hidden(ng-class='{hidden : !varnishMonitor.init}')
+      .row: .col-xs-6(ng-repeat='stats in varnishMonitor.statsList'): .panel.panel-default
+          .panel-heading
+            span(ng-bind='::stats.name')
+            | 监控列表，更新于：
+            span(ng-bind='stats.createdAt | date : "yyyy-MM-dd HH:mm:ss"')
+          table.table
+            thead: tr
+              th 名称
+              th c1
+              th c2
+              th c5
+              th c10
+              th 总量
+            tbody
+              tr(ng-repeat='item in stats.stats')
+                td(ng-bind='::item.name')
+                td(ng-bind='item[1]')
+                td(ng-bind='item[2]')
+                td(ng-bind='item[5]')
+                td(ng-bind='item[10]')
+                td(ng-bind='item.v | number : 0')
 
   - importer.import('/js/varnish/service.js');
   - importer.import('/js/varnish/monitor.js');

@@ -24,31 +24,6 @@
     ],
     "modifiedAt": "2015-06-10T18:44:16.790"
   },
-  "varnish": {
-    "css": [
-      "/component/bootstrap.css",
-      "/css/global.css",
-      "/css/widget.css",
-      "/css/nav.css",
-      "/css/varnish.css"
-    ],
-    "js": [
-      "/component/debug.js",
-      "/component/jquery.js",
-      "/component/angular.js",
-      "/component/lodash.js",
-      "/component/angular-local-storage.js",
-      "/component/sha1.js",
-      "/service/const.js",
-      "/service/http-log.js",
-      "/service/debug.js",
-      "/service/user.js",
-      "/directive/widget.js",
-      "/js/global.js",
-      "/js/varnish.js"
-    ],
-    "modifiedAt": "2015-06-10T18:41:10.984"
-  },
   "backend": {
     "css": [
       "/component/bootstrap.css",
@@ -95,9 +70,10 @@
       "/service/user.js",
       "/directive/widget.js",
       "/js/global.js",
+      "/js/varnish/service.js",
       "/js/varnish/index.js"
     ],
-    "modifiedAt": "2015-06-11T21:24:47.463"
+    "modifiedAt": "2015-06-12T20:53:24.490"
   },
   "varnish/monitor": {
     "css": [

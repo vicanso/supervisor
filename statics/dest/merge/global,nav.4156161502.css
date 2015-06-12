@@ -1,0 +1,4 @@
+/*/css/global.css*/
+.mtop5{margin-top:5px}.mtop10{margin-top:10px}.mtop15{margin-top:15px}.mleft5{margin-left:5px}.mleft10{margin-left:10px}.mleft15{margin-left:15px}.mrgith5{margin-right:5px}.mrgith10{margin-right:10px}.mrgith15{margin-right:15px}.font12{font-size:12px}
+/*/css/nav.css*/
+.navContainer{width:70px;position:fixed;left:0;top:0;bottom:0;background-color:#252024}.navContainer ul{margin:0;padding:0}.navContainer ul li.active a{color:#fff}.navContainer ul a{display:block;padding:20px 0;line-height:20px;font-size:14px;color:#6e6d73;-webkit-transition:background-color color .5s;-moz-transition:background-color color .5s;-o-transition:background-color color .5s;-ms-transition:background-color color .5s;transition:background-color color .5s;text-decoration:none}.navContainer ul a .glyphicons{font-size:18px;line-height:24px;height:26px;display:block}.navContainer ul a:hover{color:#fff;background-color:#201b1f}

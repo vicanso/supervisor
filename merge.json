@@ -17,7 +17,7 @@
       "/service/http-log.js",
       "/service/debug.js",
       "/service/user.js",
-      "/js/directive.js",
+      "/directive/widget.js",
       "/js/global.js"
     ],
     [
