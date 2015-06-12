@@ -24,10 +24,10 @@ mixin BackendList(backendList)
               td #{backend.prefix}
               td #{backend.version || '--'}
               td
-                a.glyphicon.glyphicon-remove(href='javascript:;', ng-click='backendPage.remove("#{backend.key}", $event)')
+                a.glyphicons.glyphicons-remove-2(href='javascript:;', ng-click='backendPage.remove("#{backend.key}", $event)')
 
 mixin AddBackend()
-  .row(ng-init='backend = backendPage.backend')
+  .row.backendConfig(ng-init='backend = backendPage.backend')
     .col-xs-6.col-sm-4: .input-group
       span.input-group-addon 名称
       input.form-control(type='text', placeholder='请输入名称', ng-model='backend.config.name')
