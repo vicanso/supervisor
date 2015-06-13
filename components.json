@@ -75,13 +75,13 @@
     ],
     "modifiedAt": "2015-06-12T20:53:24.490"
   },
-  "varnish/monitor": {
+  "varnish/stats": {
     "css": [
       "/component/bootstrap.css",
       "/css/global.css",
       "/css/widget.css",
       "/css/nav.css",
-      "/css/varnish/monitor.css"
+      "/css/varnish/stats.css"
     ],
     "js": [
       "/component/debug.js",
@@ -97,8 +97,8 @@
       "/directive/widget.js",
       "/js/global.js",
       "/js/varnish/service.js",
-      "/js/varnish/monitor.js"
+      "/js/varnish/stats.js"
     ],
-    "modifiedAt": "2015-06-11T21:29:10.560"
+    "modifiedAt": "2015-06-13T09:07:07.136"
   }
 }

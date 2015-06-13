@@ -21,14 +21,14 @@ module.exports = [
     handler : 'varnish.vcl'
   },
   {
-    route : '/varnish/stats/:ip/:port',
-    handler : 'varnish.stats'
+    middleware : 'addImporter',
+    template : 'varnish/stats',
+    route : '/varnish/stats',
+    handler : 'varnish.statsView'
   },
   {
-    middleware : 'addImporter',
-    template : 'varnish/monitor',
-    route : '/varnish/monitor',
-    handler : 'varnish.monitor'
+    route : '/varnish/stats/:ip/:port',
+    handler : 'varnish.stats'
   },
   {
     middleware : 'addImporter',

@@ -1,0 +1,62 @@
+extends ../layout
+
+block bodyContainer
+  .varnishStatsPage(ng-controller='VarnishStatsController as varnishStats')
+    include ../nav
+    header.headerContainer
+      h3.text-center Varnish服务器统计
+    .statsConfig: .row
+      .col-xs-3
+        .input-group
+          span.input-group-addon 时间间隔
+          input.form-control(type='text')
+          span.input-group-addon 秒
+      .col-xs-3
+        .btn-group.quotaSelector
+          button.btn.btn-primary.dropdown-toggle(type='button') 指标选择
+            .caret
+          ul.dropdown-menu(role='menu')
+            li(ng-repeat='quota in varnishStats.quotaList')
+              a(href='javascript:;', ng-bind='quota')
+
+
+    //-             <div class="btn-group" dropdown is-open="status.isopen">
+    //-   <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle ng-disabled="disabled">
+    //-     Button dropdown <span class="caret"></span>
+    //-   </button>
+    //-   <ul class="dropdown-menu" role="menu">
+    //-     <li><a href="#">Action</a></li>
+    //-     <li><a href="#">Another action</a></li>
+    //-     <li><a href="#">Something else here</a></li>
+    //-     <li class="divider"></li>
+    //-     <li><a href="#">Separated link</a></li>
+    //-   </ul>
+    //- </div>
+
+
+    .statsContainer.hidden(ng-class='{hidden : !varnishStats.init}')
+      .row: .col-xs-6(ng-repeat='stats in varnishStats.statsList'): .panel.panel-default
+          .panel-heading
+            span(ng-bind='::stats.name')
+            | 监控列表，更新于：
+            span(ng-bind='stats.createdAt | date : "yyyy-MM-dd HH:mm:ss"')
+          table.table
+            thead: tr
+              th 名称
+              th c1
+              th c2
+              th c5
+              th c10
+              th 总量
+            tbody
+              tr(ng-repeat='item in stats.stats')
+                td(ng-bind='::item.name')
+                td(ng-bind='item[1]')
+                td(ng-bind='item[2]')
+                td(ng-bind='item[5]')
+                td(ng-bind='item[10]')
+                td(ng-bind='item.v | number : 0')
+
+  - importer.import('/js/varnish/service.js');
+  - importer.import('/js/varnish/stats.js');
+  - importer.import('/css/varnish/stats.css');

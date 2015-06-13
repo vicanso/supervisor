@@ -1,17 +1,20 @@
 ;(function(global){
 'use strict';
 var fn = function($scope, $http, $element, $q, $timeout, debug, vs){
+  debug = debug('jt.varnishStatsPage');
+  var varnishList = JT_GLOBAL.varnishList;
+  var interval = 60 * 1000;
+  var statsList = {};
+
+
   var self = this;
   self.statsList = null;
   self.init = false;
 
+  self.quotaList = vs.quotaList();
 
-  debug = debug('jt.varnishMonitorPage');
-  var varnishList = JT_GLOBAL.varnishList;
-  var interval = 60 * 1000;
 
-  var statsList = {};
-  startMonitor(varnishList);
+  // startMonitor(varnishList);
   return self;
 
 
@@ -47,7 +50,6 @@ var fn = function($scope, $http, $element, $q, $timeout, debug, vs){
         });
       });
       self.statsList = covertStatsData(statsList, [1, 2, 5, 10]);
-      self.init = true;
       $timeout(function(){
         startMonitor(list);
       }, interval);
@@ -101,5 +103,5 @@ var fn = function($scope, $http, $element, $q, $timeout, debug, vs){
 };
 fn.$inject = ['$scope', '$http', '$element', '$q', '$timeout', 'debug', 'varnishService'];
 angular.module('jtApp')
-  .controller('VarnishMonitorController', fn);
+  .controller('VarnishStatsController', fn);
 })(this);

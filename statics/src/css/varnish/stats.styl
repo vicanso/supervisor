@@ -10,11 +10,22 @@ headerContainerCss()
     margin 0
     line-height $HEADER_HEIGHT
       
+statsConfigCss()
+  margin 15px
+  .quotaSelector
+    .caret
+      margin-left 5px
+    &:hover
+      padding-bottom 3px
+      .dropdown-menu
+        margin 0
+        display block
 
-
-.varnishMonitorPage
+.varnishStatsPage
   margin-left $NAV_WIDTH
   .headerContainer
     headerContainerCss()
+  .statsConfig
+    statsConfigCss()
   .statsContainer
-    margin 20px
+    margin 15px

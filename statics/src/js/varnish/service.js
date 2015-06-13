@@ -7,7 +7,8 @@ angular.module('jtApp').factory('varnishService', ['$http', '$q', 'debug', funct
     backends : backends,
     vcl : vcl,
     stats : stats,
-    statsList : statsList
+    statsList : statsList,
+    quotaList : quotaList
   };
   return varnishService;
 
@@ -49,7 +50,7 @@ angular.module('jtApp').factory('varnishService', ['$http', '$q', 'debug', funct
     var promise = $http.get(url);
     promise.then(function(res){
       var data = res.data;
-      var descDict = getStatsDescDict();
+      var descDict = statsDescDict();
       var items = [];
       angular.forEach(data, function(v, k){
         if(k !== 'createdAt' && k !== 'interval'){
@@ -79,11 +80,20 @@ angular.module('jtApp').factory('varnishService', ['$http', '$q', 'debug', funct
     return $q.all(promiseList);
   }
 
+  function quotaList(){
+    var dict = statsDescDict();
+    var arr = [];
+    angular.forEach(dict, function(desc, k){
+      arr.push(k);
+    });
+    return arr;
+  }
+
   /**
-   * [getStatsDescDict description]
+   * [statsDescDict description]
    * @return {[type]} [description]
    */
-  function getStatsDescDict(){
+  function statsDescDict(){
     return {
       uptime: 'Child process uptime',
       sess_conn: 'Sessions accepted',
