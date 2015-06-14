@@ -5,7 +5,7 @@ mixin BackendList(backendList)
   if _.get(backendList, 'length')
     .panel.panel-default
       .panel-heading 服务器列表
-      table.table
+      table.table(jt-table='fixedHead')
         thead: tr
           th 名称
           th IP
