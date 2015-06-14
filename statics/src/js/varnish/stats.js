@@ -110,7 +110,7 @@ var fn = function($scope, $http, $element, $q, $timeout, debug, vs){
         };
         angular.forEach(mergeList, function(i){
           if(list.length <= i){
-            tmp[i] = '--'
+            tmp[i] = '--';
           }else{
             tmp[i] = list[i][k] - list[0][k];
           }
