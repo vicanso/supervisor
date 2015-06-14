@@ -3,7 +3,7 @@
 var fn = function($scope, $http, $element, $q, $timeout, debug, vs){
   debug = debug('jt.varnishStatsPage');
   var varnishList = JT_GLOBAL.varnishList;
-  var statsList = {};
+  var statsDict = {};
 
 
   var self = this;
@@ -45,7 +45,7 @@ var fn = function($scope, $http, $element, $q, $timeout, debug, vs){
       result.push({
         name : name,
         checked : checked
-      })
+      });
     });
     return result;
   }
@@ -61,33 +61,19 @@ var fn = function($scope, $http, $element, $q, $timeout, debug, vs){
       angular.forEach(arr, function(res, i){
         var data = res.data;
         var name = list[i].name;
-        var stats = statsList[name];
+        var stats = statsDict[name];
         if(!stats){
-          stats = {};
-          statsList[name] = stats;
+          stats = [];
+          statsDict[name] = stats;
         }
-        if(stats.createdAt === data.createdAt){
-          return;
+        if(data){
+          stats.push(data);
         }
-        stats.createdAt = data.createdAt;
-        angular.forEach(data.items, function(item, j){
-          var name = item.name;
-          var tmp = stats[name];
-          if(!tmp){
-            tmp = {
-              changes : []
-            };
-            stats[name] = tmp;
-          }
-          tmp.v = item.v;
-          var changes = tmp.changes;
-          changes.unshift(item.c);
-          if(changes.length > 10){
-            changes.pop();
-          }
-        });
+        if(stats.length > 11){
+          stats.shift();
+        }
       });
-      self.statsList = covertStatsData(statsList, [1, 2, 5, 10]);
+      self.statsList = covertStatsData(statsDict, [1, 2, 5, 10]);
       $timeout(function(){
         startMonitor(list);
       }, interval);
@@ -98,45 +84,42 @@ var fn = function($scope, $http, $element, $q, $timeout, debug, vs){
     });
   }
 
-  function covertStatsData(list, mergeList){
+  function covertStatsData(dict, mergeList){
     var result = [];
-
-    angular.forEach(list, function(data, name){
+    var keys = {};
+    angular.forEach(self.quotaList, function(quota){
+      if(quota.checked){
+        keys[quota.name] = true;
+      }
+    });
+    angular.forEach(dict, function(list, name){
       var stats = [];
+      var last = list[list.length - 1];
       var tmp = {
         name : name,
-        createdAt : data.createdAt,
+        createdAt : last.createdAt,
         stats : stats
       };
-      delete data.createdAt;
-      angular.forEach(data, function(data, k){
+      angular.forEach(last, function(v, k){
+        if(k === 'createdAt' || !keys[k]){
+          return;
+        }
         var tmp = {
           name : k,
-          v : data.v
+          v : v
         };
         angular.forEach(mergeList, function(i){
-          var v = sum(data.changes, i);
-          if(angular.isUndefined(v)){
-            v = '--';
+          if(list.length <= i){
+            tmp[i] = '--'
+          }else{
+            tmp[i] = list[i][k] - list[0][k];
           }
-          tmp[i] = v;
         });
         stats.push(tmp);
       });
       result.push(tmp);
     });
     return result;
-    // 计算前几个数的总和
-    function sum(arr, total){
-      if(arr.length < total){
-        return;
-      }
-      var tmp = 0;
-      for(var i = 0; i < total; i++){
-        tmp += arr[i];
-      }
-      return tmp;
-    }
   }
 };
 fn.$inject = ['$scope', '$http', '$element', '$q', '$timeout', 'debug', 'varnishService'];

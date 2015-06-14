@@ -52,17 +52,20 @@ angular.module('jtApp').factory('varnishService', ['$http', '$q', 'debug', funct
       var data = res.data;
       var descDict = statsDescDict();
       var items = [];
-      angular.forEach(data, function(v, k){
-        if(k !== 'createdAt' && k !== 'interval'){
-          v.desc = descDict[k];
-          v.name = k;
-          items.push(v);
-        }
-      });
-      res.data = {
-        createdAt : data.createdAt,
-        items : items
+      var result = {
+        createdAt : data.createdAt
       };
+      delete data.createdAt;
+      angular.forEach(data, function(v, k){
+        var desc = descDict[k];
+        items.push({
+          name : k,
+          v : v,
+          desc : desc
+        });
+      });
+      result.items = items;
+      res.data = result;
     });
     return promise;
   }
@@ -74,8 +77,13 @@ angular.module('jtApp').factory('varnishService', ['$http', '$q', 'debug', funct
    */
   function statsList(list){
     var promiseList = [];
+    var fn = function(ip, port){
+      var url = '/varnish/stats/' + ip + '/' + port;
+      debug('get stats form:%s', url);
+      return $http.get(url);
+    };
     angular.forEach(list, function(tmp){
-      promiseList.push(stats(tmp.ip, tmp.port));
+      promiseList.push(fn(tmp.ip, tmp.port));
     });
     return $q.all(promiseList);
   }

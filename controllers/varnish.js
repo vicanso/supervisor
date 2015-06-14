@@ -112,7 +112,7 @@ function *stats(){
   };
   var data = _.get(res, 'body');
   if(data){
-    this.set('Cache-Control', 'public, max-age=60');
+    this.set('Cache-Control', 'public, max-age=5');
     this.body = data;
   }else{
     this.body = null;
