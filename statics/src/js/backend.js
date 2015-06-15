@@ -13,7 +13,8 @@ angular.module('jtApp').factory('backendService', ['$http', function($http){
       return backend;
     },
     save : save,
-    remove : remove
+    remove : remove,
+    validate : validate
   };
   return backendService;
 
@@ -27,7 +28,21 @@ angular.module('jtApp').factory('backendService', ['$http', function($http){
         isFail = true;
       }
     });
-    return isFail;
+    return !isFail;
+  }
+
+  function validate(){
+    if(!checkFields()){
+      backend.status = 'error';
+      backend.error = 'the field can not be empty.';
+      return false;
+    }
+    if(!backend.config.host && !backend.config.prefix){
+      backend.status = 'error';
+      backend.error = 'host and prefix can not be empty';
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -35,11 +50,6 @@ angular.module('jtApp').factory('backendService', ['$http', function($http){
    * @return {[type]} [description]
    */
   function save(){
-    if(checkFields()){
-      backend.status = 'error';
-      backend.error = 'the field can not be empty.';
-      return;
-    }
     var promise = $http.post('/backend', backend.config);
     backend.status = 'submiting';
     backend.op = 'save';
@@ -79,7 +89,7 @@ var fn = function($scope, $http, debug, backendService){
 
   // 保存backend
   self.save = function(){
-    backendService.save().then(function(){
+    backendService.validate() && backendService.save().then(function(){
       setTimeout(function(){
         location.reload();
       }, 3000);

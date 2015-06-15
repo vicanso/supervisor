@@ -93,17 +93,19 @@ function jtTable($compile, $document){
       cloneThList.eq(i).width(angular.element(dom).outerWidth());
     });
     var offset = head.offset();
+    var offsetHeight = 2 * head.height();
+    var tableHeight = element.height();
 
     cloneHead.addClass('cloneHead').css('position', 'fixed').css({
       'z-index' : 1,
       left : offset.left,
       top : 0
     }).height(head.height()).width(head.width());
-    cloneHead.insertAfter(head);
+    cloneHead.hide().insertAfter(head);
     var isHidden = true;
     var fn = _.throttle(function(){
       var top = angular.element($document).scrollTop();
-      if(top > offset.top){
+      if(top > offset.top && top < offset.top + tableHeight - offsetHeight){
         if(isHidden){
           cloneHead.show();
           isHidden = false;
@@ -118,7 +120,7 @@ function jtTable($compile, $document){
     scope.$on('$destroy', function(){
 
     });
-
+    fn();
   }
 
   function tableLink(scope, element, attr){

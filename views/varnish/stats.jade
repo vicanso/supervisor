@@ -6,7 +6,7 @@ mixin StatsConfig
       .col-xs-3
         .input-group
           span.input-group-addon 时间间隔
-          input.form-control(type='text', placeholder='请输入60的倍数', ng-model='statsConfig.interval')
+          input.form-control(type='text', placeholder='统计的间隔时间', ng-model='statsConfig.interval')
           span.input-group-addon 秒
       .col-xs-2
         .btn-group.quotaSelector
@@ -17,54 +17,40 @@ mixin StatsConfig
               a(href='javascript:;', ng-click='quota.checked = !quota.checked')
                 span.glyphicons(ng-class='{"glyphicons-unchecked" : !quota.checked, "glyphicons-check" : quota.checked}')
                 span(ng-bind='::quota.name')
-      .col-xs-1
+      .col-xs-2
         a.btn.btn-primary.start(ng-click='varnishStats.start()') 开始
     .alert.alert-danger.hidden.mtop15(ng-class='{hidden : statsConfig.status !== "error"}', ng-bind='statsConfig.error')
 
+mixin StatsView
+  .row: .col-xs-6(ng-repeat='stats in varnishStats.statsList'): .panel.panel-default
+    .panel-heading
+      span(ng-bind='::stats.name')
+      | 监控列表，更新于：
+      span(ng-bind='stats.createdAt | date : "yyyy-MM-dd HH:mm:ss"')
+    table.table(jt-table='fixedHead')
+      thead: tr
+        th 名称
+        th c1
+        th c2
+        th c5
+        th c10
+        th 总量
+      tbody
+        tr(ng-repeat='item in stats.stats')
+          td(ng-bind='::item.name')
+          td(ng-bind='item[1]')
+          td(ng-bind='item[2]')
+          td(ng-bind='item[5]')
+          td(ng-bind='item[10]')
+          td(ng-bind='item.v | number : 0')
 block bodyContainer
   .varnishStatsPage(ng-controller='VarnishStatsController as varnishStats')
     include ../nav
     header.headerContainer
       h3.text-center Varnish服务器统计
     +StatsConfig
-
-
-    //-             <div class="btn-group" dropdown is-open="status.isopen">
-    //-   <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle ng-disabled="disabled">
-    //-     Button dropdown <span class="caret"></span>
-    //-   </button>
-    //-   <ul class="dropdown-menu" role="menu">
-    //-     <li><a href="#">Action</a></li>
-    //-     <li><a href="#">Another action</a></li>
-    //-     <li><a href="#">Something else here</a></li>
-    //-     <li class="divider"></li>
-    //-     <li><a href="#">Separated link</a></li>
-    //-   </ul>
-    //- </div>
-
-
     .statsContainer.hidden(ng-class='{hidden : !varnishStats.init}')
-      .row: .col-xs-6(ng-repeat='stats in varnishStats.statsList'): .panel.panel-default
-          .panel-heading
-            span(ng-bind='::stats.name')
-            | 监控列表，更新于：
-            span(ng-bind='stats.createdAt | date : "yyyy-MM-dd HH:mm:ss"')
-          table.table
-            thead: tr
-              th 名称
-              th c1
-              th c2
-              th c5
-              th c10
-              th 总量
-            tbody
-              tr(ng-repeat='item in stats.stats')
-                td(ng-bind='::item.name')
-                td(ng-bind='item[1]')
-                td(ng-bind='item[2]')
-                td(ng-bind='item[5]')
-                td(ng-bind='item[10]')
-                td(ng-bind='item.v | number : 0')
+      +StatsView
 
   - importer.import('/js/varnish/service.js');
   - importer.import('/js/varnish/stats.js');

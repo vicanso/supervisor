@@ -50,7 +50,7 @@ mixin AddBackend()
     .col-xs-3.col-sm-2: a.btn.btn-default(ng-click='backendPage.mode = "view"') 取消
   .alert.alert-success.hidden(ng-class='{hidden : backendPage.backend.status != "success" && backendPage.backend.op == "save"}') 已成功保存，3秒后将刷新页面！
   .alert.alert-info.hidden(ng-class='{hidden : backendPage.backend.status != "submiting" && backendPage.backend.op == "save"}') 正在提交中，请稍候...
-  .alert.alert-danger.hidden(ng-class='{hidden : backendPage.backend.status != "error" && backendPage.backend.op == "save"}', ng-bind='backendPage.backend.error')
+  .alert.alert-danger.hidden(ng-class='{hidden : backendPage.backend.status != "error"}', ng-bind='backendPage.backend.error')
 
 //-   <div class="input-group">
 //-   <span class="input-group-addon" id="basic-addon1">@</span>
