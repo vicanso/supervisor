@@ -36,13 +36,10 @@ angular.module('jtApp').factory('backendService', ['$http', function($http){
       backend.status = 'error';
       backend.error = 'the field can not be empty.';
       return false;
+    }else{
+      return true;
     }
-    if(!backend.config.host && !backend.config.prefix){
-      backend.status = 'error';
-      backend.error = 'host and prefix can not be empty';
-      return false;
-    }
-    return true;
+    
   }
 
   /**
@@ -89,11 +86,13 @@ var fn = function($scope, $http, debug, backendService){
 
   // 保存backend
   self.save = function(){
-    backendService.validate() && backendService.save().then(function(){
-      setTimeout(function(){
-        location.reload();
-      }, 3000);
-    });
+     if(backendService.validate()){
+      backendService.save().then(function(){
+        setTimeout(function(){
+          location.reload();
+        }, 3000);
+      });
+    }
   };
 
   // 删除backend

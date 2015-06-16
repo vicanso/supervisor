@@ -9,6 +9,6 @@
   "out_file": "/var/log/supervisor-out.log",
   "env": {
     "NODE_ENV": "production",
-    "APP_VERSION": "2015-06-14T13:50:04.225"
+    "APP_VERSION": "2015-06-16T20:49:51.427"
   }
 }
