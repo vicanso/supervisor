@@ -66,23 +66,7 @@ function convertRouterSetting(routes){
  */
 function getImporterMiddleware(){
   var importer = require('../middlewares/importer');
-  var staticVerion = null;
-  var staticMerge = null;
-  var importerOptions = {
-    prefix : config.staticUrlPrefix,
-    versionMode : 1,
-    srcPath : 'src'
-  };
-  try{
-    staticVerion = require('../crc32');
-    staticMerge = require('../merge');
-  }catch(err){
-    console.error(err);
-  }
-  if(config.env !== 'development'){
-    importerOptions.version = staticVerion;
-    importerOptions.merge = staticMerge;
-  }
+  var importerOptions = require('../helpers/util').importerOptions();
   return importer(importerOptions);
 }
 

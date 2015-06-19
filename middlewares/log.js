@@ -43,7 +43,7 @@ module.exports = function(processName){
       }else{
         length = ctx.body && ctx.body.length;
       }
-      var str = util.format('%s "%s %s HTTP/%s" %d %d %d-%dms "%s" "%s" %d-%d-%d', ip, method, url, httpVersion, ctx.status, length, renderTimeConsuming, use, header.referer || '', header['user-agent'], handlingReqTotal, index, requestTotal);
+      var str = util.format('%s "%s %s HTTP/%s" %d %d %d-%dms "%s" "%s" %d-%d-%d', ip, method, url, httpVersion, ctx.status, length, renderTimeConsuming, use, ctx.get('referer') || '', ctx.get('user-agent'), handlingReqTotal, index, requestTotal);
       handlingReqTotal--;
       if(config.env !== 'development'){
         console.info(str);

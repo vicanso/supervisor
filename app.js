@@ -26,22 +26,10 @@ function startMonitor(){
  */
 function wrapOnError(context){
   var fn = context.onerror;
-
+  var responseError = require('./helpers/error').responseError;
   context.onerror = function(err){
-    if(err && err.data){
-      var data = err.data;
-      var res = this.res;
-      var end = res.end;
-      var self = this;
-      this.res.end = function(){
-        var msg = data;
-        if(_.isObject(data)){
-          msg = JSON.stringify(data);
-          self.type = 'application/json';
-        }
-        self.length = Buffer.byteLength(msg);
-        end.call(res, msg);
-      };
+    if(err){
+      responseError(this, err);
     }
     fn.call(this, err);
   };
@@ -62,6 +50,7 @@ function initServer(port){
   var methodOverride = require('koa-methodoverride');
   var app = koa();
 
+  // require('./helpers/error').wrapOnError(app.context);
   wrapOnError(app.context);
   // 超时，单位ms
   var timeout = 30 * 1000;
