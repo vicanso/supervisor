@@ -24,6 +24,7 @@ module.exports = function(processName){
     var renderTimeConsuming = 0;
     var onfinish = done.bind(null, 'finish');
     var onclose = done.bind(null, 'close');
+    var xProcess = ctx.header['x-process']
 
     res.once('finish', onfinish);
     res.once('close', onclose);
@@ -55,6 +56,8 @@ module.exports = function(processName){
       renderTimeConsuming = ctx._renderTimeConsuming;
     }
     var jtInfo = util.format('%s,%s,%d,%d,%d,%d,%d,%d', hostname, processName, pid, handlingReqTotal, requestTotal, renderTimeConsuming, use, Date.now());
+    var processList = ctx.header['x-process'] || '';
+    ctx.set('X-Process', processList + ', node-' + process.env.HOSTNAME);
     ctx.set('JT-Info', jtInfo);
   };
 };

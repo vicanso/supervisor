@@ -1,0 +1,44 @@
+@import 'nib'
+@import '../constant'
+
+headerContainerCss()
+  height $HEADER_HEIGHT
+  line-height @height
+  background-color #fcfcfc
+  border-bottom 1px solid #cbccce
+  h3
+    margin 0
+    line-height $HEADER_HEIGHT
+      
+statsConfigCss()
+  margin 15px
+  height 40px
+  .quotaSelector
+    width 100%
+    .caret
+      margin-left 5px
+    .btn
+      width 100%
+    &:hover
+      padding-bottom 3px
+      .dropdown-menu
+        margin 0
+        display block
+    .dropdown-menu
+      height 200px
+      overflow auto
+      .glyphicons
+        margin-right 3px
+  .start
+    display block
+
+.varnishStatsPage
+  margin-left $NAV_WIDTH
+  .headerContainer
+    headerContainerCss()
+  .statsConfig
+    statsConfigCss()
+  .statsContainer
+    margin 15px
+    .cloneHead
+      background-color #fff

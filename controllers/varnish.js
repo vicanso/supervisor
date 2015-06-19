@@ -10,7 +10,7 @@ exports.view = view;
 exports.backends = backends;
 exports.vcl = vcl;
 exports.stats = stats;
-exports.monitor = monitor;
+exports.statsView = statsView;
 
 /**
  * [*view description]
@@ -33,10 +33,10 @@ function *view(){
 }
 
 /**
- * [*monitor description]
+ * [*statsView description]
  * @yield {[type]} [description]
  */
-function *monitor(){
+function *statsView(){
   try{
     var varnishList = yield etcd.varnishList();
   }catch(err){
@@ -44,7 +44,7 @@ function *monitor(){
   }
   this.set('Cache-Control', 'public, max-age=60');
   this.state.viewData = {
-    page : 'varnish/monitor',
+    page : 'varnish/stats',
     globals : {
       varnishList : varnishList
     }
@@ -112,7 +112,7 @@ function *stats(){
   };
   var data = _.get(res, 'body');
   if(data){
-    this.set('Cache-Control', 'public, max-age=60');
+    this.set('Cache-Control', 'public, max-age=5');
     this.body = data;
   }else{
     this.body = null;

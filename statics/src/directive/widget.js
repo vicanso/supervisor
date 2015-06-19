@@ -72,4 +72,71 @@ function jtDialog($compile){
 
 jtDialog.$inject = ['$compile'];
 
+
+
+module.directive('jtTable', jtTable);
+/**
+ * [jtTable description]
+ * @param  {[type]} $compile [description]
+ * @return {[type]}          [description]
+ */
+function jtTable($compile, $document){
+
+  function fixedHead(scope, element){
+
+
+    var head = element.find('thead');
+    var cloneHead = head.clone();
+    var thList = head.find('th');
+    var cloneThList = cloneHead.find('th');
+    angular.forEach(thList, function(dom, i){
+      cloneThList.eq(i).width(angular.element(dom).outerWidth());
+    });
+    var offset = head.offset();
+    var offsetHeight = 2 * head.height();
+    var tableHeight = element.height();
+
+    cloneHead.addClass('cloneHead').css('position', 'fixed').css({
+      'z-index' : 1,
+      left : offset.left,
+      top : 0
+    }).height(head.height()).width(head.width());
+    cloneHead.hide().insertAfter(head);
+    var isHidden = true;
+    var fn = _.throttle(function(){
+      var top = angular.element($document).scrollTop();
+      if(top > offset.top && top < offset.top + tableHeight - offsetHeight){
+        if(isHidden){
+          cloneHead.show();
+          isHidden = false;
+        }
+      }else if(!isHidden){
+        cloneHead.hide();
+        isHidden = true;
+      }
+    }, 30);
+
+    angular.element($document).on('scroll', fn);
+    scope.$on('$destroy', function(){
+
+    });
+    fn();
+  }
+
+  function tableLink(scope, element, attr){
+    var type = attr.jtTable;
+    if(type === 'fixedHead'){
+      setTimeout(function(){
+        fixedHead(scope, element);
+      }, 1000);
+    }
+  }
+
+  return {
+    restrict : 'A',
+    link : tableLink
+  };
+}
+jtTable.$inject = ['$compile', '$document'];
+
 })(this);

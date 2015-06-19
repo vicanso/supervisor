@@ -5,7 +5,7 @@ mixin BackendList(backendList)
   if _.get(backendList, 'length')
     .panel.panel-default
       .panel-heading 服务器列表
-      table.table
+      table.table(jt-table='fixedHead')
         thead: tr
           th 名称
           th IP
@@ -24,10 +24,10 @@ mixin BackendList(backendList)
               td #{backend.prefix}
               td #{backend.version || '--'}
               td
-                a.glyphicon.glyphicon-remove(href='javascript:;', ng-click='backendPage.remove("#{backend.key}", $event)')
+                a.glyphicons.glyphicons-remove-2(href='javascript:;', ng-click='backendPage.remove("#{backend.key}", $event)')
 
 mixin AddBackend()
-  .row(ng-init='backend = backendPage.backend')
+  .row.backendConfig(ng-init='backend = backendPage.backend')
     .col-xs-6.col-sm-4: .input-group
       span.input-group-addon 名称
       input.form-control(type='text', placeholder='请输入名称', ng-model='backend.config.name')
@@ -50,7 +50,7 @@ mixin AddBackend()
     .col-xs-3.col-sm-2: a.btn.btn-default(ng-click='backendPage.mode = "view"') 取消
   .alert.alert-success.hidden(ng-class='{hidden : backendPage.backend.status != "success" && backendPage.backend.op == "save"}') 已成功保存，3秒后将刷新页面！
   .alert.alert-info.hidden(ng-class='{hidden : backendPage.backend.status != "submiting" && backendPage.backend.op == "save"}') 正在提交中，请稍候...
-  .alert.alert-danger.hidden(ng-class='{hidden : backendPage.backend.status != "error" && backendPage.backend.op == "save"}', ng-bind='backendPage.backend.error')
+  .alert.alert-danger.hidden(ng-class='{hidden : backendPage.backend.status != "error"}', ng-bind='backendPage.backend.error')
 
 //-   <div class="input-group">
 //-   <span class="input-group-addon" id="basic-addon1">@</span>

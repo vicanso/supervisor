@@ -68,13 +68,11 @@ block append templateContainer
           table.table
             thead: tr
               th 名称
-              th.change.text-center 变化量
               th.total.text-center 总量
               th.desc.text-center 描述
             tbody
               tr(ng-repeat='item in data.items')
                 td(ng-bind='::item.name')
-                td.text-center.change(ng-bind='::item.c | number : 0')
                 td.text-center.total(ng-bind='::item.v | number : 0')
                 td.desc.text-center
                   span.glyphicons.glyphicons-circle-question-mark(title='{{::item.desc}}')

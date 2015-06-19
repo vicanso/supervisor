@@ -7,9 +7,14 @@ nav.navContainer
     li(class='#{page == "varnish"? "active" : ""}'): a.text-center(href='#{URL("/varnish")}')
       i.glyphicons.glyphicons-magic
       | Varnish
+    li(class='#{page == "varnish/stats"? "active" : ""}'): a.text-center(href='#{URL("/varnish/stats")}')
+      i.glyphicons.glyphicons-stats
+      | Varnish Stats
+
     li(class='#{page == "backend"? "active" : ""}'): a.text-center(href='#{URL("/backend")}')
       i.glyphicons.glyphicons-imac
       | Backend
+
 
 
 
