@@ -45,5 +45,11 @@ module.exports = [
     method : 'delete',
     route : '/backend/:key/:index',
     handler : 'backend.remove'
+  },
+  {
+    middleware : 'addImporter',
+    route : '/setting',
+    template : 'setting',
+    handler : 'setting.view'
   }
 ];

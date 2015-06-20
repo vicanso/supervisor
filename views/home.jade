@@ -6,6 +6,8 @@ block bodyContainer
       ul.pull-right.functions
         li.login: a(href='javascript:;', ng-click='app.login()') 登录
         li.register: a(href='javascript:;', ng-click='app.register()') 注册
+        li.setting
+          a.glyphicons.glyphicons-menu-hamburger.font16(href='#{URL("/setting")}')
       h3.text-center Supervisor
 
   

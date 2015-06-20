@@ -15,6 +15,9 @@ exports.backendList = backendList;
 exports.addBackend = addBackend;
 exports.deleteBackend = deleteBackend;
 
+exports.setting = setting;
+
+
 /**
  * [*backendList 获取backend list]
  * @yield {[type]} [description]
@@ -101,4 +104,27 @@ function *varnishList(){
   }
   yield parallel(list.map(ping));
   return list;
+}
+
+/**
+ * [*setting description]
+ * @param {[type]} data  有data则是set，无则为get
+ * @yield {[type]} [description]
+ */
+function *setting(data){
+  var result = yield function(done){
+    request.get(etcdUrl + '/keys/jt-setting').timeout(3000).end(done);
+  };
+  var data = _.get(result, 'body.node.value');
+  if(!data){
+    return;
+  }else{
+    try{
+      data = JSON.parse(data);
+    }catch(err){
+      console.error(err);
+      data = null;
+    }
+    return data;
+  }
 }

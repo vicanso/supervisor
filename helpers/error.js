@@ -14,7 +14,6 @@ function getImporter(){
 }
 
 function responseError(ctx, err){
-  // var data = err.data || err.message;
   var res = ctx.res;
   var end = res.end;
   ctx.res.end = function(){
