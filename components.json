@@ -21,5 +21,28 @@
       "/js/home.js"
     ],
     "modifiedAt": "2015-06-30T15:15:46.463"
+  },
+  "etcd": {
+    "css": [
+      "/component/bootstrap.css",
+      "/css/global.css",
+      "/css/nav.css",
+      "/css/etcd.css"
+    ],
+    "js": [
+      "/component/jquery.js",
+      "/component/angular.js",
+      "/component/lodash.js",
+      "/component/angular-local-storage.js",
+      "/component/sha1.js",
+      "/service/const.js",
+      "/service/http-log.js",
+      "/service/debug.js",
+      "/service/user.js",
+      "/js/directive.js",
+      "/js/global.js",
+      "/js/etcd.js"
+    ],
+    "modifiedAt": "2015-07-01T22:03:51.729"
   }
 }

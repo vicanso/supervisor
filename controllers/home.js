@@ -13,6 +13,7 @@ function *home(){
     setImmediate(done);
   };
   ctx.state.viewData = {
+    page : 'home',
     name : 'vicanso'
   };
 }

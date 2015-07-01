@@ -8,6 +8,7 @@ exports.add = add;
 exports.get = get;
 exports.del = del;
 exports.update = update;
+exports.list = list;
 /**
  * [getUrl description]
  * @param  {[type]} tmp [description]
@@ -101,4 +102,18 @@ function *update(key, data, ttl) {
     req.end(done);
   };
   return _.get(res, 'body');
+}
+
+
+/**
+ * [list description]
+ * @return {[type]} [description]
+ */
+function *list() {
+  let res = yield function (done) {
+    request.get(getUrl(''))
+      .timeout(exports.timeout)
+      .end(done);
+  };
+  return _.get(res, 'body.node.nodes');
 }

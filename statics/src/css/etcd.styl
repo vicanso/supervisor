@@ -1,7 +1,7 @@
 @import 'nib'
 @import './constant'
 
-headerContainerCss()
+HeaderContainerCss()
   height $HEADER_HEIGHT
   line-height @height
   background-color #fcfcfc
@@ -22,9 +22,11 @@ headerContainerCss()
     margin 0
     line-height $HEADER_HEIGHT
 
-
-
-.homePage
+EtcdNodeListCss()
+  margin 15px
+.etcdPage
   margin-left $NAV_WIDTH
   .headerContainer
-    headerContainerCss()
+    HeaderContainerCss()
+  .etcdNodeList
+    EtcdNodeListCss()
