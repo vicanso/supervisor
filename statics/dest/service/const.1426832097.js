@@ -1,1 +1,0 @@
-!function(t){"use strict";var a=angular.module("jt.service.const",[]),n=angular.extend({app:"timtam"},CONFIG);a.constant("CONST",n)}(this);
