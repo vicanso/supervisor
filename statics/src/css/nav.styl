@@ -1,0 +1,24 @@
+@import 'nib'
+@import './constant'
+.navContainer
+  width $NAV_WIDTH
+  position fixed
+  left 0
+  top 0
+  bottom 0
+  background-color #252024
+  ul
+    margin 0
+    padding 0
+    li
+      &:nth-child(1) a
+        color #fff
+    a
+      display block
+      line-height 60px
+      font-size 14px
+      color #6e6d73
+      transition background-color 0.5s
+      &:hover
+        background-color #201b1f
+    

@@ -1,0 +1,14 @@
+{
+  "name": "timtam",
+  "instances": 2,
+  "merge_logs": true,
+  "max_memory_restart": "200M",
+  "script": "app.js",
+  "log_file": "/var/log/timtam.log",
+  "error_file": "/var/log/timtam-error.log",
+  "out_file": "/var/log/timtam-out.log",
+  "env": {
+    "NODE_ENV": "production",
+    "APP_VERSION": "2015-07-01T11:17:22.651"
+  }
+}
