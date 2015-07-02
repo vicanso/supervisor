@@ -5,7 +5,7 @@ const debug = require('../helpers/debug');
 const errors = require('../errors');
 exports.view = view;
 exports.get = get;
-
+exports.del = del;
 /**
  * [home description]
  * @return {[type]} [description]
@@ -13,24 +13,13 @@ exports.get = get;
 function *view(){
   /*jshint validthis:true */
   let ctx = this;
-  let nodes = yield etcd.list();
-  nodes = _.map(nodes, function (node) {
-    let v = _.isUndefined(node.value)? '--' : node.value;
-    let ttl = _.isUndefined(node.ttl)? '--' : node.ttl;
-    return {
-      key : node.key,
-      value : v,
-      dir : !!node.dir,
-      ttl : ttl
-    };
-  });
-  nodes = _.sortBy(nodes, function(node) {
-    return node.key;
-  });
+  let nodes = yield etcd.list('');
   ctx.state.viewData = {
     page : 'etcd',
     name : 'vicanso',
-    nodes : nodes
+    globals : {
+      nodes : nodes
+    }
   };
 }
 
@@ -42,12 +31,26 @@ function *view(){
 function *get() {
   /*jshint validthis:true */
   let ctx = this;
-  let key = _.get(ctx, 'query.key');
-  if (!key) {
-    throw errors.get(20, {
-      params : ['key']
-    });
+  let query = ctx.query;
+  let fn = 'get';
+  let key = query.key || '';
+  if (query.dir) {
+    fn = 'list';
   }
-  let result = yield etcd.get(key);
+  let result = yield etcd[fn](key);
+  ctx.body = result;
+}
+
+/**
+ * [del description]
+ * @return {[type]} [description]
+ */
+function *del(){
+  /*jshint validthis:true */
+  let ctx = this;
+  let query = ctx.query;
+  let key = query.key;
+  let result = yield etcd.del(key);
+  console.dir(result);
   ctx.body = result;
 }

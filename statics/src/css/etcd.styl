@@ -1,8 +1,8 @@
 @import 'nib'
 @import './constant'
 
-body
-  visibility hidden
+// body
+//   visibility hidden
 
 HeaderContainerCss()
   height $HEADER_HEIGHT
@@ -27,9 +27,25 @@ HeaderContainerCss()
 
 EtcdNodeListCss()
   margin 15px
+  .loading
+    margin 15px
+  .op
+    width 60px
+    a
+      margin-right 5px
+
+AddNodeContainerCss()
+  margin 15px
+  .nodeValue
+    margin-top 15px
+  .btn
+    margin-top 15px
+    display block
 .etcdPage
   margin-left $NAV_WIDTH
   .headerContainer
     HeaderContainerCss()
   .etcdNodeList
     EtcdNodeListCss()
+  .addNodeContainer
+    AddNodeContainerCss()

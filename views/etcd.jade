@@ -2,32 +2,70 @@ extends ./layout
 
 mixin EtcdNodeList(nodes)
   .panel.panel-default 
-    .panel-heading etcd节点数据
-    table.table
+    .panel-heading 
+      a.glyphicons.glyphicons-plus.pull-right(href='javascript:;', title='添加数据节点')
+      | etcd数据节点
+    p.text-center.loading(ng-hide='etcdPage.data.status !== "loading"') 正在加载中，请稍候...
+    table.table.hidden(ng-class='{hidden : etcdPage.data.status !== "success"}')
       thead: tr
         th key
         th value
-        th dir
         th ttl
+        th.op op
       tbody
-        each node in nodes
-          tr
-            td #{node.key}
-            td #{node.value}
-            td
-              if node.dir
-                a(href='javascript:;'): span.glyphicons.glyphicons-folder-open
-              else
-                span --
-            td #{node.ttl}
+        tr(ng-repeat='node in etcdPage.data.nodes')
+          td(ng-bind='node.key')
+          td(ng-bind='node.value')
+          td(ng-bind='node.ttl')
+          td.op
+            span(ng-show='node.status !== "doing"')
+              a(href='javascript:;', ng-if='node.dir')
+                span.glyphicons.glyphicons-folder-open
+              a(href='javascript:;', ng-click='etcdPage.del(node)')
+                span.glyphicons.glyphicons-remove-2
+            span(ng-show='node.status === "doing"') ...
+            
+      //- tbody
+      //-   each node in nodes
+      //-     tr
+      //-       td #{node.key}
+      //-       td #{node.value}
+      //-       td #{node.ttl}
+      //-       
+      //-       td.op
+      //-         if node.dir
+      //-           a(href='javascript:;'): span.glyphicons.glyphicons-folder-open
+      //-         a(href='javascript:;', ng-click='etcPage.del("#{node.key}")')
+      //-           span.glyphicons.glyphicons-remove-2
 block bodyContainer
-  .etcdPage(ng-controller='EtcdPageController')
+  .etcdPage(ng-controller='EtcdPageController as etcdPage')
     include ./nav
     header.headerContainer
       h3.text-center ETCD
   
     .etcdNodeList
       +EtcdNodeList(viewData.nodes)
+    .addNodeContainer
+      .row.clearfix
+        .col-xs-5
+          .input-group
+            .input-group-addon key
+            input.form-control(type='text', placeholder='请输入key')
+        .col-xs-5
+          .input-group
+            .input-group-addon ttl
+            input.form-control(type='text', placeholder='请输入ttl，可选')
+        .col-xs-2
+          .input-group
+            .input-group-addon
+              input(type='checkbox')
+            span.form-control 是否为dir
+        .col-xs-12.nodeValue
+          .input-group
+            .input-group-addon value
+            input.form-control(type='text', placeholder='请输入该节点的数据')
+      a.btn.btn-primary(href='javascript:;') 保 存
+      
 
         
   - importer.import('/js/etcd.js');
