@@ -10,9 +10,14 @@ exports.get = getError;
  * [getError 根据code返回error对象]
  * @param  {[type]} code     [description]
  * @param  {[type]} language [description]
+ * @param  {[type]} data [description]
  * @return {[type]}          [description]
  */
-function getError(code, language) {
+function getError(code, language, data) {
+  if (_.isObject(language)) {
+    data = language;
+    language = '';
+  }
   language = language || 'en';
   let errorInfo = errors[code];
   let msg = '';
@@ -20,6 +25,9 @@ function getError(code, language) {
     msg = 'the error code is undefined';
   } else {
     msg = errorInfo[language];
+  }
+  if (data) {
+    msg = _.template(msg)(data);
   }
   let err = new Error(msg);
   err.code = code;

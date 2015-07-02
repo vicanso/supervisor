@@ -4,5 +4,9 @@ module.exports = {
   '1' : {
     cn : '服务器繁忙，请稍候再试。',
     en : 'The server is busy, please try again later.'
+  },
+  '20' : {
+    cn : '参数错误，<%= params %>不能为空',
+    en : 'Params is wrong, <%= params %> can not be null'
   }
 };

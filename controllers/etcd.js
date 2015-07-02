@@ -1,7 +1,10 @@
 'use strict';
 const etcd = require('../services/etcd');
 const _ = require('lodash');
+const debug = require('../helpers/debug');
+const errors = require('../errors');
 exports.view = view;
+exports.get = get;
 
 /**
  * [home description]
@@ -29,4 +32,22 @@ function *view(){
     name : 'vicanso',
     nodes : nodes
   };
+}
+
+
+/**
+ * [get description]
+ * @return {[type]} [description]
+ */
+function *get() {
+  /*jshint validthis:true */
+  let ctx = this;
+  let key = _.get(ctx, 'query.key');
+  if (!key) {
+    throw errors.get(20, {
+      params : ['key']
+    });
+  }
+  let result = yield etcd.get(key);
+  ctx.body = result;
 }

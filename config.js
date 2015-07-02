@@ -9,8 +9,9 @@ exports.appUrlPrefix = env === 'development'? '' : '/timtam';
 
 exports.staticUrlPrefix = exports.appUrlPrefix + '/static';
 
-//静态文件源码目录
+exports.etcdUrl = process.env.ETCD || 'http://localhost:4001/v2';
 
+//静态文件源码目录
 exports.staticPath = env === 'development'? path.join(__dirname, 'statics/src') : path.join(__dirname, 'statics/dest');
 
 exports.env = env;
