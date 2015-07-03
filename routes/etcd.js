@@ -13,5 +13,10 @@ module.exports = [
     route : '/etcd/del',
     method : 'delete',
     handler : 'etcd.del'
+  },
+  {
+    route : '/etcd/add',
+    method : 'post',
+    handler : 'etcd.add'
   }
 ];

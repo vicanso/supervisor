@@ -14,20 +14,48 @@ angular.module('jtApp')
 function ctrl($scope, $http, debug, etcdService) {
   var self = this;
   self.data = etcdService.init();
-
-
-  self.del = function(node) {
-    etcdService.del(node);
+  // 是否显示添加节点的面板功能
+  self.nodeConf = {
+    show : false
   };
+
+  self.del = del;
+  self.add = add;
+
+  $scope.$watch('etcdPage.data.node', function() {
+    self.nodeConf.status = '';
+  }, true);
   return self;
+
+
+  function del(node) {
+    etcdService.del(node);
+  }
+
+  function add() {
+    var result = etcdService.validate(self.data.node);
+    if (result.ok) {
+      etcdService.add(self.data.node);
+    } else {
+      self.nodeConf.status = 'error';
+      self.nodeConf.error = result.msg;
+    }
+  }
 }
 
 function service($http, $timeout) {
-  var data = {};
+  var data = {
+    // 当前的etcd nodes
+    nodes : null,
+    // 用于保存要添加的节点数据
+    node : {}
+  };
   return {
     get : get,
     init : init,
-    del : del
+    del : del,
+    add : add,
+    validate : validate
   };
 
   /**
@@ -83,6 +111,33 @@ function service($http, $timeout) {
     node.status = 'doing';
     var url = '/etcd/del?key=' + node.key;
     return $http['delete'](url);
+  }
+
+  /**
+   * [validate description]
+   * @param  {[type]} node [description]
+   * @return {[type]}      [description]
+   */
+  function validate(node) {
+    if(!node || !node.key || !node.value) {
+      return {
+        ok : false,
+        msg : 'key, value不能为空'
+      };
+    } else {
+      return {
+        ok : true
+      };
+    }
+  }
+
+
+  /**
+   * [add description]
+   * @param {[type]} node [description]
+   */
+  function add(node) {
+    return $http.post('/etcd/add', node);
   }
 
 }

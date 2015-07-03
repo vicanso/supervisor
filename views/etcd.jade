@@ -3,7 +3,7 @@ extends ./layout
 mixin EtcdNodeList(nodes)
   .panel.panel-default 
     .panel-heading 
-      a.glyphicons.glyphicons-plus.pull-right(href='javascript:;', title='添加数据节点')
+      a.glyphicons.glyphicons-plus.pull-right(href='javascript:;', title='添加数据节点', ng-click='etcdPage.nodeConf.show = !etcdPage.nodeConf.show')
       | etcd数据节点
     p.text-center.loading(ng-hide='etcdPage.data.status !== "loading"') 正在加载中，请稍候...
     table.table.hidden(ng-class='{hidden : etcdPage.data.status !== "success"}')
@@ -24,47 +24,39 @@ mixin EtcdNodeList(nodes)
               a(href='javascript:;', ng-click='etcdPage.del(node)')
                 span.glyphicons.glyphicons-remove-2
             span(ng-show='node.status === "doing"') ...
-            
-      //- tbody
-      //-   each node in nodes
-      //-     tr
-      //-       td #{node.key}
-      //-       td #{node.value}
-      //-       td #{node.ttl}
-      //-       
-      //-       td.op
-      //-         if node.dir
-      //-           a(href='javascript:;'): span.glyphicons.glyphicons-folder-open
-      //-         a(href='javascript:;', ng-click='etcPage.del("#{node.key}")')
-      //-           span.glyphicons.glyphicons-remove-2
+
+mixin AddNodeContainer
+  .row.clearfix(ng-init='node = etcdPage.data.node')
+    .col-xs-5
+      .input-group
+        .input-group-addon key
+        input.form-control(type='text', placeholder='请输入key', ng-model='node.key')
+    .col-xs-5
+      .input-group
+        .input-group-addon ttl
+        input.form-control(type='text', placeholder='请输入ttl，可选', ng-model='node.ttl')
+    .col-xs-2
+      .input-group
+        .input-group-addon
+          input(type='checkbox', ng-model='node.dir')
+        span.form-control 是否为dir
+    .col-xs-12.nodeValue
+      .input-group
+        .input-group-addon value
+        input.form-control(type='text', placeholder='请输入该节点的数据', ng-model='node.value')
+  .alert-danger.alert(ng-bind='etcdPage.nodeConf.error', ng-show='etcdPage.nodeConf.status === "error"')
+  a.btn.btn-primary(href='javascript:;', ng-click='etcdPage.add()') 保 存
+
 block bodyContainer
   .etcdPage(ng-controller='EtcdPageController as etcdPage')
     include ./nav
     header.headerContainer
       h3.text-center ETCD
-  
+
     .etcdNodeList
       +EtcdNodeList(viewData.nodes)
-    .addNodeContainer
-      .row.clearfix
-        .col-xs-5
-          .input-group
-            .input-group-addon key
-            input.form-control(type='text', placeholder='请输入key')
-        .col-xs-5
-          .input-group
-            .input-group-addon ttl
-            input.form-control(type='text', placeholder='请输入ttl，可选')
-        .col-xs-2
-          .input-group
-            .input-group-addon
-              input(type='checkbox')
-            span.form-control 是否为dir
-        .col-xs-12.nodeValue
-          .input-group
-            .input-group-addon value
-            input.form-control(type='text', placeholder='请输入该节点的数据')
-      a.btn.btn-primary(href='javascript:;') 保 存
+    .addNodeContainer.hidden(ng-class='{hidden : !etcdPage.nodeConf.show}')
+      +AddNodeContainer
       
 
         

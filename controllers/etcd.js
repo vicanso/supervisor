@@ -6,6 +6,7 @@ const errors = require('../errors');
 exports.view = view;
 exports.get = get;
 exports.del = del;
+exports.add = add;
 /**
  * [home description]
  * @return {[type]} [description]
@@ -13,7 +14,12 @@ exports.del = del;
 function *view(){
   /*jshint validthis:true */
   let ctx = this;
-  let nodes = yield etcd.list('');
+  let nodes = [];
+  try {
+    nodes = yield etcd.list('');
+  } catch (e) {
+    console.error(e);
+  }
   ctx.state.viewData = {
     page : 'etcd',
     name : 'vicanso',
@@ -51,6 +57,13 @@ function *del(){
   let query = ctx.query;
   let key = query.key;
   let result = yield etcd.del(key);
-  console.dir(result);
   ctx.body = result;
+}
+
+
+function *add() {
+  /*jshint validthis:true */
+  let ctx = this;
+  let data = ctx.request.body;
+  console.dir(data);
 }
