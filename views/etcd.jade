@@ -45,6 +45,8 @@ mixin AddNodeContainer
         .input-group-addon value
         input.form-control(type='text', placeholder='请输入该节点的数据', ng-model='node.value')
   .alert-danger.alert(ng-bind='etcdPage.nodeConf.error', ng-show='etcdPage.nodeConf.status === "error"')
+  .alert.alert-success(ng-show='etcdPage.nodeConf.status === "success"') 添加数据成功，2秒后将自动刷新页面...
+  .alert.alert-info(ng-show='etcdPage.nodeConf.status === "submitting"') 正在提交数据，请稍候...
   a.btn.btn-primary(href='javascript:;', ng-click='etcdPage.add()') 保 存
 
 block bodyContainer

@@ -56,6 +56,9 @@ function *del(){
   let ctx = this;
   let query = ctx.query;
   let key = query.key;
+  if (query.dir) {
+    key += '?dir=true';
+  }
   let result = yield etcd.del(key);
   ctx.body = result;
 }
@@ -65,5 +68,10 @@ function *add() {
   /*jshint validthis:true */
   let ctx = this;
   let data = ctx.request.body;
-  console.dir(data);
+  let fn = 'update';
+  if (data.dir) {
+    fn = 'add';
+  }
+  let result = yield etcd[fn](data.key, data.value, data.ttl);
+  ctx.body = result;
 }

@@ -29,13 +29,32 @@ function ctrl($scope, $http, debug, etcdService) {
 
 
   function del(node) {
-    etcdService.del(node);
+    node.status = 'doing';
+    etcdService.del(node).then(function(res) {
+      var index = _.indexOf(self.data.nodes, node);
+      self.data.nodes.splice(index, 1);
+    }, function(res) {
+      node.status = '';
+      alert('删除失败：' + res.error);
+    });
   }
 
   function add() {
+    if (self.nodeConf.status === 'submitting') {
+      return;
+    }
     var result = etcdService.validate(self.data.node);
     if (result.ok) {
-      etcdService.add(self.data.node);
+      self.nodeConf.status = 'submitting';
+      etcdService.add(self.data.node).then(function(res) {
+        self.nodeConf.status = 'success';
+        setTimeout(function() {
+          location.reload();
+        }, 2000);
+      }, function(res) {
+        self.nodeConf.status = 'error';
+        self.nodeConf.error = res.error;
+      });
     } else {
       self.nodeConf.status = 'error';
       self.nodeConf.error = result.msg;
@@ -108,8 +127,10 @@ function service($http, $timeout) {
    * @return {[type]}          [description]
    */
   function del(node) {
-    node.status = 'doing';
     var url = '/etcd/del?key=' + node.key;
+    if (node.dir) {
+      url += '&dir=1';
+    }
     return $http['delete'](url);
   }
 
