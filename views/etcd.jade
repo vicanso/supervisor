@@ -43,7 +43,7 @@ mixin AddNodeContainer
     .col-xs-12.nodeValue
       .input-group
         .input-group-addon value
-        input.form-control(type='text', placeholder='请输入该节点的数据', ng-model='node.value')
+        input.form-control(type='text', placeholder='请输入该节点的数据', ng-model='node.value', ng-disabled='node.dir')
   .alert-danger.alert(ng-bind='etcdPage.nodeConf.error', ng-show='etcdPage.nodeConf.status === "error"')
   .alert.alert-success(ng-show='etcdPage.nodeConf.status === "success"') 添加数据成功，2秒后将自动刷新页面...
   .alert.alert-info(ng-show='etcdPage.nodeConf.status === "submitting"') 正在提交数据，请稍候...
@@ -54,11 +54,14 @@ block bodyContainer
     include ./nav
     header.headerContainer
       h3.text-center ETCD
-
-    .etcdNodeList
-      +EtcdNodeList(viewData.nodes)
-    .addNodeContainer.hidden(ng-class='{hidden : !etcdPage.nodeConf.show}')
-      +AddNodeContainer
+    .contentContainer
+      if viewData.err
+        .alert.alert-danger 加载数据失败！
+      else
+        .etcdNodeList
+          +EtcdNodeList(viewData.nodes)
+      .addNodeContainer.hidden(ng-class='{hidden : !etcdPage.nodeConf.show}')
+        +AddNodeContainer
       
 
         

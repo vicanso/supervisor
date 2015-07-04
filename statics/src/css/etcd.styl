@@ -26,7 +26,7 @@ HeaderContainerCss()
     line-height $HEADER_HEIGHT
 
 EtcdNodeListCss()
-  margin 15px
+  margin 0 15px
   .loading
     margin 15px
   .op
@@ -35,7 +35,7 @@ EtcdNodeListCss()
       margin-right 5px
 
 AddNodeContainerCss()
-  margin 15px
+  margin 0 15px
   .nodeValue
     margin-top 15px
   .btn
@@ -47,6 +47,8 @@ AddNodeContainerCss()
   margin-left $NAV_WIDTH
   .headerContainer
     HeaderContainerCss()
+  .contentContainer
+    margin 15px
   .etcdNodeList
     EtcdNodeListCss()
   .addNodeContainer

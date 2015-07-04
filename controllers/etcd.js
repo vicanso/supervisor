@@ -15,14 +15,17 @@ function *view(){
   /*jshint validthis:true */
   let ctx = this;
   let nodes = [];
+  let err;
   try {
     nodes = yield etcd.list('');
   } catch (e) {
+    err = e;
     console.error(e);
   }
   ctx.state.viewData = {
     page : 'etcd',
     name : 'vicanso',
+    err : err,
     globals : {
       nodes : nodes
     }
@@ -57,7 +60,7 @@ function *del(){
   let query = ctx.query;
   let key = query.key;
   if (query.dir) {
-    key += '?dir=true';
+    key += '?recursive=true';
   }
   let result = yield etcd.del(key);
   ctx.body = result;

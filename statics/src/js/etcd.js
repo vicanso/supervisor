@@ -35,7 +35,7 @@ function ctrl($scope, $http, debug, etcdService) {
       self.data.nodes.splice(index, 1);
     }, function(res) {
       node.status = '';
-      alert('删除失败：' + res.error);
+      alert('删除失败：' + res.data);
     });
   }
 
@@ -53,7 +53,7 @@ function ctrl($scope, $http, debug, etcdService) {
         }, 2000);
       }, function(res) {
         self.nodeConf.status = 'error';
-        self.nodeConf.error = res.error;
+        self.nodeConf.error = res.data;
       });
     } else {
       self.nodeConf.status = 'error';
@@ -140,16 +140,24 @@ function service($http, $timeout) {
    * @return {[type]}      [description]
    */
   function validate(node) {
-    if(!node || !node.key || !node.value) {
-      return {
-        ok : false,
-        msg : 'key, value不能为空'
-      };
+    if (node.dir) {
+      if (!node.key) {
+        return {
+          ok : false,
+          msg : '创建dir，key不能为空'
+        };
+      }
     } else {
-      return {
-        ok : true
-      };
+      if (!node.key || !node.value) {
+        return {
+          ok : false,
+          msg : 'key, value不能为空'
+        };
+      }
     }
+    return {
+      ok : true
+    };
   }
 
 

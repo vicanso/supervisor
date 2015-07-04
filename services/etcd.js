@@ -69,6 +69,7 @@ function *get(key, dir) {
  */
 function *del(key) {
   let res = yield function(done) {
+    console.dir(getUrl(key));
     request.del(getUrl(key))
       .timeout(exports.timeout)
       .end(done);
