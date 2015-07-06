@@ -16,12 +16,13 @@ html(lang='zh-CN', ng-app='jtApp')
     if pattern
       - importer.import('/component/debug.js');
     - importer.import('/component/bootstrap.css', '/component/jquery.js', '/component/angular.js', '/component/lodash.js', '/component/angular-local-storage.js', '/component/sha1.js');
-    - importer.import('/service/const.js', '/service/http-log.js', '/service/debug.js', '/service/user.js', '/js/directive.js');
-    - importer.import('/css/global.css', '/js/global.js');
+    - importer.import('/service/const.js', '/service/http-log.js', '/service/debug.js', '/service/user.js', '/js/directive.js', '/service/util.js');
+    - importer.import('/css/global.css', '/css/widget.css', '/js/global.js');
 
   body(ng-controller='AppController as app')
     block bodyContainer
   include ./globals
+  block templateContainer
   script.
     TIMING.end('html');
     TIMING.start('js');

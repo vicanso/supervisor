@@ -1,7 +1,7 @@
 ;(function(global){
 
 'use strict';
-var requires = ['LocalStorageModule', 'jt.service.const', 'jt.service.debug', 'jt.service.httpLog', 'jt.service.user', 'jt.directive.widget'];
+var requires = ['LocalStorageModule', 'jt.service.const', 'jt.service.debug', 'jt.service.httpLog', 'jt.service.user', 'jt.directive.widget', 'jt.service.util'];
 var app = angular.module('jtApp', requires);
 
 // 用户在controller中添加require

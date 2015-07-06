@@ -1,7 +1,7 @@
 ;(function(global){
 'use strict';
 
-ctrl.$inject = ['$scope', '$http', 'debug', 'etcdService'];
+ctrl.$inject = ['$scope', '$http', 'util', 'debug', 'etcdService'];
 service.$inject = ['$http', '$timeout'];
 
 
@@ -11,7 +11,7 @@ angular.module('jtApp')
 
 
 
-function ctrl($scope, $http, debug, etcdService) {
+function ctrl($scope, $http, util, debug, etcdService) {
   var self = this;
   self.data = etcdService.init();
   // 是否显示添加节点的面板功能
@@ -44,14 +44,18 @@ function ctrl($scope, $http, debug, etcdService) {
   }
 
   function del(node) {
-    node.status = 'doing';
-    etcdService.del(node.key, node.dir).then(function(res) {
-      var index = _.indexOf(self.data.nodes, node);
-      self.data.nodes.splice(index, 1);
-    }, function(res) {
-      node.status = '';
-      alert('删除失败：' + res.data);
+    util.alert('确定要删除该节点吗？', 'abcd').then(function() {
+      console.dir('del');
     });
+
+    // node.status = 'doing';
+    // etcdService.del(node.key, node.dir).then(function(res) {
+    //   var index = _.indexOf(self.data.nodes, node);
+    //   self.data.nodes.splice(index, 1);
+    // }, function(res) {
+    //   node.status = '';
+    //   alert('删除失败：' + res.data);
+    // });
   }
 
   function add() {
@@ -114,10 +118,10 @@ function service($http, $timeout) {
    * @return {[type]}      [description]
    */
   function convert(node) {
-    var v = _.isUndefined(node.value)? '--' : node.value;
+    var v = _.isUndefined(node.value)? '--' : JSON.stringify(node.value);
     return {
       key : node.key,
-      value : _.isUndefined(node.value)? '--' : node.value,
+      value : v,
       dir : !!node.dir,
       ttl : _.isUndefined(node.ttl)? '--' : node.ttl
     };

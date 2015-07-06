@@ -26,6 +26,7 @@
     "css": [
       "/component/bootstrap.css",
       "/css/global.css",
+      "/css/widget.css",
       "/css/nav.css",
       "/css/etcd.css"
     ],
@@ -40,9 +41,10 @@
       "/service/debug.js",
       "/service/user.js",
       "/js/directive.js",
+      "/service/util.js",
       "/js/global.js",
       "/js/etcd.js"
     ],
-    "modifiedAt": "2015-07-03T19:17:05.521"
+    "modifiedAt": "2015-07-06T21:44:47.829"
   }
 }

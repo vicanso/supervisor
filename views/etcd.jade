@@ -1,5 +1,14 @@
 extends ./layout
 
+block append templateContainer
+  script#confirmToDelTpl(type='text/tpl')
+    jt-dialog.dialog.etcdConfirmDelDialog
+      .title 确定删除该节点？
+        a.pull-right.destroy(href='javascript:;'): span.glyphicons.glyphicons-remove-2
+      .content
+        p xxxxx
+
+
 mixin EtcdNodeList(nodes)
   .panel.panel-default 
     .panel-heading 
@@ -20,7 +29,9 @@ mixin EtcdNodeList(nodes)
           td.op
             span(ng-show='node.status !== "doing"')
               a(href='javascript:;', ng-if='node.dir', ng-click='etcdPage.open(node)', ng-class='{disabled : node.open}')
-                span.glyphicons.glyphicons-folder-open
+                span.glyphicons.glyphicons-list
+              a(href='javascript:;', ng-click='etcdPage.edit(node)')
+                span.glyphicons.glyphicons-edit
               a(href='javascript:;', ng-click='etcdPage.del(node)')
                 span.glyphicons.glyphicons-remove-2
             span(ng-show='node.status === "doing"') ...

@@ -1,0 +1,44 @@
+.mask
+  position fixed
+  z-index 1
+  left 0
+  right 0
+  bottom 0
+  top 0
+  background-color rgba(0, 0, 0, 0.3)
+
+jt-dialog, jt-table
+  display block
+.dialog
+  position fixed
+  z-index 2
+  top 50%
+  left 50%
+  width 400px
+  margin-left -(@width / 2)
+  border 1px solid #e1e1e8
+  background-color #fff
+  .title
+    line-height 40px
+    background-color #201b1f
+    text-indent 10px
+    color #fff
+    margin 0
+    .destroy
+      text-aligne center
+      color #aaa
+      padding 0 10px
+      height 100%
+      display block
+      &:hover
+        color #fff
+      .glyphicons
+        line-height 35px
+  .content
+    margin 15px
+  .btns
+    .btn
+      margin-right 20px
+      width 30%
+      &:last-child
+        margin-right 0
