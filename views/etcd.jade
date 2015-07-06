@@ -19,7 +19,7 @@ mixin EtcdNodeList(nodes)
           td(ng-bind='node.ttl')
           td.op
             span(ng-show='node.status !== "doing"')
-              a(href='javascript:;', ng-if='node.dir')
+              a(href='javascript:;', ng-if='node.dir', ng-click='etcdPage.open(node)', ng-class='{disabled : node.open}')
                 span.glyphicons.glyphicons-folder-open
               a(href='javascript:;', ng-click='etcdPage.del(node)')
                 span.glyphicons.glyphicons-remove-2

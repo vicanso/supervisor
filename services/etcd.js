@@ -47,10 +47,9 @@ function *add(key, data, ttl) {
 /**
  * [get description]
  * @param  {[type]} key [description]
- * @param  {[type]} dir [description]
  * @return {[type]}     [description]
  */
-function *get(key, dir) {
+function *get(key) {
   let res = yield function (done) {
     request.get(getUrl(key))
       .timeout(exports.timeout)

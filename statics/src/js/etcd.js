@@ -21,16 +21,31 @@ function ctrl($scope, $http, debug, etcdService) {
 
   self.del = del;
   self.add = add;
+  self.open = open;
 
   $scope.$watch('etcdPage.data.node', function() {
     self.nodeConf.status = '';
   }, true);
   return self;
 
+  function open(node) {
+    if (node.open) {
+      return;
+    }
+    etcdService.get(node.key, node.dir).then(function (res) {
+      var nodes = self.data.nodes;
+      var index = _.indexOf(nodes, node);
+      var arr = [index + 1, 0].concat(res.data);
+      node.open = true;
+      nodes.splice.apply(nodes, arr);
+    }, function (res) {
+      alert('加载失败：' + res.error);
+    });
+  }
 
   function del(node) {
     node.status = 'doing';
-    etcdService.del(node).then(function(res) {
+    etcdService.del(node.key, node.dir).then(function(res) {
       var index = _.indexOf(self.data.nodes, node);
       self.data.nodes.splice(index, 1);
     }, function(res) {
@@ -118,17 +133,27 @@ function service($http, $timeout) {
     if (dir) {
       url += '&dir=1'
     }
-    return $http.get(url);
+    var promise = $http.get(url);
+    promise.then(function (res) {
+      var data = res.data;
+      if (_.isArray(data)) {
+        res.data = _.map(res.data, convert);
+      } else {
+        res.data = convert(data);
+      }
+    });
+    return promise;
   }
 
   /**
    * [del description]
-   * @param  {[type]} argument [description]
-   * @return {[type]}          [description]
+   * @param  {[type]} key [description]
+   * @param  {[type]} dir [description]
+   * @return {[type]}     [description]
    */
-  function del(node) {
-    var url = '/etcd/del?key=' + node.key;
-    if (node.dir) {
+  function del(key, dir) {
+    var url = '/etcd/del?key=' + key;
+    if (dir) {
       url += '&dir=1';
     }
     return $http['delete'](url);
