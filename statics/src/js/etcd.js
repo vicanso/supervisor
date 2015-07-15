@@ -44,18 +44,19 @@ function ctrl($scope, $http, util, debug, etcdService) {
   }
 
   function del(node) {
-    util.alert('确定要删除该节点吗？', 'abcd').then(function() {
-      console.dir('del');
+    var str = node.key + ':' + node.value;
+    util.alert('确定要删除该节点吗？', str).then(function() {
+      node.status = 'doing';
+      etcdService.del(node.key, node.dir).then(function(res) {
+        var index = _.indexOf(self.data.nodes, node);
+        self.data.nodes.splice(index, 1);
+      }, function(res) {
+        node.status = '';
+        alert('删除失败：' + res.data);
+      });
     });
 
-    // node.status = 'doing';
-    // etcdService.del(node.key, node.dir).then(function(res) {
-    //   var index = _.indexOf(self.data.nodes, node);
-    //   self.data.nodes.splice(index, 1);
-    // }, function(res) {
-    //   node.status = '';
-    //   alert('删除失败：' + res.data);
-    // });
+
   }
 
   function add() {

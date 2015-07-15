@@ -3,6 +3,7 @@
     "css": [
       "/component/bootstrap.css",
       "/css/global.css",
+      "/css/widget.css",
       "/css/nav.css",
       "/css/home.css"
     ],
@@ -17,10 +18,11 @@
       "/service/debug.js",
       "/service/user.js",
       "/js/directive.js",
+      "/service/util.js",
       "/js/global.js",
       "/js/home.js"
     ],
-    "modifiedAt": "2015-06-30T15:15:46.463"
+    "modifiedAt": "2015-07-08T11:05:07.496"
   },
   "etcd": {
     "css": [
