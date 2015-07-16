@@ -1,0 +1,60 @@
+@import 'nib'
+@import './constant'
+
+// body
+//   visibility hidden
+
+HeaderContainerCss()
+  height $HEADER_HEIGHT
+  line-height @height
+  background-color #fcfcfc
+  border-bottom 1px solid #cbccce
+  .functions
+    line-height 30px
+    margin-top (($HEADER_HEIGHT - @line-height) / 2)
+    li
+      list-style none
+      display inline-block
+      margin 0 10px
+      &.login a
+        color #27c24c
+      a
+        color #717171
+        font-size 13px
+  h3
+    margin 0
+    line-height $HEADER_HEIGHT
+
+EtcdNodeListCss()
+  margin 0 15px
+  .loading
+    margin 15px
+  .table
+    .op
+      width 100px
+      a
+        margin 0 5px
+        font-size 16px
+        &.disabled
+          cursor default
+          color #666
+
+AddNodeContainerCss()
+  margin 0 15px
+  .nodeValue
+    margin-top 15px
+  .btn
+    margin-top 15px
+    display block
+  .alert
+    margin 15px 0
+.etcdPage
+  margin-left $NAV_WIDTH
+  .headerContainer
+    HeaderContainerCss()
+  .contentContainer
+    margin 15px
+  .etcdNodeList
+    EtcdNodeListCss()
+  .addNodeContainer
+    AddNodeContainerCss()

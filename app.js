@@ -8,9 +8,6 @@ const globals = require('./globals');
 const debug = require('./helpers/debug');
 const urlJoin = require('url-join');
 
-// initServer(10000);
-
-// initMongodb('mongodb://localhost:27017/test');
 co(function *() {
   initLogger();
   let setting = yield getSetting();

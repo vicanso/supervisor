@@ -1,0 +1,10 @@
+extends ./layout
+
+block bodyContainer
+  .etcdPage(ng-controller='EtcdPageController as etcdPage')
+    include ./nav
+    header.headerContainer
+      h3.text-center ETCD
+  
+  - importer.import('/js/etcd.js');
+  - importer.import('/css/etcd.css');

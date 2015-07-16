@@ -1,17 +1,16 @@
 'use strict';
 
-module.exports = home;
+exports.view = view;
 
 /**
  * [home description]
  * @return {[type]} [description]
  */
-function *home(){
+function *view(){
   /*jshint validthis:true */
   let ctx = this;
   yield Promise.resolve();
   ctx.state.viewData = {
-    name : 'vicanso',
-    page : 'home'
+    page : 'etcd'
   };
 }

@@ -12,6 +12,7 @@ angular.module('jtApp')
 
 
 function ctrl($scope, $http, util, debug, etcdService) {
+  /*jshint validthis:true */
   var self = this;
   self.data = etcdService.init();
   // 是否显示添加节点的面板功能
@@ -44,19 +45,18 @@ function ctrl($scope, $http, util, debug, etcdService) {
   }
 
   function del(node) {
-    var str = node.key + ':' + node.value;
-    util.alert('确定要删除该节点吗？', str).then(function() {
-      node.status = 'doing';
-      etcdService.del(node.key, node.dir).then(function(res) {
-        var index = _.indexOf(self.data.nodes, node);
-        self.data.nodes.splice(index, 1);
-      }, function(res) {
-        node.status = '';
-        alert('删除失败：' + res.data);
-      });
+    util.alert('确定要删除该节点吗？', 'abcd').then(function() {
+      console.dir('del');
     });
 
-
+    // node.status = 'doing';
+    // etcdService.del(node.key, node.dir).then(function(res) {
+    //   var index = _.indexOf(self.data.nodes, node);
+    //   self.data.nodes.splice(index, 1);
+    // }, function(res) {
+    //   node.status = '';
+    //   alert('删除失败：' + res.data);
+    // });
   }
 
   function add() {
@@ -102,7 +102,7 @@ function service($http, $timeout) {
    * @return {[type]} [description]
    */
   function init() {
-    var nodes = _.map(JT_GLOBAL.nodes, convert);
+    var nodes = [];
     nodes = _.sortBy(nodes, function(node) {
       return node.key;
     });
@@ -136,7 +136,7 @@ function service($http, $timeout) {
   function get(key, dir){
     var url = '/etcd/get?key=' + key;
     if (dir) {
-      url += '&dir=1'
+      url += '&dir=1';
     }
     var promise = $http.get(url);
     promise.then(function (res) {

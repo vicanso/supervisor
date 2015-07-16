@@ -9,6 +9,6 @@
   "out_file": "/var/log/albi-out.log",
   "env": {
     "NODE_ENV": "production",
-    "APP_VERSION": "2015-07-16T21:15:12.987"
+    "APP_VERSION": "2015-07-16T22:39:22.406"
   }
 }

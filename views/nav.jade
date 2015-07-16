@@ -1,8 +1,12 @@
+- var page = viewData.page;
 nav.navContainer
   ul
-    li: a.text-center.logo(href='javascript:;', title='TimTam'): i.glyphicon.glyphicon-align-left
-    li: a.text-center(href='javascript:;'): i.glyphicons.glyphicons-wifi
-    li: a.text-center(href='javascript:;'): i.glyphicons.glyphicons-wifi
-    li: a.text-center(href='javascript:;'): i.glyphicons.glyphicons-wifi
-    li: a.text-center(href='javascript:;'): i.glyphicons.glyphicons-wifi
+    li(class='#{page === "home"? "active" : ""}')
+      a.text-center.logo(href='#{URL("/")}', title='supervisor')
+        span.glyphicons.glyphicons-home
+        | home
+    li(class='#{page === "etcd"? "active" : ""}')
+      a.text-center.etcd(href='#{URL("/etcd")}', title='etcd')
+        span.glyphicons.glyphicons-cluster
+        | etcd
 - importer.import('/css/nav.css');
