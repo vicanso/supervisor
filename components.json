@@ -1,0 +1,25 @@
+{
+  "home": {
+    "css": [
+      "/component/bootstrap.css",
+      "/css/global.css",
+      "/css/nav.css",
+      "/css/home.css"
+    ],
+    "js": [
+      "/component/jquery.js",
+      "/component/angular.js",
+      "/component/lodash.js",
+      "/component/angular-local-storage.js",
+      "/component/sha1.js",
+      "/service/const.js",
+      "/service/http-log.js",
+      "/service/debug.js",
+      "/service/user.js",
+      "/js/directive.js",
+      "/js/global.js",
+      "/js/home.js"
+    ],
+    "modifiedAt": "2015-07-13T18:01:41.381"
+  }
+}
