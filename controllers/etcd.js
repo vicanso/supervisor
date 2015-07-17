@@ -1,6 +1,7 @@
 'use strict';
-
+const etcd = require('../services/etcd');
 exports.view = view;
+exports.list = list;
 
 /**
  * [home description]
@@ -13,4 +14,16 @@ function *view(){
   ctx.state.viewData = {
     page : 'etcd'
   };
+}
+
+
+/**
+ * [list description]
+ * @return {[type]} [description]
+ */
+function *list() {
+  /*jshint validthis:true */
+  let ctx = this;
+  let key = ctx.params.key;
+  ctx.body = yield etcd.list(key);
 }

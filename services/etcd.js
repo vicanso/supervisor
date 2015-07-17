@@ -125,5 +125,8 @@ function *list(key) {
     } catch (err) {
     }
   });
-  return data;
+
+  return _.sortBy(data, function (item) {
+    return item.key;
+  });
 }

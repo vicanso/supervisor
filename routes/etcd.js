@@ -10,6 +10,10 @@ module.exports = [
     handler : 'etcd.get'
   },
   {
+    route : ['/etcd/list', '/etcd/list/:key'],
+    handler : 'etcd.list'
+  },
+  {
     route : '/etcd/del',
     method : 'delete',
     handler : 'etcd.del'

@@ -17,10 +17,11 @@
       "/service/debug.js",
       "/service/user.js",
       "/js/directive.js",
+      "/service/util.js",
       "/js/global.js",
       "/js/home.js"
     ],
-    "modifiedAt": "2015-07-16T22:06:36.377"
+    "modifiedAt": "2015-07-17T21:24:33.619"
   },
   "etcd": {
     "css": [

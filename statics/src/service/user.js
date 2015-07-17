@@ -9,7 +9,7 @@ module.factory('user', ['$rootScope', '$http', '$q', 'debug', function($rootScop
   var deferredList = [];
 
   var user = {
-    url : '/user?cache=false',
+    url : '/1/users/me?cache=false',
     /**
      * [session 获取用户信息]
      * @return {[type]} [description]
