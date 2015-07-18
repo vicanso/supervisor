@@ -15,6 +15,33 @@ function ctrl($scope, $http, util, debug, etcdService) {
   /*jshint validthis:true */
   var self = this;
   self.data = etcdService.init();
+  self.show = show;
+  self.showPath = showPath;
+
+  /**
+   * [show description]
+   * @param  {[type]} node [description]
+   * @return {[type]}     [description]
+   */
+  function show(node) {
+    etcdService.show(node.key);
+  }
+
+  /**
+   * [showPath description]
+   * @param  {[type]} index [description]
+   * @return {[type]}       [description]
+   */
+  function showPath(index) {
+    var keyArr = [];
+    angular.forEach(self.data.paths, function (path, i) {
+      if (i && i <= index) {
+        keyArr.push(path);
+      }
+    });
+    etcdService.show('/' + keyArr.join(''));
+  }
+
   // // 是否显示添加节点的面板功能
   // self.nodeConf = {
   //   show : false
@@ -76,27 +103,47 @@ function ctrl($scope, $http, util, debug, etcdService) {
 function service($http, $timeout) {
   var etcdData = {
     status : 'loading',
-    nodes : null
+    nodes : {},
+    paths : [],
+    currentPath : ''
   };
   return {
     init : init,
-    list : list
+    show : show
   };
 
+  /**
+   * [init description]
+   * @return {[type]} [description]
+   */
   function init() {
     etcdData.status = 'loading';
     list().then(function (res) {
-      angular.forEach(res.data, function (item) {
-        item.value = JSON.stringify(item.value, null, 2);
-      });
-      etcdData.nodes = res.data;
-      console.dir(etcdData);
+      var key = '/';
+      etcdData.currentPath = key;
+      etcdData.nodes[key] = res.data;
+      etcdData.paths = getPaths(key);
       etcdData.status = 'success';
     }, function (res) {
       etcdData.status = 'error';
       etcdData.error = res.data.msg;
     });
     return etcdData;
+  }
+
+  /**
+   * [show description]
+   * @param  {[type]} key [description]
+   * @return {[type]}     [description]
+   */
+  function show(key) {
+    return list(key).then(function (res) {
+      etcdData.currentPath = key;
+      etcdData.paths = getPaths(key);
+      etcdData.nodes[key] = res.data;
+    }, function (res) {
+      // body...
+    });
   }
 
   /**
@@ -107,9 +154,30 @@ function service($http, $timeout) {
   function list(key) {
     var url = '/etcd/list';
     if (key) {
-      url += ('/' + key);
+      url += key;
     }
-    return $http.get(url);
+    var promise =  $http.get(url);
+    promise.then(function (res) {
+      angular.forEach(res.data, function (item) {
+        item.value = JSON.stringify(item.value, null, 2);
+      });
+    });
+    return promise;
+  }
+
+  /**
+   * [getPaths description]
+   * @param  {[type]} key [description]
+   * @return {[type]}     [description]
+   */
+  function getPaths(key) {
+    if (key === '/') {
+      return ['root'];
+    } else {
+      var arr = key.split('/');
+      arr[0] = 'root';
+      return arr;
+    }
   }
   // var data = {
   //   // 当前的etcd nodes

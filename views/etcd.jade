@@ -5,20 +5,18 @@ mixin EtcdNodeList()
   .alert.alert-danger.hidden(ng-class='{hidden : etcdPage.data.status !== "error"}') 加载数据失败，
     span(ng-bind='etcdPage.data.error')
   .nodes.hidden(ng-class='{hidden : etcdPage.data.status !== "success"}')
-    .panel.panel-default(ng-repeat='node in etcdPage.data.nodes')
+    .path
+      span.glyphicons.glyphicons-google-maps
+      span(ng-repeat='path in etcdPage.data.paths')
+        a(ng-bind='path', href='javascript:;', ng-click='etcdPage.showPath($index)')
+        span.glyphicons.glyphicons-chevron-right(ng-if='!$last')
+    .panel.panel-default(ng-repeat='node in etcdPage.data.nodes[etcdPage.data.currentPath]')
       .panel-heading
-        a.glyphicons.glyphicons-chevron-right.pull-right(ng-if='node.dir', href='javascript:;')
+        a.glyphicons.glyphicons-chevron-right.pull-right(ng-if='node.dir', href='javascript:;', ng-click='etcdPage.show(node)')
+        a.glyphicons.glyphicons-edit.pull-right(ng-if='!node.dir', href='javascript:;', ng-click='etcdPage.modify(node)')
         .panel-title(ng-bind='::node.key')
       .panel-body(ng-if='!node.dir')
         pre(ng-bind='::node.value')
-//-   <div class="panel panel-default">
-//- <div class="panel-heading">
-//-   <h3 class="panel-title">Panel title</h3>
-//- </div>
-//- <div class="panel-body">
-//-   Panel content
-//- </div>
-//- </div>
   
 
 block bodyContainer
