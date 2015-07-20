@@ -1,5 +1,5 @@
 'use strict';
-const etcd = require('../services/etcd');
+const etcd = require('../helpers/etcd');
 exports.view = view;
 exports.list = list;
 

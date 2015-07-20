@@ -28,6 +28,7 @@
       "/component/bootstrap.css",
       "/css/global.css",
       "/css/nav.css",
+      "/css/codemirror.css",
       "/css/etcd.css"
     ],
     "js": [
@@ -43,8 +44,9 @@
       "/js/directive.js",
       "/service/util.js",
       "/js/global.js",
+      "/component/codemirror.js",
       "/js/etcd.js"
     ],
-    "modifiedAt": "2015-07-18T07:43:18.095"
+    "modifiedAt": "2015-07-20T21:12:48.215"
   }
 }

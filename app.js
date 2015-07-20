@@ -195,7 +195,7 @@ function initMongodb(uri) {
 
 
 function *getSetting() {
-  const etcd = require('./services/etcd');
+  const etcd = require('./helpers/etcd');
   const parallel = require('co-parallel');
   let configs = {
     // key : etcd中对应的key

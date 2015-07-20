@@ -12,11 +12,14 @@ mixin EtcdNodeList()
         span.glyphicons.glyphicons-chevron-right(ng-if='!$last')
     .panel.panel-default(ng-repeat='node in etcdPage.data.nodes[etcdPage.data.currentPath]')
       .panel-heading
-        a.glyphicons.glyphicons-chevron-right.pull-right(ng-if='node.dir', href='javascript:;', ng-click='etcdPage.show(node)')
-        a.glyphicons.glyphicons-edit.pull-right(ng-if='!node.dir', href='javascript:;', ng-click='etcdPage.modify(node)')
+        span.pull-right(ng-if='node.dir')
+          a.glyphicons.glyphicons-plus(href='javascript:;')
+          a.glyphicons.glyphicons-chevron-right(href='javascript:;', ng-click='etcdPage.show(node)')
+
+        a.glyphicons.glyphicons-edit.pull-right(ng-if='!node.dir && !node.modifing', href='javascript:;', ng-click='etcdPage.modify(node)')
         .panel-title(ng-bind='::node.key')
       .panel-body(ng-if='!node.dir')
-        pre(ng-bind='::node.value')
+        pre(ng-bind='::node.value', jt-code-mirror='node', ng-hide='node.modifing')
   
 
 block bodyContainer
@@ -29,5 +32,6 @@ block bodyContainer
       .etcdNodeList
         +EtcdNodeList()
   
+  - importer.import('/component/codemirror.js', '/css/codemirror.css');
   - importer.import('/js/etcd.js');
   - importer.import('/css/etcd.css');

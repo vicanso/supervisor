@@ -4,6 +4,7 @@
 ctrl.$inject = ['$scope', '$http', 'util', 'debug', 'etcdService'];
 service.$inject = ['$http', '$timeout'];
 
+angular.module('jtApp').directive('jtCodeMirror', jtCodeMirror);
 
 angular.module('jtApp').factory('etcdService', service);
 angular.module('jtApp')
@@ -17,6 +18,9 @@ function ctrl($scope, $http, util, debug, etcdService) {
   self.data = etcdService.init();
   self.show = show;
   self.showPath = showPath;
+  self.modify = modify;
+
+  return self;
 
   /**
    * [show description]
@@ -40,6 +44,15 @@ function ctrl($scope, $http, util, debug, etcdService) {
       }
     });
     etcdService.show('/' + keyArr.join(''));
+  }
+
+  /**
+   * [modify description]
+   * @param  {[type]} node [description]
+   * @return {[type]}      [description]
+   */
+  function modify(node) {
+    node.modifing = true;
   }
 
   // // 是否显示添加节点的面板功能
@@ -295,5 +308,55 @@ function service($http, $timeout) {
   //   return $http.post('/etcd/add', node);
   // }
 
+}
+
+
+function jtCodeMirror() {
+  function codeMirrorLink(scope, element, attr) {
+    var model = attr.jtCodeMirror;
+    var codeMirrorEditor;
+    var ctrl = '<div class="ctrls">' +
+      '<a href="javascript:;" class="glyphicons glyphicons-ok-2"></a>' +
+      '<a href="javascript:;" class="glyphicons glyphicons-remove-2"></a>' +
+    '</div>';
+    scope.$watch(model + '.modifing', function (v) {
+      if (v) {
+        showCodeMirror();
+      }
+    });
+
+    function close() {
+      scope.$apply(function(){
+        scope[model].modifing = false;
+      });
+      codeMirrorEditor.remove();
+      codeMirrorEditor = null;
+    }
+
+    function showCodeMirror() {
+      if (codeMirrorEditor) {
+        codeMirrorEditor.remove();
+      }
+      var obj = angular.element('<div class="codeMirrorEditor"></div>');
+      obj.insertAfter(element);
+      var editor = CodeMirror(obj.get(0), {
+        lineNumbers: true,
+        mode : 'json',
+        tabSize : 2,
+        value : scope[model].value,
+        theme : 'monokai'
+      });
+      obj.append(ctrl);
+      obj.find('.glyphicons-remove-2').click(close);
+      obj.find('.glyphicons-ok-2').click(function(){
+        close();
+      });
+      codeMirrorEditor = obj;
+    }
+  }
+  return {
+    restrict : 'A',
+    link : codeMirrorLink
+  };
 }
 })(this);
