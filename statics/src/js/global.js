@@ -156,10 +156,10 @@ function AppController($scope, $http, $compile, $element, user){
   ctrl.session = {};
 
 
-  $scope.$on('user', function(e, type){
-    getSession();
-  });
-  getSession();
+  // $scope.$on('user', function(e, type){
+  //   getSession();
+  // });
+  // getSession();
 
 
   function showDialog(type){

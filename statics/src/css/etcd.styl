@@ -26,6 +26,7 @@ HeaderContainerCss()
     line-height $HEADER_HEIGHT
 
 EtcdNodeListCss()
+  margin-bottom 65px
   .path
     margin 10px 0
     color #bc2328
@@ -39,19 +40,8 @@ EtcdNodeListCss()
       color #bc2328
   .panel-heading
     .glyphicons
+      font-size 14px
       margin-left 10px
-  .codeMirrorEditor
-    position relative
-    .ctrls
-      position absolute
-      right 5px
-      top 5px
-      z-index 9
-      a
-        color #f92672
-        margin-left 10px
-        &.glyphicons-ok-2
-          color #1dc116
   // border 1px solid #e1e1e8
   // padding 15px
   // position relative
@@ -67,14 +57,8 @@ EtcdNodeListCss()
   //   border-radius bottom left 5px
 
 AddNodeContainerCss()
-  margin 0 15px
-  .nodeValue
-    margin-top 15px
-  .btn
-    margin-top 15px
+  jt-code-mirror
     display block
-  .alert
-    margin 15px 0
 .etcdPage
   margin-left $NAV_WIDTH
   .headerContainer
@@ -85,3 +69,26 @@ AddNodeContainerCss()
     EtcdNodeListCss()
   .addNodeContainer
     AddNodeContainerCss()
+
+  .codeMirrorEditor
+    position relative
+    margin-top 15px
+    .ctrls
+      position absolute
+      right 5px
+      top 5px
+      z-index 9
+      a
+        color #f92672
+        margin-left 10px
+        &.glyphicons-ok-2
+          color #1dc116
+  .addBtnContainer
+    position fixed
+    bottom 0
+    left $NAV_WIDTH
+    right 0
+    background-color $BG_COLOR
+    .btn
+      margin 15px
+      display block

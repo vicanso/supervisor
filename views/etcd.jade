@@ -1,6 +1,6 @@
 extends ./layout
 
-mixin EtcdNodeList()
+mixin EtcdNodeList
   p.text-center.loading(ng-hide='etcdPage.data.status !== "loading"') 正在加载中，请稍候...
   .alert.alert-danger.hidden(ng-class='{hidden : etcdPage.data.status !== "error"}') 加载数据失败，
     span(ng-bind='etcdPage.data.error')
@@ -10,17 +10,39 @@ mixin EtcdNodeList()
       span(ng-repeat='path in etcdPage.data.paths')
         a(ng-bind='path', href='javascript:;', ng-click='etcdPage.showPath($index)')
         span.glyphicons.glyphicons-chevron-right(ng-if='!$last')
-    .panel.panel-default(ng-repeat='node in etcdPage.data.nodes[etcdPage.data.currentPath]')
+    .panel.panel-default(ng-repeat='node in etcdPage.data.nodes[etcdPage.data.currentPath]', ng-if='etcdPage.data.nodes[etcdPage.data.currentPath].length')
       .panel-heading
         span.pull-right(ng-if='node.dir')
           a.glyphicons.glyphicons-plus(href='javascript:;')
           a.glyphicons.glyphicons-chevron-right(href='javascript:;', ng-click='etcdPage.show(node)')
-
-        a.glyphicons.glyphicons-edit.pull-right(ng-if='!node.dir && !node.modifing', href='javascript:;', ng-click='etcdPage.modify(node)')
+        span.pull-right(ng-if='!node.dir')
+          a.glyphicons.glyphicons-edit(ng-if='!node.modifing', href='javascript:;', ng-click='etcdPage.modify(node)')
+          a.glyphicons.glyphicons-remove-2(href='javascript:;', ng-click='etcdPage.del(node)')
+          
         .panel-title(ng-bind='::node.key')
       .panel-body(ng-if='!node.dir')
         pre(ng-bind='::node.value', jt-code-mirror='node', ng-hide='node.modifing')
-  
+    .panel(ng-if='!etcdPage.data.nodes[etcdPage.data.currentPath].length')
+      p.text-center 该节点暂无数据，请先添加
+    
+
+mixin AddNodeContainer
+  .row.clearfix(ng-init='addNode = etcdPage.addNode')
+    .col-xs-5
+      .input-group
+        .input-group-addon key
+        input.form-control(type='text', placeholder='请输入key', ng-model='addNode.key')
+    .col-xs-5
+      .input-group
+        .input-group-addon ttl
+        input.form-control(type='text', placeholder='请输入ttl，可选', ng-model='addNode.ttl')
+    .col-xs-2
+      .input-group
+        .input-group-addon
+          input(type='checkbox', ng-model='addNode.dir')
+        span.form-control 是否为dir
+    .col-xs-12
+      jt-code-mirror(ng-if='addNode.show', on-save='etcdPage.save(value)')
 
 block bodyContainer
   .etcdPage(ng-controller='EtcdPageController as etcdPage')
@@ -29,9 +51,14 @@ block bodyContainer
       h3.text-center ETCD
     
     .contentContainer
-      .etcdNodeList
-        +EtcdNodeList()
-  
+      .etcdNodeList(ng-hide='etcdPage.addNode.show')
+        +EtcdNodeList
+      .addNodeContainer.hidden(ng-class='{hidden : !etcdPage.addNode.show}')
+        +AddNodeContainer
+      .addBtnContainer
+        a.btn.btn-primary(href='javascript:;', ng-click='etcdPage.addNode.show = !etcdPage.addNode.show') 
+          span(ng-show='!etcdPage.addNode.show') 添 加
+          span.hidden(ng-class='{hidden : !etcdPage.addNode.show}') 取 消
   - importer.import('/component/codemirror.js', '/css/codemirror.css');
   - importer.import('/js/etcd.js');
   - importer.import('/css/etcd.css');

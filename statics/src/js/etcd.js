@@ -19,6 +19,11 @@ function ctrl($scope, $http, util, debug, etcdService) {
   self.show = show;
   self.showPath = showPath;
   self.modify = modify;
+  self.save = save;
+  self.del = del;
+  self.addNode = {
+    show : false
+  };
 
   return self;
 
@@ -53,6 +58,28 @@ function ctrl($scope, $http, util, debug, etcdService) {
    */
   function modify(node) {
     node.modifing = true;
+  }
+
+
+  /**
+   * [save description]
+   * @param  {[type]} value [description]
+   * @return {[type]}       [description]
+   */
+  function save(value){
+    var data = _.pick(self.addNode, ['key', 'ttl', 'dir']);
+    try {
+      value = JSON.parse(value);
+    } catch (e) {
+
+    } finally {
+      data.value = value;
+    }
+    etcdService.save(data);
+  }
+
+  function del(node) {
+    etcdService.del(node.key);
   }
 
   // // 是否显示添加节点的面板功能
@@ -122,7 +149,9 @@ function service($http, $timeout) {
   };
   return {
     init : init,
-    show : show
+    show : show,
+    save : save,
+    del : del
   };
 
   /**
@@ -191,6 +220,19 @@ function service($http, $timeout) {
       arr[0] = 'root';
       return arr;
     }
+  }
+
+  /**
+   * [save description]
+   * @param  {[type]} data [description]
+   * @return {[type]}      [description]
+   */
+  function save(data) {
+    $http.post('/etcd/add', data);
+  }
+
+  function del(key) {
+    $http.delete('/etcd/del?key=' + key);
   }
   // var data = {
   //   // 当前的etcd nodes
@@ -313,24 +355,20 @@ function service($http, $timeout) {
 
 function jtCodeMirror() {
   function codeMirrorLink(scope, element, attr) {
-    var model = attr.jtCodeMirror;
+    var model = attr.jtValue;
     var codeMirrorEditor;
     var ctrl = '<div class="ctrls">' +
       '<a href="javascript:;" class="glyphicons glyphicons-ok-2"></a>' +
       '<a href="javascript:;" class="glyphicons glyphicons-remove-2"></a>' +
     '</div>';
-    scope.$watch(model + '.modifing', function (v) {
-      if (v) {
-        showCodeMirror();
-      }
-    });
+
+    showCodeMirror();
 
     function close() {
-      scope.$apply(function(){
-        scope[model].modifing = false;
-      });
-      codeMirrorEditor.remove();
-      codeMirrorEditor = null;
+      if (codeMirrorEditor) {
+        codeMirrorEditor.remove();
+        codeMirrorEditor = null;
+      }
     }
 
     function showCodeMirror() {
@@ -338,24 +376,28 @@ function jtCodeMirror() {
         codeMirrorEditor.remove();
       }
       var obj = angular.element('<div class="codeMirrorEditor"></div>');
-      obj.insertAfter(element);
+      obj.appendTo(element);
       var editor = CodeMirror(obj.get(0), {
-        lineNumbers: true,
         mode : 'json',
         tabSize : 2,
-        value : scope[model].value,
-        theme : 'monokai'
+        theme : 'monokai',
+        autofocus : true
       });
       obj.append(ctrl);
       obj.find('.glyphicons-remove-2').click(close);
       obj.find('.glyphicons-ok-2').click(function(){
-        close();
+        console.dir(editor.getValue());
+        scope.save({value : editor.getValue()});
+        // close();
       });
       codeMirrorEditor = obj;
     }
   }
   return {
-    restrict : 'A',
+    restrict : 'AE',
+    scope : {
+      'save' : '&onSave'
+    },
     link : codeMirrorLink
   };
 }
