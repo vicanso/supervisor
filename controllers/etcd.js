@@ -27,7 +27,7 @@ function *view(){
 function *list() {
   /*jshint validthis:true */
   let ctx = this;
-  let key = ctx.params.key;
+  let key = ctx.query.key;
   ctx.body = yield etcd.list(key);
 }
 
@@ -48,6 +48,10 @@ function *add() {
 function *del() {
   /*jshint validthis:true */
   let ctx = this;
-  let key = ctx.query.key;
+  let query = ctx.query;
+  let key = query.key;
+  if (query.dir) {
+    key += '?dir=true'
+  }
   ctx.body = yield etcd.del(key);
 }

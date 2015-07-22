@@ -10,7 +10,7 @@ module.exports = [
     handler : 'etcd.get'
   },
   {
-    route : ['/etcd/list', '/etcd/list/:key'],
+    route : '/etcd/list',
     handler : 'etcd.list'
   },
   {

@@ -26,6 +26,7 @@
   "etcd": {
     "css": [
       "/component/bootstrap.css",
+      "/css/widget.css",
       "/css/global.css",
       "/css/nav.css",
       "/css/codemirror.css",
@@ -47,6 +48,6 @@
       "/component/codemirror.js",
       "/js/etcd.js"
     ],
-    "modifiedAt": "2015-07-20T21:12:48.215"
+    "modifiedAt": "2015-07-22T21:27:13.455"
   }
 }

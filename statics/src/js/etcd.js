@@ -21,6 +21,8 @@ function ctrl($scope, $http, util, debug, etcdService) {
   self.modify = modify;
   self.save = save;
   self.del = del;
+  self.modify = modify;
+  self.cancelModify = cancelModify;
   self.addNode = {
     show : false
   };
@@ -33,7 +35,12 @@ function ctrl($scope, $http, util, debug, etcdService) {
    * @return {[type]}     [description]
    */
   function show(node) {
-    etcdService.show(node.key);
+    node.status = 'showDetail';
+    etcdService.show(node.key).then(function (res) {
+      node.status = '';
+    }, function (res) {
+      node.status = '';
+    });
   }
 
   /**
@@ -52,16 +59,6 @@ function ctrl($scope, $http, util, debug, etcdService) {
   }
 
   /**
-   * [modify description]
-   * @param  {[type]} node [description]
-   * @return {[type]}      [description]
-   */
-  function modify(node) {
-    node.modifing = true;
-  }
-
-
-  /**
    * [save description]
    * @param  {[type]} value [description]
    * @return {[type]}       [description]
@@ -78,8 +75,60 @@ function ctrl($scope, $http, util, debug, etcdService) {
     etcdService.save(data);
   }
 
+  /**
+   * [del description]
+   * @param  {[type]} node [description]
+   * @return {[type]}      [description]
+   */
   function del(node) {
-    etcdService.del(node.key);
+    var str = '请注意，节点：' + node.key + '删除之后将无法恢复。';
+    if (node.dir) {
+      str += '(注：包括它的子节点)'
+    }
+    util.alert('确定要删除该节点吗？', str).then(function() {
+      node.status = 'deleting';
+      etcdService.del(node.key, node.dir).then(function (res) {
+        node.status = '';
+      }, function (res) {
+        node.status = '';
+      });
+    });
+  }
+
+
+  /**
+   * [findModifyNode description]
+   * @return {[type]} [description]
+   */
+  function findModifyNode() {
+    return _.find(self.data.nodes[self.data.currentPath], function (node) {
+      return node.modifing;
+    });
+  }
+  /**
+   * [cancelModify description]
+   * @param  {[type]} argument [description]
+   * @return {[type]}          [description]
+   */
+  function cancelModify() {
+    var node = findModifyNode();
+    node.modifing = false;
+    $scope.$digest();
+  }
+
+  function modify(value) {
+    var node = findModifyNode();
+    var data = _.pick(node, ['key', 'ttl', 'dir']);
+    try {
+      value = JSON.parse(value);
+    } catch (e) {
+    } finally {
+      data.value = value;
+    }
+    etcdService.save(data).then(function (res) {
+      node.value = JSON.stringify(data.value, null, 2);
+      node.modifing = false;
+    });
   }
 
   // // 是否显示添加节点的面板功能
@@ -183,8 +232,6 @@ function service($http, $timeout) {
       etcdData.currentPath = key;
       etcdData.paths = getPaths(key);
       etcdData.nodes[key] = res.data;
-    }, function (res) {
-      // body...
     });
   }
 
@@ -196,7 +243,7 @@ function service($http, $timeout) {
   function list(key) {
     var url = '/etcd/list';
     if (key) {
-      url += key;
+      url += ('?key=' + key);
     }
     var promise =  $http.get(url);
     promise.then(function (res) {
@@ -228,11 +275,27 @@ function service($http, $timeout) {
    * @return {[type]}      [description]
    */
   function save(data) {
-    $http.post('/etcd/add', data);
+    return $http.post('/etcd/add', data);
   }
 
-  function del(key) {
-    $http.delete('/etcd/del?key=' + key);
+  /**
+   * [del description]
+   * @param  {[type]} key [description]
+   * @param  {[type]} dir [description]
+   * @return {[type]}     [description]
+   */
+  function del(key, dir) {
+    var url = '/etcd/del?key=' + key;
+    if (dir) {
+      url += '&dir=true';
+    }
+    var promise = $http.delete(url);
+    promise.then(function () {
+      etcdData.nodes[etcdData.currentPath] = _.filter(etcdData.nodes[etcdData.currentPath], function (node) {
+        return node.key !== key;
+      });
+    });
+    return promise;
   }
   // var data = {
   //   // 当前的etcd nodes
@@ -353,9 +416,14 @@ function service($http, $timeout) {
 }
 
 
-function jtCodeMirror() {
+function jtCodeMirror($parse) {
   function codeMirrorLink(scope, element, attr) {
     var model = attr.jtValue;
+    var value = '';
+    if (model) {
+      value = $parse(model)(scope.$parent);
+    }
+
     var codeMirrorEditor;
     var ctrl = '<div class="ctrls">' +
       '<a href="javascript:;" class="glyphicons glyphicons-ok-2"></a>' +
@@ -368,6 +436,7 @@ function jtCodeMirror() {
       if (codeMirrorEditor) {
         codeMirrorEditor.remove();
         codeMirrorEditor = null;
+        scope.close();
       }
     }
 
@@ -381,14 +450,13 @@ function jtCodeMirror() {
         mode : 'json',
         tabSize : 2,
         theme : 'monokai',
+        value : value || '',
         autofocus : true
       });
       obj.append(ctrl);
       obj.find('.glyphicons-remove-2').click(close);
       obj.find('.glyphicons-ok-2').click(function(){
-        console.dir(editor.getValue());
         scope.save({value : editor.getValue()});
-        // close();
       });
       codeMirrorEditor = obj;
     }
@@ -396,9 +464,13 @@ function jtCodeMirror() {
   return {
     restrict : 'AE',
     scope : {
-      'save' : '&onSave'
+      'save' : '&onSave',
+      'close' : '&onCancel'
     },
     link : codeMirrorLink
   };
 }
+
+jtCodeMirror.$inject = ['$parse'];
+
 })(this);
