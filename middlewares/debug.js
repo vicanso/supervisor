@@ -1,5 +1,6 @@
 'use strict';
 const _ = require('lodash');
+const config = require('../config');
 const debug = require('../helpers/debug');
 
 module.exports = function (params) {
@@ -15,6 +16,9 @@ module.exports = function (params) {
       'true' : true,
       'false' : false
     };
+    if (config.env === 'development') {
+      state.pattern = '*';
+    }
     _.forEach(params, function (v, k) {
       if (_.has(query, v)) {
         if (query[v]) {

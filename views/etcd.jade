@@ -57,14 +57,12 @@ block bodyContainer
     
     .contentContainer
     
-    
       .loadingContainer(ng-hide='etcdPage.data.status !== "loading"')
         p.text-center
           span.loading &nbsp;
           | 正在加载中，请稍候...
       .alert.alert-danger.hidden(ng-class='{hidden : etcdPage.data.status !== "error"}') 加载数据失败，
         span(ng-bind='etcdPage.data.error')
-        
         
       .etcdNodeList(ng-hide='etcdPage.addNode.show')
         +EtcdNodeList

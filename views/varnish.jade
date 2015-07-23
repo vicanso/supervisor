@@ -1,0 +1,29 @@
+extends ./layout
+block bodyContainer
+  .homePage(ng-controller='VarnishPageController as varnishPage')
+    include ./nav
+    header.headerContainer
+      h3.text-center Varnish
+    
+    .contentContainer
+    
+      .input-group
+        input.form-control(type='text', placeholder='Search for varnish backends...', ng-model='varnishPage.searchOptions.keyword')
+        span.input-group-btn
+          button.btn.btn-default(ng-click='varnishPage.search(varnishPage.searchOptions.keyword)') GO!
+      .alert.alert-warning.hidden.mtop10(ng-class='{hidden: varnishPage.searchOptions.status !== "warning"}') varnish keyword can not be null!
+      .loadingContainer.mtop10.hidden(ng-class='{hidden: varnishPage.searchOptions.status !== "loading"}')
+        p.text-center
+          span.loading &nbsp;
+          | 正在获取数据，请稍候...
+          
+      //- 
+      //- <div class="input-group">
+      //-   <input type="text" class="form-control" placeholder="Search for...">
+      //-   <span class="input-group-btn">
+      //-     <button class="btn btn-default" type="button">Go!</button>
+      //-   </span>
+      //- </div><!-- /input-group -->
+  
+  - importer.import('/js/varnish.js');
+  - importer.import('/css/varnish.css');

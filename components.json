@@ -34,6 +34,7 @@
       "/css/etcd.css"
     ],
     "js": [
+      "/component/debug.js",
       "/component/jquery.js",
       "/component/angular.js",
       "/component/lodash.js",
@@ -49,6 +50,32 @@
       "/component/codemirror.js",
       "/js/etcd.js"
     ],
-    "modifiedAt": "2015-07-22T21:27:13.455"
+    "modifiedAt": "2015-07-23T21:46:22.981"
+  },
+  "varnish": {
+    "css": [
+      "/component/bootstrap.css",
+      "/css/widget.css",
+      "/css/global.css",
+      "/css/nav.css",
+      "/css/varnish.css"
+    ],
+    "js": [
+      "/component/debug.js",
+      "/component/jquery.js",
+      "/component/angular.js",
+      "/component/lodash.js",
+      "/component/angular-local-storage.js",
+      "/component/sha1.js",
+      "/service/const.js",
+      "/service/http-log.js",
+      "/service/debug.js",
+      "/service/user.js",
+      "/js/directive.js",
+      "/service/util.js",
+      "/js/global.js",
+      "/js/varnish.js"
+    ],
+    "modifiedAt": "2015-07-23T21:51:22.661"
   }
 }

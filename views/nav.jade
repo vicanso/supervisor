@@ -9,4 +9,9 @@ nav.navContainer
       a.text-center.etcd(href='#{URL("/etcd")}', title='etcd')
         span.glyphicons.glyphicons-cluster
         | etcd
+    
+    li(class='#{page === "varnish"? "active" : ""}')
+      a.text-center.etcd(href='#{URL("/varnish")}', title='varnish')
+        span.glyphicons.glyphicons-magic
+        | varnish
 - importer.import('/css/nav.css');

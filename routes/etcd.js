@@ -6,10 +6,6 @@ module.exports = [
     handler : 'etcd.view'
   },
   {
-    route : '/etcd/get',
-    handler : 'etcd.get'
-  },
-  {
     route : '/etcd/list',
     handler : 'etcd.list'
   },

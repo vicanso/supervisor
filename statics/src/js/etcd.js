@@ -15,6 +15,7 @@ angular.module('jtApp')
 function ctrl($scope, $http, util, debug, etcdService) {
   /*jshint validthis:true */
   var self = this;
+  debug = debug('jt.etcd');
   self.data = etcdService.init();
   self.show = show;
   self.showPath = showPath;
@@ -38,9 +39,12 @@ function ctrl($scope, $http, util, debug, etcdService) {
    */
   function show(node) {
     node.status = 'showDetail';
+    debug('show:%j', node);
     etcdService.show(node.key).then(function (res) {
+      debug('show success:%j', res.data);
       node.status = '';
     }, function (res) {
+      debug('show fail:%j', res.data);
       node.status = '';
     });
   }
@@ -57,7 +61,9 @@ function ctrl($scope, $http, util, debug, etcdService) {
         keyArr.push(path);
       }
     });
-    etcdService.show('/' + keyArr.join(''));
+    var key = '/' + keyArr.join('');
+    debug('show path:%s', key)
+    etcdService.show(key);
   }
 
   /**
@@ -212,11 +218,13 @@ function service($http, $timeout) {
    * @return {[type]}     [description]
    */
   function show(key) {
-    return list(key).then(function (res) {
+    var promise = list(key);
+    promise.then(function (res) {
       etcdData.currentPath = key;
       etcdData.paths = getPaths(key);
       etcdData.nodes[key] = res.data;
     });
+    return promise;
   }
 
   /**
