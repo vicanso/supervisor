@@ -11,7 +11,7 @@ mixin EtcdNodeList
       .panel-heading
         .pull-right(ng-if='!node.status')
           span(ng-if='node.dir')
-            a.glyphicons.glyphicons-plus(href='javascript:;')
+            a.glyphicons.glyphicons-plus(href='javascript:;', ng-click='etcdPage.addToDir(node.key)')
             a.glyphicons.glyphicons-remove-2(href='javascript:;', ng-click='etcdPage.del(node)')
             a.glyphicons.glyphicons-chevron-right(href='javascript:;', ng-click='etcdPage.show(node)')
           span(ng-if='!node.dir')
@@ -28,22 +28,26 @@ mixin EtcdNodeList
     
 
 mixin AddNodeContainer
-  .row.clearfix(ng-init='addNode = etcdPage.addNode')
+  .row.clearfix
     .col-xs-5
       .input-group
         .input-group-addon key
-        input.form-control(type='text', placeholder='请输入key', ng-model='addNode.key')
+        input.form-control(type='text', placeholder='请输入key', ng-model='etcdPage.addNode.key')
     .col-xs-5
       .input-group
         .input-group-addon ttl
-        input.form-control(type='text', placeholder='请输入ttl，可选', ng-model='addNode.ttl')
+        input.form-control(type='text', placeholder='请输入ttl，可选', ng-model='etcdPage.addNode.ttl')
     .col-xs-2
       .input-group
         .input-group-addon
-          input(type='checkbox', ng-model='addNode.dir')
+          input(type='checkbox', ng-model='etcdPage.addNode.dir')
         span.form-control 是否为dir
     .col-xs-12
-      jt-code-mirror(ng-if='addNode.show', on-save='etcdPage.save(value)')
+      jt-code-mirror(ng-if='etcdPage.addNode.show', on-save='etcdPage.save(value)', ng-hide='etcdPage.addNode.status === "submitting"', on-cancel='etcdPage.cancelAdd()')
+      .loadingContainer.mtop10(ng-show='etcdPage.addNode.status === "submitting"')
+        p.text-center
+          span.loading &nbsp;
+          | 正在提交保存，请稍候...
 
 block bodyContainer
   .etcdPage(ng-controller='EtcdPageController as etcdPage')

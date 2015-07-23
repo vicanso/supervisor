@@ -237,26 +237,26 @@ function *getSetting() {
     }
   };
 
-  if (config.env !== 'development') {
-    let get = function *get(key) {
-      let result;
-      try {
-        result = yield etcd.get(key);
-      } catch (err) {
-        console.error('get config:%s fail, error:%s', key, err.message);
-      }
-      return result;
-    };
-    let reqs = _.map(configs, get);
-    let keys = _.keys(configs);
-    let res = yield parallel(reqs);
-    _.forEach(res, function (item, index) {
-      if (item) {
-        result[keys[index]] = item.value;
-      }
-    });
-  }
-
+  // if (config.env !== 'development') {
+  //   let get = function *get(key) {
+  //     let result;
+  //     try {
+  //       result = yield etcd.get(key);
+  //     } catch (err) {
+  //       console.error('get config:%s fail, error:%s', key, err.message);
+  //     }
+  //     return result;
+  //   };
+  //   let reqs = _.map(configs, get);
+  //   let keys = _.keys(configs);
+  //   let res = yield parallel(reqs);
+  //   _.forEach(res, function (item, index) {
+  //     if (item) {
+  //       result[keys[index]] = item.value;
+  //     }
+  //   });
+  // }
+  yield Promise.resolve();
   debug('app setting:%j', result);
 
   return result;

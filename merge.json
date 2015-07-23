@@ -5,8 +5,20 @@
     "/component/angular.js",
     "/component/lodash.js",
     "/component/jquery.js",
-    "/component/bootstrap.css"
+    "/component/bootstrap.css",
+    "/component/codemirror.js"
   ],
   "files" : [
+    [
+      "/css/widget.css",
+      "/css/global.css",
+      "/css/nav.css"
+    ],
+    [
+      "/component/angular-local-storage.js",
+      "/component/sha1.js",
+      "/service/const.js",
+      "/service/http-log.js"
+    ]
   ]
 }

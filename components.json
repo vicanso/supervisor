@@ -2,6 +2,7 @@
   "home": {
     "css": [
       "/component/bootstrap.css",
+      "/css/widget.css",
       "/css/global.css",
       "/css/nav.css",
       "/css/home.css"
@@ -21,7 +22,7 @@
       "/js/global.js",
       "/js/home.js"
     ],
-    "modifiedAt": "2015-07-17T21:24:33.619"
+    "modifiedAt": "2015-07-23T14:23:32.415"
   },
   "etcd": {
     "css": [

@@ -51,7 +51,7 @@ function *del() {
   let query = ctx.query;
   let key = query.key;
   if (query.dir) {
-    key += '?dir=true'
+    key += '?dir=true';
   }
   ctx.body = yield etcd.del(key);
 }
