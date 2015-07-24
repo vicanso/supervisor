@@ -8,6 +8,7 @@
       "/css/home.css"
     ],
     "js": [
+      "/component/debug.js",
       "/component/jquery.js",
       "/component/angular.js",
       "/component/lodash.js",
@@ -22,7 +23,7 @@
       "/js/global.js",
       "/js/home.js"
     ],
-    "modifiedAt": "2015-07-23T14:23:32.415"
+    "modifiedAt": "2015-07-24T20:38:29.419"
   },
   "etcd": {
     "css": [

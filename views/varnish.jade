@@ -1,4 +1,17 @@
 extends ./layout
+
+mixin Search
+  .input-group
+    input.form-control(type='text', placeholder='Search for varnish backends...', ng-model='varnishPage.searchOptions.keyword')
+    span.input-group-btn
+      button.btn.btn-default(ng-click='varnishPage.search(varnishPage.searchOptions.keyword)') GO!
+      
+mixin NodeList
+  .nodeList.hidden(ng-class='{hidden: varnishPage.searchOptions.status !== "success"}')
+    .panel.panel-default(ng-repeat='node in varnishPage.searchOptions.nodes')
+      .panel-heading: .panel-title(ng-bind='::node.key')
+      .panel-body
+        pre(ng-bind='::node.value')
 block bodyContainer
   .homePage(ng-controller='VarnishPageController as varnishPage')
     include ./nav
@@ -6,24 +19,15 @@ block bodyContainer
       h3.text-center Varnish
     
     .contentContainer
-    
-      .input-group
-        input.form-control(type='text', placeholder='Search for varnish backends...', ng-model='varnishPage.searchOptions.keyword')
-        span.input-group-btn
-          button.btn.btn-default(ng-click='varnishPage.search(varnishPage.searchOptions.keyword)') GO!
-      .alert.alert-warning.hidden.mtop10(ng-class='{hidden: varnishPage.searchOptions.status !== "warning"}') varnish keyword can not be null!
-      .loadingContainer.mtop10.hidden(ng-class='{hidden: varnishPage.searchOptions.status !== "loading"}')
-        p.text-center
-          span.loading &nbsp;
-          | 正在获取数据，请稍候...
-          
-      //- 
-      //- <div class="input-group">
-      //-   <input type="text" class="form-control" placeholder="Search for...">
-      //-   <span class="input-group-btn">
-      //-     <button class="btn btn-default" type="button">Go!</button>
-      //-   </span>
-      //- </div><!-- /input-group -->
+      +Search
+      .mtop10
+        +NodeList
+        .alert.alert-warning.hidden(ng-class='{hidden: varnishPage.searchOptions.status !== "warning"}') varnish keyword can not be null!
+        .loadingContainer.hidden(ng-class='{hidden: varnishPage.searchOptions.status !== "loading"}')
+          p.text-center
+            span.loading &nbsp;
+            | 正在获取数据，请稍候...
+        .alert.alert-danger.hidden(ng-class='{hidden: varnishPage.searchOptions.status !== "error"}')
   
   - importer.import('/js/varnish.js');
   - importer.import('/css/varnish.css');

@@ -55,9 +55,16 @@ function ctrl($scope, $http, debug, varnishService){
     }
     self.searchOptions.status = 'loading';
     varnishService.list(key).then(function (res) {
-      console.dir(res);
+      self.searchOptions.status = 'success';
+      var nodes = res.data;
+      angular.forEach(nodes, function (node) {
+        node.value = JSON.stringify(node.value);
+      });
+      self.searchOptions.nodes = nodes;
     }, function (res) {
-    })
+      self.searchOptions.status = 'error';
+      self.searchOptions.error = res.data.msg;
+    });
   }
 }
 
