@@ -1,6 +1,4 @@
 'use strict';
-const session = require('koa-generic-session');
-const redisStore = require('koa-redis');
 const debug = require('../helpers/debug');
 const _ = require('lodash');
 const zipkin = require('../helpers/zipkin');
@@ -16,6 +14,8 @@ exports.get = get;
  */
 function init(redisConfig, sessionConfig) {
   debug('session redisConfig:%j, sessionConfig:%j', redisConfig, sessionConfig);
+  const session = require('koa-generic-session');
+  const redisStore = require('koa-redis');
   let store = redisStore(redisConfig);
   let options = _.clone(sessionConfig);
   options.store = store;

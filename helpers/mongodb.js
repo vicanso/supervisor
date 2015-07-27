@@ -1,7 +1,5 @@
 'use strict';
 const _ = require('lodash');
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 const requireTree = require('require-tree');
 const debug = require('./debug');
 const errors = require('../errors');
@@ -19,6 +17,8 @@ exports.model = model;
  * @return {[type]}           [description]
  */
 function init(uri, options, modelPath) {
+  const mongoose = require('mongoose');
+  const Schema = mongoose.Schema;
   if (_.isString(options)) {
     modelPath = options;
     options = null;
@@ -48,7 +48,14 @@ function init(uri, options, modelPath) {
 }
 
 
+/**
+ * [initModels description]
+ * @param  {[type]} modelPath [description]
+ * @return {[type]}           [description]
+ */
 function initModels(modelPath) {
+  const mongoose = require('mongoose');
+  const Schema = mongoose.Schema;
   let models = requireTree(modelPath);
   _.forEach(models, function(model, name){
     name = name.charAt(0).toUpperCase() + name.substring(1);
