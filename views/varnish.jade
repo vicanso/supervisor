@@ -9,9 +9,15 @@ mixin Search
 mixin NodeList
   .nodeList.hidden(ng-class='{hidden: varnishPage.searchOptions.status !== "success"}')
     .panel.panel-default(ng-repeat='node in varnishPage.searchOptions.nodes')
-      .panel-heading: .panel-title(ng-bind='::node.key')
+      .panel-heading: .panel-title(ng-bind='::(node.host + ":" + node.port)')
       .panel-body
-        pre(ng-bind='::node.value')
+        pre(ng-bind='::node.vcl')
+      .version(title='版本号')
+        span.glyphicons.glyphicons-paperclip
+        span(ng-bind='::node.version')
+      .updatedAt
+        span.glyphicons.glyphicons-calendar
+        span(ng-bind='::node.updatedAt')
 block bodyContainer
   .homePage(ng-controller='VarnishPageController as varnishPage')
     include ./nav

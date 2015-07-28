@@ -84,8 +84,10 @@ function ctrl($scope, $http, util, debug, etcdService) {
     etcdService.save(data).then(function (res) {
       self.addNode.show = false;
       self.addNode.status = '';
+      self.data.nodes[self.data.currentPath].push(data);
     }, function (res) {
       self.addNode.status = '';
+      util.alert('出错了', '保存节点失败：' + res.data.msg, 1);
     });
   }
 
@@ -105,6 +107,8 @@ function ctrl($scope, $http, util, debug, etcdService) {
         node.status = '';
       }, function (res) {
         node.status = '';
+        var msg = '删除节点失败：' + res.data.msg + '。该节点下是否还有节点未删除？'
+        util.alert('出错了', msg, 1);
       });
     });
   }
@@ -150,6 +154,8 @@ function ctrl($scope, $http, util, debug, etcdService) {
     etcdService.save(data).then(function (res) {
       node.value = JSON.stringify(data.value, null, 2);
       node.modifing = false;
+    }, function (res) {
+      util.alert('出错了', '修改节点失败：' + res.data.msg, 1);
     });
   }
 

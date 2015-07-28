@@ -25,9 +25,7 @@ function *version() {
   /*jshint validthis:true */
   let ctx = this;
   let data = yield getVersion();
-  ctx.set({
-    'Cache-Control' : 'public, max-age=60'
-  });
+  ctx.set('Cache-Control', 'public, max-age=60');
   ctx.body = data;
 }
 

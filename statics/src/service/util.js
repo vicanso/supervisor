@@ -15,10 +15,24 @@ function utilFn($rootScope, $compile, $document, $q){
    * [alert description]
    * @param  {[type]} title [description]
    * @param  {[type]} msg   [description]
-   * @param  {[type]} btns  [description]
+   * @param  {[type]} type  [description]
    * @return {[type]}       [description]
    */
-  function alert(title, msg, btns) {
+  function alert(title, msg, type) {
+    type = type || 0;
+    // 0 取消、确定按钮，1 只有确定按钮，2无按键
+    var btnsHtml = '';
+    if (type === 1) {
+      btnsHtml = '<div class="btns text-center">' +
+        '<button type="button" class="btn btn-primary" ng-click="submit()">确定</button>' +
+      '</div>';
+    } else if (type === 0) {
+      btnsHtml = '<div class="btns text-center">' +
+        '<button type="button" class="btn btn-default destroy">取消</button>' +
+        '<button type="button" class="btn btn-primary" ng-click="submit()">确定</button>' +
+      '</div>';
+    }
+
     var deferred = $q.defer();
     var html = '<jt-dialog class="dialog">' +
       '<div class="title">' + title +
@@ -27,11 +41,9 @@ function utilFn($rootScope, $compile, $document, $q){
         '</a>' +
       '</div>' +
       '<div class="content"><p>' + msg + '</p>' +
-      '<div class="btns text-center">' +
-        '<button type="button" class="btn btn-default destroy">取消</button>' +
-        '<button type="button" class="btn btn-primary" ng-click="submit()">确定</button>' +
-      '</div>' +
+      btnsHtml +
     '</div>';
+
     var obj = angular.element(html);
     var tmpScope = $rootScope.$new(true);
     angular.extend(tmpScope, {

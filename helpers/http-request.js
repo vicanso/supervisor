@@ -35,9 +35,15 @@ function *handle(req) {
   processedTotal++;
   sdc.increment('request.processing');
   try {
-    res = yield function (done) {
-      req.timeout(exports.timeout).end(done);
-    };
+    res = yield new Promise(function(resolve, reject) {
+      req.timeout(exports.timeout).end(function (err, res) {
+        if(err) {
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      });
+    });
   } catch (err) {
     throw err;
   } finally {
@@ -53,9 +59,5 @@ function *handle(req) {
     console.info(str);
   }
 
-  if (!_.isEmpty(res.body)) {
-    return res.body;
-  } else {
-    return res.text;
-  }
+  return res;
 }

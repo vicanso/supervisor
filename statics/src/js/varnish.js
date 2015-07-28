@@ -17,7 +17,7 @@ function service($http) {
 
 
   function list(key) {
-    return $http.get('/etcd/list?key=' + key);
+    return $http.get('/varnish/list?key=' + key);
   }
 }
 
