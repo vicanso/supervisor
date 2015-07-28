@@ -78,5 +78,30 @@
       "/js/varnish.js"
     ],
     "modifiedAt": "2015-07-23T21:51:22.661"
+  },
+  "backend": {
+    "css": [
+      "/component/bootstrap.css",
+      "/css/widget.css",
+      "/css/global.css",
+      "/css/nav.css",
+      "/css/backend.css"
+    ],
+    "js": [
+      "/component/debug.js",
+      "/component/jquery.js",
+      "/component/angular.js",
+      "/component/lodash.js",
+      "/component/angular-local-storage.js",
+      "/component/sha1.js",
+      "/service/const.js",
+      "/service/http-log.js",
+      "/service/debug.js",
+      "/service/user.js",
+      "/js/directive.js",
+      "/service/util.js",
+      "/js/global.js"
+    ],
+    "modifiedAt": "2015-07-27T16:35:59.473"
   }
 }

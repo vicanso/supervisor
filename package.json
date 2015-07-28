@@ -1,6 +1,6 @@
 {
-  "name": "albi",
-  "description": "backend framework base on koa",
+  "name": "supervisor",
+  "description": "supervisor include etcd varnish and so on.",
   "version": "0.0.1",
   "author": {
     "name": "vicanso 小墨鱼",
@@ -8,12 +8,12 @@
   },
   "keywords": [
     "koa",
-    "albi"
+    "supervisor"
   ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vicanso/albi.git"
+    "url": "https://github.com/vicanso/supervisor.git"
   },
   "main": "app",
   "readmeFilename": "README.md",
@@ -62,5 +62,5 @@
     "nib": "^1.1.0",
     "through": "^2.3.8"
   },
-  "readme": "backend framework base on koa"
+  "readme": "supervisor include etcd varnish and so on."
 }

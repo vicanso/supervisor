@@ -1,5 +1,5 @@
 {
-  "name": "albi",
+  "name": "supervisor",
   "instances": 2,
   "merge_logs": true,
   "max_memory_restart": "200M",
