@@ -26,6 +26,7 @@ function ctrl($scope, $http, debug, varnishService){
   var self = this;
   debug = debug('jt.varnish');
 
+  self.screenMode = 'normal';
   self.searchOptions = {
     status : ''
   };
@@ -35,6 +36,7 @@ function ctrl($scope, $http, debug, varnishService){
   });
 
   self.search = search;
+  search('varnish');
   return self;
   /**
    * [search description]
@@ -65,6 +67,11 @@ function ctrl($scope, $http, debug, varnishService){
       self.searchOptions.status = 'error';
       self.searchOptions.error = res.data.msg;
     });
+  }
+
+
+  function fullScreen(vcl) {
+    self.screenMode = 'full';
   }
 }
 

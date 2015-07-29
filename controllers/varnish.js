@@ -54,6 +54,12 @@ function *getVarnishInfo(options) {
   url = util.format('http://%s:%s/v-vcl', config.host, config.port);
   res = yield httpRequest.get(url);
   config.vcl = res.text;
+
+  res = yield etcd.list(arr[2]);
+  config.backends = _.map(res, function (tmp) {
+    return tmp.value;
+  });
+  console.dir(config.backends);
   return config;
 }
 

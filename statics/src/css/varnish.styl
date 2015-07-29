@@ -24,24 +24,71 @@ headerContainerCss()
 
 nodeListCss()
   .panel
-    position relative
-    pre
-      max-height 250px
-      overflow-y scroll
-
     .glyphicons
       width 14px
       margin-right 5px
-    .version
-      position absolute
-      right 5px
-      top 2px
       color #337ab7
-    .updatedAt
-      position absolute
-      bottom 2px
-      right 15px
-      color #337ab7
+    .panel-body
+      color #666
+      .wrap
+        padding 4px
+        border 1px solid #ddd
+        background-color #fff
+        border-radius 4px
+        margin-bottom 15px
+        &:last-child
+          margin-bottom 0
+        .content
+          background-color #f5f5f5
+          padding 10px
+      .value
+        color #333
+      .backends
+        padding-left 20px
+        margin-bottom 0
+        li
+          border-bottom 1px dashed #666
+          padding 5px 0
+          &:last-child
+            border-bottom none
+          span
+            display inline-block
+            &.key
+              text-align right
+              margin-right 10px
+      .vclContainer
+        height 100%
+        .wrap
+          height 100%
+          position relative
+          .glyphicons
+            position absolute
+            right 0
+            top 5px
+            color #bc2328
+          .content
+            max-height 100%
+            overflow-y scroll
+          pre
+            border none
+            margin 0
+            padding 0
+//       display: block;
+// padding: 4px;
+// margin-bottom: 20px;
+// line-height: 1.42857143;
+// background-color: #fff;
+// border: 1px solid #ddd;
+
+
+    // .version
+    //   margin-left 10px
+    //   font-size 10px
+    // .updatedAt
+    //   position absolute
+    //   bottom 2px
+    //   right 15px
+    //   color #337ab7
 
 
 .homePage

@@ -5,19 +5,51 @@ mixin Search
     input.form-control(type='text', placeholder='Search for varnish backends...', ng-model='varnishPage.searchOptions.keyword')
     span.input-group-btn
       button.btn.btn-default(ng-click='varnishPage.search(varnishPage.searchOptions.keyword)') GO!
-      
+
+mixin Backend
+  .col-xs-3
+    .wrap: .content
+      span.glyphicons.glyphicons-calendar
+      | 配置文件更新
+      br
+      span.value(ng-bind='::node.updatedAt')
+    .wrap: .content
+      span.glyphicons.glyphicons-paperclip
+      | 配置文件版本号
+      br
+      span.value(ng-bind='::node.version')
+    .wrap: .content
+      span.glyphicons.glyphicons-multiple-displays
+      | 后端服务器列表
+      ul.backends
+        li(ng-repeat='backend in node.backends')
+          .field
+            span.key 地址
+            span.value(ng-bind='::backend.ip')
+          .field
+            span.key 端口
+            span.value(ng-bind='::backend.port')
+          .field(ng-if='::backend.prefix')
+            span.key 前缀
+            span.value(ng-bind='::backend.prefix')
+          .field(ng-if='::backend.host')
+            span.key 域名
+            span.value(ng-bind='::backend.host')
+  .col-xs-9.vclContainer(jt-fix-height='full-parent', ng-if='node')
+    .wrap
+      a.glyphicons.glyphicons-resize-full(href='javascript:;', ng-click='varnishPage.fullScreen(node.vcl)')
+      .content
+        pre(ng-bind='::node.vcl')
 mixin NodeList
   .nodeList.hidden(ng-class='{hidden: varnishPage.searchOptions.status !== "success"}')
     .panel.panel-default(ng-repeat='node in varnishPage.searchOptions.nodes')
-      .panel-heading: .panel-title(ng-bind='::(node.host + ":" + node.port)')
+      .panel-heading
+        .panel-title
+          span(ng-bind='::(node.host + ":" + node.port)')
       .panel-body
-        pre(ng-bind='::node.vcl')
-      .version(title='版本号')
-        span.glyphicons.glyphicons-paperclip
-        span(ng-bind='::node.version')
-      .updatedAt
-        span.glyphicons.glyphicons-calendar
-        span(ng-bind='::node.updatedAt')
+        .row
+          +Backend
+          
 block bodyContainer
   .homePage(ng-controller='VarnishPageController as varnishPage')
     include ./nav

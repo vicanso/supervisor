@@ -139,4 +139,38 @@ function jtTable($compile, $document){
 }
 jtTable.$inject = ['$compile', '$document'];
 
+
+module.directive('jtFixHeight', jtFixHeight);
+
+/**
+ * [jtFixHeight description]
+ * @param  {[type]} argument [description]
+ * @return {[type]}          [description]
+ */
+function jtFixHeight() {
+  function link(scope, element, attr) {
+    element.hide();
+    setHeight(5);
+
+    function setHeight(tryTimes) {
+      var height = 0;
+      if (attr.jtFixHeight === 'full-parent') {
+        height = element.parent().height();
+      }
+      if (height) {
+        element.height(height).show();
+      } else if (tryTimes) {
+        setTimeout(function(){
+          setHeight(--tryTimes);
+        }, 20);
+      }
+    }
+  }
+
+  return {
+    restrict : 'A',
+    link : link
+  };
+}
+
 })(this);
