@@ -10,23 +10,17 @@ angular.module('jtApp').factory('varnishService', service);
 angular.module('jtApp')
   .controller('VarnishPageController', ctrl);
 
-function service($http) {
-  return {
-    list : list
-  };
 
-
-  function list(key) {
-    return $http.get('/varnish/list?key=' + key);
-  }
-}
 
 function ctrl($scope, $http, debug, varnishService){
   /*jshint validthis:true */
   var self = this;
   debug = debug('jt.varnish');
 
-  self.screenMode = 'normal';
+  self.viewVcl = {
+    mode : 'normal',
+    value : ''
+  };
   self.searchOptions = {
     status : ''
   };
@@ -36,7 +30,7 @@ function ctrl($scope, $http, debug, varnishService){
   });
 
   self.search = search;
-  search('varnish');
+  self.fullScreen = fullScreen;
   return self;
   /**
    * [search description]
@@ -70,10 +64,33 @@ function ctrl($scope, $http, debug, varnishService){
   }
 
 
+  /**
+   * [fullScreen 全屏]
+   * @param  {[type]} vcl [description]
+   * @return {[type]}     [description]
+   */
   function fullScreen(vcl) {
-    self.screenMode = 'full';
+    var viewVcl = self.viewVcl;
+    viewVcl.mode = 'full';
+    viewVcl.value = vcl;
   }
 }
 
+
+function service($http) {
+  return {
+    list : list
+  };
+
+
+  /**
+   * [list 列出varnish信息]
+   * @param  {[type]} key [description]
+   * @return {[type]}     [description]
+   */
+  function list(key) {
+    return $http.get('/varnish/list?key=' + key);
+  }
+}
 
 })(this);

@@ -23,24 +23,6 @@ function *home(){
 }
 
 
-
-/**
- * [varnish description]
- * @return {[type]} [description]
- */
-function *varnish(){
-  /*jshint validthis:true */
-  let ctx = this;
-  yield Promise.resolve();
-  ctx.set({
-    'Cache-Control' : 'public, max-age=60'
-  });
-  ctx.state.viewData = {
-    page : 'varnish'
-  };
-}
-
-
 /**
  * [backend description]
  * @return {[type]} [description]
@@ -80,6 +62,7 @@ function *backendAdd() {
     ip : ctx.ip || _.get('ctx', 'ips[0]')
   });
   globals.set('backends', backends);
+  yield Promise.resolve();
   ctx.body = {
     msg : 'success'
   };

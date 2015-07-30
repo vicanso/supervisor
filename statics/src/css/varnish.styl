@@ -73,23 +73,6 @@ nodeListCss()
             border none
             margin 0
             padding 0
-//       display: block;
-// padding: 4px;
-// margin-bottom: 20px;
-// line-height: 1.42857143;
-// background-color: #fff;
-// border: 1px solid #ddd;
-
-
-    // .version
-    //   margin-left 10px
-    //   font-size 10px
-    // .updatedAt
-    //   position absolute
-    //   bottom 2px
-    //   right 15px
-    //   color #337ab7
-
 
 .homePage
   margin-left $NAV_WIDTH
@@ -104,3 +87,20 @@ nodeListCss()
         display inline-block
     .nodeList
       nodeListCss()
+  .fullScreenView
+    position fixed
+    left 0
+    top 0
+    right 0
+    bottom 0
+    z-index 9
+    padding 5px
+    background-color #fff
+    .glyphicons
+      position absolute
+      right 8px
+      top 8px
+      color #bc2328
+      font-size 16px
+    pre
+      overflow-y scroll

@@ -149,20 +149,21 @@ module.directive('jtFixHeight', jtFixHeight);
  */
 function jtFixHeight() {
   function link(scope, element, attr) {
-    element.hide();
-    setHeight(5);
-
+    var interval = 20;
+    setTimeout(function(){
+      setHeight(5);
+    }, interval);
     function setHeight(tryTimes) {
       var height = 0;
       if (attr.jtFixHeight === 'full-parent') {
         height = element.parent().height();
       }
       if (height) {
-        element.height(height).show();
+        element.outerHeight(height).removeClass('hidden');
       } else if (tryTimes) {
         setTimeout(function(){
           setHeight(--tryTimes);
-        }, 20);
+        }, interval);
       }
     }
   }

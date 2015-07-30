@@ -62,7 +62,7 @@ function ctrl($scope, $http, util, debug, etcdService) {
       }
     });
     var key = '/' + keyArr.join('');
-    debug('show path:%s', key)
+    debug('show path:%s', key);
     etcdService.show(key);
   }
 
@@ -107,7 +107,7 @@ function ctrl($scope, $http, util, debug, etcdService) {
         node.status = '';
       }, function (res) {
         node.status = '';
-        var msg = '删除节点失败：' + res.data.msg + '。该节点下是否还有节点未删除？'
+        var msg = '删除节点失败：' + res.data.msg + '。该节点下是否还有节点未删除？';
         util.alert('出错了', msg, 1);
       });
     });

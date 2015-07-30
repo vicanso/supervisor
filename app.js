@@ -270,7 +270,7 @@ function *getSetting() {
 function keepServiceAlive() {
   const etcd = require('./helpers/etcd');
   let appUrlPrefix = globals.get('config.appUrlPrefix');
-  let arr = process.env.APP_HOST.split(':')
+  let arr = process.env.APP_HOST.split(':');
   let data = {
     name : config.app,
     ip : arr[0],

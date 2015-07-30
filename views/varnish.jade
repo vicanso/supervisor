@@ -35,7 +35,7 @@ mixin Backend
           .field(ng-if='::backend.host')
             span.key 域名
             span.value(ng-bind='::backend.host')
-  .col-xs-9.vclContainer(jt-fix-height='full-parent', ng-if='node')
+  .col-xs-9.vclContainer.hidden(jt-fix-height='full-parent', ng-if='node')
     .wrap
       a.glyphicons.glyphicons-resize-full(href='javascript:;', ng-click='varnishPage.fullScreen(node.vcl)')
       .content
@@ -66,6 +66,8 @@ block bodyContainer
             span.loading &nbsp;
             | 正在获取数据，请稍候...
         .alert.alert-danger.hidden(ng-class='{hidden: varnishPage.searchOptions.status !== "error"}')
-  
+    .fullScreenView.hidden(ng-class='{hidden : varnishPage.viewVcl.mode !== "full"}')
+      a.glyphicons.glyphicons-resize-small(href='javascript:;', ng-click='varnishPage.viewVcl.mode = "normal"')
+      pre(ng-bind='varnishPage.viewVcl.value', jt-fix-height='full-parent', ng-if='varnishPage.viewVcl.mode === "full"')
   - importer.import('/js/varnish.js');
   - importer.import('/css/varnish.css');
