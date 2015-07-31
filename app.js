@@ -173,7 +173,7 @@ function initServer() {
   app.on('error', _.noop);
 
   if (appUrlPrefix) {
-    app.use(mount(appUrlPrefix), require('./routes')());
+    app.use(mount(appUrlPrefix, require('./routes')()));
   } else {
     app.use(require('./routes')());
   }
@@ -237,6 +237,10 @@ function *getSetting() {
     }
   };
 
+  if (config.env !== 'development') {
+    result.config.appUrlPrefix = '/supervisor';
+  }
+
   // if (config.env !== 'development') {
   //   let get = function *get(key) {
   //     let result;
@@ -267,23 +271,30 @@ function *getSetting() {
  * [keepServiceAlive description]
  * @return {[type]} [description]
  */
-function keepServiceAlive() {
+function keepServiceAlive(key, data) {
   const etcd = require('./helpers/etcd');
-  let appUrlPrefix = globals.get('config.appUrlPrefix');
-  let arr = process.env.APP_HOST.split(':');
-  let data = {
-    name : config.app,
-    ip : arr[0],
-    port : parseInt(arr[1])
-  };
-  if (appUrlPrefix) {
-    data.prefix = appUrlPrefix;
+  let interval = 60 * 1000;
+  if (!key) {
+    let appUrlPrefix = globals.get('config.appUrlPrefix');
+    let arr = process.env.APP_HOST.split(':');
+    data = {
+      name : config.app,
+      ip : arr[0],
+      port : parseInt(arr[1])
+    };
+    if (appUrlPrefix) {
+      data.prefix = appUrlPrefix;
+    }
+    co(function *() {
+      yield etcd.add(process.env.SERVICE_KEY, data, interval + 20 * 1000);
+    }).catch(function (err) {
+      console.error(err);
+    });
+  } else {
+
   }
-  co(function *() {
-    yield etcd.add(process.env.SERVICE_KEY, data, 300);
-  }).catch(function (err) {
-    console.error(err);
-  });
+
+  setTimeout(keepServiceAlive, 60);
 }
 
 // keepServiceAlive()

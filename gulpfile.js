@@ -139,7 +139,12 @@ gulp.task('static-version', ['static-merge', 'static-copy-other'], function(){
 
   return gulp.src(['statics/build/**/*.js', 'statics/build/**/*.css', 'statics/dest/**/*.png', 'statics/dest/**/*.jpg', 'statics/dest/**/*.gif'])
     .pipe(through(crc32, function(){
-      fs.writeFileSync('crc32.json', JSON.stringify(crc32Infos, null, 2));
+      var keys = _.keys(crc32Infos).sort();
+      var result = {};
+      _.forEach(keys, function (key) {
+        result[key] = crc32Infos[key];
+      });
+      fs.writeFileSync('crc32.json', JSON.stringify(result, null, 2));
       this.emit('end');
     }))
     .pipe(gulp.dest('statics/dest'));
