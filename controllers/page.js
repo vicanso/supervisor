@@ -1,6 +1,7 @@
 'use strict';
 const globals = require('../globals');
 const _  = require('lodash');
+const moment = require('moment');
 
 exports.home = home;
 exports.backend = backend;
@@ -59,7 +60,8 @@ function *backendAdd() {
   });
   backends.push({
     name : data.name,
-    ip : ctx.ip || _.get('ctx', 'ips[0]')
+    ip : ctx.ip || _.get('ctx', 'ips[0]'),
+    updatedAt : moment().format('YYYY-MM-DD HH:mm:ss')
   });
   globals.set('backends', backends);
   yield Promise.resolve();
@@ -67,3 +69,18 @@ function *backendAdd() {
     msg : 'success'
   };
 }
+
+// const request = require('superagent');
+//
+// function update() {
+//   request.post('http://localhost:10000/backend/add').send({
+//     name : 'mac-pro'
+//   }).end(function (err, res) {
+//     if (res && res.body) {
+//       console.dir(res.body);
+//     }
+//   });
+// }
+//
+//
+// setInterval(update, 1 * 1000);

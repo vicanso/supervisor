@@ -15,11 +15,13 @@ block bodyContainer
             th #
             th 名称
             th IP
+            th 更新时间
           tbody
             each backend, i in viewData.backends
               tr
                 td #{i + 1}
                 td #{backend.name}
                 td #{backend.ip}
+                td #{backend.updatedAt}
             
   - importer.import('/css/backend.css');

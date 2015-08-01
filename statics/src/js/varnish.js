@@ -59,7 +59,7 @@ function ctrl($scope, $http, debug, varnishService){
       self.searchOptions.nodes = nodes;
     }, function (res) {
       self.searchOptions.status = 'error';
-      self.searchOptions.error = res.data.msg;
+      self.searchOptions.error = res.data.msg || '没有相关varnish节点信息';
     });
   }
 
