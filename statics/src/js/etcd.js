@@ -29,6 +29,7 @@ function ctrl($scope, $http, util, debug, etcdService) {
   self.addNode = {
     show : false
   };
+  self.template = template;
 
   return self;
 
@@ -183,6 +184,21 @@ function ctrl($scope, $http, util, debug, etcdService) {
     $scope.$digest();
   }
 
+  /**
+   * [template description]
+   * @param  {[type]} type [description]
+   * @return {[type]}      [description]
+   */
+  function template(type) {
+    var data = {
+      name : "backend-name",
+      ip : "backend-ip",
+      port : 10000,
+      prefix : 'backend-prefix, optional'
+    };
+    self.addNode.value = JSON.stringify(data, null, 2);
+  }
+
 }
 
 function service($http, $timeout) {
@@ -302,12 +318,16 @@ function service($http, $timeout) {
 function jtCodeMirror($parse) {
   function codeMirrorLink(scope, element, attr) {
     var model = attr.jtValue;
-    var value = '';
     if (model) {
-      value = $parse(model)(scope.$parent);
+      scope.$parent.$watch(model, function (v) {
+        var editor = codeMirrorObj && codeMirrorObj.editor;
+        if (editor && v) {
+          editor.doc.setValue(v);
+        }
+      });
     }
 
-    var codeMirrorEditor;
+    var codeMirrorObj;
     var ctrl = '<div class="ctrls">' +
       '<a href="javascript:;" class="glyphicons glyphicons-ok-2"></a>' +
       '<a href="javascript:;" class="glyphicons glyphicons-remove-2"></a>' +
@@ -316,16 +336,16 @@ function jtCodeMirror($parse) {
     showCodeMirror();
 
     function close() {
-      if (codeMirrorEditor) {
-        codeMirrorEditor.remove();
-        codeMirrorEditor = null;
+      if (codeMirrorObj) {
+        codeMirrorObj.remove();
+        codeMirrorObj = null;
         scope.close();
       }
     }
 
     function showCodeMirror() {
-      if (codeMirrorEditor) {
-        codeMirrorEditor.remove();
+      if (codeMirrorObj) {
+        codeMirrorObj.remove();
       }
       var obj = angular.element('<div class="codeMirrorEditor"></div>');
       obj.appendTo(element);
@@ -333,7 +353,7 @@ function jtCodeMirror($parse) {
         mode : 'json',
         tabSize : 2,
         theme : 'monokai',
-        value : value || '',
+        value : '',
         autofocus : true
       });
       obj.append(ctrl);
@@ -341,11 +361,12 @@ function jtCodeMirror($parse) {
       obj.find('.glyphicons-ok-2').click(function(){
         scope.save({value : editor.getValue()});
       });
-      codeMirrorEditor = obj;
+      codeMirrorObj = obj;
+      codeMirrorObj.editor = editor;
     }
   }
   return {
-    restrict : 'AE',
+    restrict : 'E',
     scope : {
       'save' : '&onSave',
       'close' : '&onCancel'

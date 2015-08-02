@@ -35,6 +35,7 @@
       "/css/etcd.css"
     ],
     "js": [
+      "/component/debug.js",
       "/component/jquery.js",
       "/component/angular.js",
       "/component/lodash.js",
@@ -50,7 +51,7 @@
       "/component/codemirror.js",
       "/js/etcd.js"
     ],
-    "modifiedAt": "2015-07-31T22:31:13.465"
+    "modifiedAt": "2015-08-02T08:15:12.861"
   },
   "varnish": {
     "css": [

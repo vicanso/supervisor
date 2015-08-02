@@ -29,21 +29,26 @@ mixin EtcdNodeList
 
 mixin AddNodeContainer
   .row.clearfix
-    .col-xs-5
+    .col-xs-6.col-md-3
       .input-group
         .input-group-addon key
         input.form-control(type='text', placeholder='请输入key', ng-model='etcdPage.addNode.key')
-    .col-xs-5
+    .col-xs-6.col-md-3
       .input-group
         .input-group-addon ttl
         input.form-control(type='text', placeholder='请输入ttl，可选', ng-model='etcdPage.addNode.ttl')
-    .col-xs-2
+    .col-xs-6.col-md-3
       .input-group
         .input-group-addon
           input(type='checkbox', ng-model='etcdPage.addNode.dir')
         span.form-control 是否为dir
+    .col-xs-6.col-md-3
+      .input-group
+        .input-group-addon 模板选择
+        span.form-control
+          a.glyphicons.glyphicons-display(title='backend', href='javascript:;', ng-click='etcdPage.template("backend")')
     .col-xs-12
-      jt-code-mirror(ng-if='etcdPage.addNode.show', on-save='etcdPage.save(value)', ng-hide='etcdPage.addNode.status === "submitting"', on-cancel='etcdPage.cancelAdd()')
+      jt-code-mirror(ng-if='etcdPage.addNode.show', on-save='etcdPage.save(value)', ng-hide='etcdPage.addNode.status === "submitting"', on-cancel='etcdPage.cancelAdd()', jt-value='etcdPage.addNode.value')
       .loadingContainer.mtop10(ng-show='etcdPage.addNode.status === "submitting"')
         p.text-center
           span.loading &nbsp;
