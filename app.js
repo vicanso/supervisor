@@ -1,4 +1,5 @@
 'use strict';
+require('./init');
 const config = require('./config');
 const util = require('util');
 const path = require('path');
@@ -9,7 +10,6 @@ const debug = require('./helpers/debug');
 const urlJoin = require('url-join');
 
 co(function *() {
-  initLogger();
   let setting = yield getSetting();
   _.forEach(setting, function (v, k) {
     globals.set(k, v);

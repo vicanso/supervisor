@@ -1,4 +1,4 @@
-FROM vicanso/pm2
+FROM vicanso/iojs
 
 MAINTAINER "vicansocanbico@gmail.com"
 

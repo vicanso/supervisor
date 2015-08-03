@@ -74,6 +74,9 @@ function ctrl($scope, $http, util, debug, etcdService) {
    */
   function save(value){
     var data = _.pick(self.addNode, ['key', 'ttl', 'dir']);
+    if (data.key.charAt(0) !== '/') {
+      data.key = '/' + data.key;
+    }
     try {
       value = JSON.parse(value);
     } catch (e) {
@@ -194,7 +197,8 @@ function ctrl($scope, $http, util, debug, etcdService) {
       name : "backend-name",
       ip : "backend-ip",
       port : 10000,
-      prefix : 'backend-prefix, optional'
+      prefix : 'backend-prefix, optional',
+      weight : 'load balance\'s weight, optional'
     };
     self.addNode.value = JSON.stringify(data, null, 2);
   }

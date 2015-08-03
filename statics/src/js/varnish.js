@@ -31,6 +31,7 @@ function ctrl($scope, $http, debug, varnishService){
 
   self.search = search;
   self.fullScreen = fullScreen;
+  self.showStats = showStats;
   return self;
   /**
    * [search description]
@@ -52,11 +53,7 @@ function ctrl($scope, $http, debug, varnishService){
     self.searchOptions.status = 'loading';
     varnishService.list(key).then(function (res) {
       self.searchOptions.status = 'success';
-      var nodes = res.data;
-      angular.forEach(nodes, function (node) {
-        node.value = JSON.stringify(node.value);
-      });
-      self.searchOptions.nodes = nodes;
+      self.searchOptions.nodes = res.data;
     }, function (res) {
       self.searchOptions.status = 'error';
       self.searchOptions.error = res.data.msg || '没有相关varnish节点信息';
@@ -74,12 +71,30 @@ function ctrl($scope, $http, debug, varnishService){
     viewVcl.mode = 'full';
     viewVcl.value = vcl;
   }
+
+
+  /**
+   * [showStats description]
+   * @param  {[type]} data [description]
+   * @return {[type]}      [description]
+   */
+  function showStats(data) {
+    data.statsStatus = 'loading';
+    varnishService.stats(data.ip, data.port).then(function (res) {
+      data.stats = JSON.stringify(res.data, null, 2);
+      data.statsStatus = 'success';
+    }, function (res) {
+      data.statsStatus = 'error';
+      data.error = res.data.msg;
+    });
+  }
 }
 
 
 function service($http) {
   return {
-    list : list
+    list : list,
+    stats : stats
   };
 
 
@@ -90,6 +105,10 @@ function service($http) {
    */
   function list(key) {
     return $http.get('/varnish/list?key=' + key);
+  }
+
+  function stats(ip, port) {
+    return $http.get('/varnish/stats/' + ip + '/' + port);
   }
 }
 
