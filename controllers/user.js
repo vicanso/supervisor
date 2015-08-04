@@ -29,10 +29,6 @@ function *get(){
   /*jshint validthis:true */
   let ctx = this;
   let sess = ctx.session;
-  let result = sess.user || {
-    anonymous : true,
-    hashCode : uuid.v4()
-  };
   // 用户跟踪cookie
   let track = ctx.cookies.get(config.trackKey);
   if (!track) {
@@ -42,9 +38,10 @@ function *get(){
     });
   }
 
-  sess.user = result;
-  yield Promise.resolve();
-  ctx.body = pick(result);
+  ctx.body = {
+    anonymous : true,
+    hashCode : uuid.v4()
+  };
 }
 
 /**

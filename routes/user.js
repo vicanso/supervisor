@@ -28,18 +28,18 @@ let routes = [
   }
 ];
 
-_.forEach(routes, function (item) {
-  if (!item.middleware) {
-    item.middleware = [];
-  } else if (!_.isArray(item.middleware)) {
-    item.middleware = [item.middleware];
-  }
-  let arr = ['session.get'];
-  _.forEach(arr, function (tmp) {
-    if (_.indexOf(item.middleware, tmp) === -1) {
-      item.middleware.push(tmp);
-    }
-  });
-});
+// _.forEach(routes, function (item) {
+//   if (!item.middleware) {
+//     item.middleware = [];
+//   } else if (!_.isArray(item.middleware)) {
+//     item.middleware = [item.middleware];
+//   }
+//   let arr = ['session.get'];
+//   _.forEach(arr, function (tmp) {
+//     if (_.indexOf(item.middleware, tmp) === -1) {
+//       item.middleware.push(tmp);
+//     }
+//   });
+// });
 
 module.exports = routes;

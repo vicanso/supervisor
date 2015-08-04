@@ -106,11 +106,13 @@ function initServer() {
     this.body = config.version;
   }));
 
-  // http log for dev
-  if(config.env === 'development'){
-    app.use(require('koa-logger')());
+
+  let logType = 'dev';
+  if (config.env !== 'development') {
+    logType = ':remote-addr - :cookie[' + config.trackKey + '] ":method :url HTTP/:http-version" :status :length ":referrer" ":user-agent"';
   }
-  app.use(require('koa-log')(['_track']));
+  app.use(require('koa-log')(logType));
+
 
   app.use(require('./middlewares/http-stats')({
     time : [300, 500, 1000, 3000],

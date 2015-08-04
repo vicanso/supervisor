@@ -12,7 +12,7 @@ exports.etcdUrl = process.env.ETCD || 'http://localhost:4001';
 
 exports.app = pkg.name;
 
-exports.trackKey = '_track';
+exports.trackKey = '_jttrack';
 
 // 静态文件前缀
 exports.staticUrlPrefix = '/static';

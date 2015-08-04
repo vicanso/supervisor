@@ -17,7 +17,7 @@ function *error(next) {
     ctx.set('Cache-Control', 'public, max-age=0');
     ctx.body = {
       code : err.code || 0,
-      msg : err.message
+      error : err.message
     };
     ctx.app.emit('error', err, this);
     let str = util.format('url:%s, code:%s, error:%s, stack:%s', ctx.originalUrl, err.code || '0', err.message, err.stack);
