@@ -91,7 +91,7 @@ function ctrl($scope, $http, util, debug, etcdService) {
       self.data.nodes[self.data.currentPath].push(data);
     }, function (res) {
       self.addNode.status = '';
-      util.alert('出错了', '保存节点失败：' + res.data.msg, 1);
+      util.alert('出错了', '保存节点失败：' + res.data.error, 1);
     });
   }
 
@@ -111,7 +111,7 @@ function ctrl($scope, $http, util, debug, etcdService) {
         node.status = '';
       }, function (res) {
         node.status = '';
-        var msg = '删除节点失败：' + res.data.msg + '。该节点下是否还有节点未删除？';
+        var msg = '删除节点失败：' + res.data.error + '。该节点下是否还有节点未删除？';
         util.alert('出错了', msg, 1);
       });
     });
@@ -159,7 +159,7 @@ function ctrl($scope, $http, util, debug, etcdService) {
       node.value = JSON.stringify(data.value, null, 2);
       node.modifing = false;
     }, function (res) {
-      util.alert('出错了', '修改节点失败：' + res.data.msg, 1);
+      util.alert('出错了', '修改节点失败：' + res.data.error, 1);
     });
   }
 
@@ -233,7 +233,7 @@ function service($http, $timeout) {
       etcdData.status = 'success';
     }, function (res) {
       etcdData.status = 'error';
-      etcdData.error = res.data.msg;
+      etcdData.error = res.data.error;
     });
     return etcdData;
   }

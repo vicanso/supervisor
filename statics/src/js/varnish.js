@@ -32,6 +32,8 @@ function ctrl($scope, $http, debug, varnishService){
   self.search = search;
   self.fullScreen = fullScreen;
   self.showStats = showStats;
+
+  self.searchOptions.keyword = 'haproxy-backends';
   return self;
   /**
    * [search description]
@@ -56,7 +58,7 @@ function ctrl($scope, $http, debug, varnishService){
       self.searchOptions.nodes = res.data;
     }, function (res) {
       self.searchOptions.status = 'error';
-      self.searchOptions.error = res.data.msg || '没有相关varnish节点信息';
+      self.searchOptions.error = res.data.error || '没有相关varnish节点信息';
     });
   }
 
@@ -79,13 +81,41 @@ function ctrl($scope, $http, debug, varnishService){
    * @return {[type]}      [description]
    */
   function showStats(data) {
+    if (data.statsStatus === 'loading') {
+      return;
+    } else if (data.statsStatus === 'success') {
+      data.statsStatus = '';
+      return;
+    }
     data.statsStatus = 'loading';
     varnishService.stats(data.ip, data.port).then(function (res) {
-      data.stats = JSON.stringify(res.data, null, 2);
+      var arr = [];
+      var uptime;
+      angular.forEach(res.data, function (v, k) {
+        if (k !== 'uptime') {
+          var tmpArr = [];
+          angular.forEach(v, function (v1, k1) {
+            tmpArr.push({
+              name : k1,
+              value : v1
+            });
+          });
+          arr.push({
+            name : k,
+            value : tmpArr
+          });
+        } else {
+          uptime = v;
+        }
+      });
+      data.stats = {
+        list : arr,
+        uptime : uptime
+      };
       data.statsStatus = 'success';
     }, function (res) {
       data.statsStatus = 'error';
-      data.error = res.data.msg;
+      data.error = res.data.error;
     });
   }
 }
@@ -108,7 +138,19 @@ function service($http) {
   }
 
   function stats(ip, port) {
-    return $http.get('/varnish/stats/' + ip + '/' + port);
+    var promise = $http.get('/varnish/stats/' + ip + '/' + port);
+    // var keys = {
+    //   sess : 'sess_conn sess_drop sess_fail sess_pipe_overflow',
+    //   client_req : 'client_req_400 client_req_411 client_req_413 client_req_417 client_req',
+    //   cache : 'cache_hit cache_hitpass cache_miss',
+    //   backend : 'backend_conn backend_unhealthy backend_busy backend_fail backend_reuse backend_toolate backend_recycle backend_retry',
+    //   fetch : 'fetch_head fetch_length '
+    // }
+    promise.then(function (res) {
+      var data = res.data;
+      console.dir(data);
+    });
+    return promise;
   }
 }
 

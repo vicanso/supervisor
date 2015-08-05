@@ -14,7 +14,7 @@ mixin Backend
       br
       span.value(ng-bind='::node.updatedAt')
     .wrap: .content
-      span.glyphicons.glyphicons-paperclip
+      span.glyphicons.glyphicons-screenshot
       | 配置文件版本号
       br
       span.value(ng-bind='::node.version')
@@ -41,13 +41,22 @@ mixin Backend
       .content
         pre(ng-bind='::node.vcl')
   .col-xs-12.hidden.mtop15(ng-class='{hidden : !node.statsStatus}')
-    .wrap
-      pre(ng-bind='node.stats', ng-show='node.statsStatus === "success"')
-      .loadingContainer(ng-show='node.statsStatus === "loading"')
-        p.text-center
-          span.loading &nbsp;
-          | 正在获取数据，请稍候...
-      .alert.alert-danger(ng-show='node.statsStatus === "error"', ng-bind='node.error')
+    .statsContainer(ng-if='node.statsStatus === "success"')
+      .col-xs-3.item(ng-repeat='item in node.stats.list')
+        .wrap: .content
+          .name(ng-bind='item.name')
+          ul.backends
+            li(ng-repeat='tmp in item.value')
+              .field
+                span.key(ng-bind='::tmp.name')
+                span.value(ng-bind='::tmp.value')
+    //- .wrap
+    //-   pre(ng-bind='node.stats', ng-show='node.statsStatus === "success"')
+    .loadingContainer(ng-show='node.statsStatus === "loading"')
+      p.text-center
+        span.loading &nbsp;
+        | 正在获取数据，请稍候...
+    .alert.alert-danger(ng-show='node.statsStatus === "error"', ng-bind='node.error')
           
       
 mixin NodeList
