@@ -40,16 +40,17 @@ mixin Backend
       a.glyphicons.glyphicons-resize-full(href='javascript:;', ng-click='varnishPage.fullScreen(node.vcl)')
       .content
         pre(ng-bind='::node.vcl')
-  .col-xs-12.hidden.mtop15(ng-class='{hidden : !node.statsStatus}')
-    .statsContainer(ng-if='node.statsStatus === "success"')
-      .col-xs-3.item(ng-repeat='item in node.stats.list')
-        .wrap: .content
-          .name(ng-bind='item.name')
-          ul.backends
-            li(ng-repeat='tmp in item.value')
-              .field
-                span.key(ng-bind='::tmp.name')
-                span.value(ng-bind='::tmp.value')
+  .clearfix
+  .hidden.mtop15(ng-class='{hidden : !node.statsStatus}')
+    varnish-stats.statsContainer(ng-if='node.statsStatus === "success"', stats='node.stats')
+      //- .col-xs-3.item(ng-repeat='item in node.stats.list')
+      //-   .wrap: .content
+      //-     .name(ng-bind='item.name')
+      //-     ul.backends
+      //-       li(ng-repeat='tmp in item.value')
+      //-         .field
+      //-           span.key(ng-bind='::tmp.name')
+      //-           span.value(ng-bind='::tmp.value')
     //- .wrap
     //-   pre(ng-bind='node.stats', ng-show='node.statsStatus === "success"')
     .loadingContainer(ng-show='node.statsStatus === "loading"')
@@ -66,13 +67,13 @@ mixin NodeList
         .panel-title
           span(ng-bind='::(node.ip + ":" + node.port)')
           .pull-right
-            a.glyphicons.glyphicons-stats(href='jajavascript:;', ng-click='varnishPage.showStats(node)')
+            a.glyphicons.glyphicons-stats(href='javascript:;', ng-click='varnishPage.showStats(node)')
       .panel-body
         .row
           +Backend
           
 block bodyContainer
-  .homePage(ng-controller='VarnishPageController as varnishPage')
+  .varnishPage(ng-controller='VarnishPageController as varnishPage')
     include ./nav
     header.headerContainer
       h3.text-center Varnish

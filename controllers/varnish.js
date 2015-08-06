@@ -141,7 +141,7 @@ function *stats() {
   result.cache = {
     hit : data.cache_hit,
     hitpass : data.cache_hitpass,
-    miss : data.miss
+    miss : data.cache_miss
   };
 
   result.clientReq = {
@@ -247,7 +247,7 @@ function *stats() {
     nreq : data.sms_nreq
   };
 
-  result.hread = {
+  result.thread = {
     total : data.threads,
     limited : data.threads_limited,
     created : data.threads_created,

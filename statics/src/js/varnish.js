@@ -2,13 +2,13 @@
 'use strict';
 
 ctrl.$inject = ['$scope', '$http', 'debug', 'varnishService'];
-
 service.$inject = ['$http'];
+varnishStatsDirective.$inject = ['$parse'];
 
-angular.module('jtApp').factory('varnishService', service);
-
-angular.module('jtApp')
-  .controller('VarnishPageController', ctrl);
+var app = angular.module('jtApp');
+app.factory('varnishService', service);
+app.directive('varnishStats', varnishStatsDirective);
+app.controller('VarnishPageController', ctrl);
 
 
 
@@ -89,29 +89,7 @@ function ctrl($scope, $http, debug, varnishService){
     }
     data.statsStatus = 'loading';
     varnishService.stats(data.ip, data.port).then(function (res) {
-      var arr = [];
-      var uptime;
-      angular.forEach(res.data, function (v, k) {
-        if (k !== 'uptime') {
-          var tmpArr = [];
-          angular.forEach(v, function (v1, k1) {
-            tmpArr.push({
-              name : k1,
-              value : v1
-            });
-          });
-          arr.push({
-            name : k,
-            value : tmpArr
-          });
-        } else {
-          uptime = v;
-        }
-      });
-      data.stats = {
-        list : arr,
-        uptime : uptime
-      };
+      data.stats = res.data;
       data.statsStatus = 'success';
     }, function (res) {
       data.statsStatus = 'error';
@@ -139,19 +117,124 @@ function service($http) {
 
   function stats(ip, port) {
     var promise = $http.get('/varnish/stats/' + ip + '/' + port);
-    // var keys = {
-    //   sess : 'sess_conn sess_drop sess_fail sess_pipe_overflow',
-    //   client_req : 'client_req_400 client_req_411 client_req_413 client_req_417 client_req',
-    //   cache : 'cache_hit cache_hitpass cache_miss',
-    //   backend : 'backend_conn backend_unhealthy backend_busy backend_fail backend_reuse backend_toolate backend_recycle backend_retry',
-    //   fetch : 'fetch_head fetch_length '
-    // }
-    promise.then(function (res) {
-      var data = res.data;
-      console.dir(data);
-    });
     return promise;
   }
+}
+
+
+function varnishStatsDirective($parse) {
+  function link(scope, element, attr) {
+    var getter = $parse(attr.stats);
+    var data = getter(scope);
+    var result = [];
+    var keys = 'cache fetch clientReq backend busy s sess n thread others vsm hcb shm sms bans esi'.split(' ');
+    var htmlArrList = [];
+    var statsCountList = [];
+    for (var i = 0; i < 4; i++) {
+      htmlArrList.push([]);
+      statsCountList.push(0);
+    }
+
+    var getSmallestIndex = function(){
+      var low = 99999;
+      var index = 0;
+      angular.forEach(statsCountList, function (count, i) {
+        if (count < low) {
+          low = count;
+          index = i;
+        }
+      });
+      return index;
+    };
+
+    angular.forEach(keys, function (k) {
+      var v = data[k];
+      var index = getSmallestIndex();
+      var count = statsCountList[index] + 5;
+      var arr = htmlArrList[index];
+      arr.push('<div class="item"><div class="content">');
+      arr.push('<div class="name"><span class="glyphicons glyphicons-stats"></span>' + k + '</div>');
+      arr.push('<ul>')
+
+      angular.forEach(v, function (v1, k1) {
+        var html = '<li>' +
+          '<span class="key">' + k1 + '</span>' +
+          '<span class="value">' + v1 + '</span>' +
+        '</li>';
+        arr.push(html);
+        count++
+      });
+      arr.push('</ul>');
+      arr.push('</div></div>');
+      statsCountList[index] = count;
+    });
+    var html = '';
+    angular.forEach(htmlArrList, function (htmlArr) {
+      html += ('<div class="col-xs-3">' + htmlArr.join('') + '</div>');
+    });
+    element.html(html);
+
+    // resort();
+
+    function resort() {
+      var items = element.find('.item');
+      var heightList = [];
+      var result = [];
+      angular.forEach(items, function (item) {
+        item._height = angular.element(item).height();
+        result.push(item);
+      });
+      result.sort(function(item1, item2){
+        return item2._height - item1._height;
+      });
+      var heightList = [];
+      var sortItems = [];
+      for(var i = 0; i < 4; i++){
+        heightList.push(0);
+        sortItems.push([]);
+      }
+
+      angular.forEach(result, function(item) {
+        var index = getLowest();
+        sortItems[index].push(item);
+        heightList[index] += item._height;
+      });
+      element.empty();
+      angular.forEach(sortItems, function (items) {
+        var obj = angular.element('<div class="col-xs-3"></div>');
+        angular.forEach(items, function (item){
+          delete item._height;
+          obj.append(item);
+        });
+        element.append(obj);
+      });
+      element.css('visibility', 'visible');
+    }
+    // var arr = [];
+    // var uptime;
+    // angular.forEach(res.data, function (v, k) {
+    //   if (k !== 'uptime') {
+    //     var tmpArr = [];
+    //     angular.forEach(v, function (v1, k1) {
+    //       tmpArr.push({
+    //         name : k1,
+    //         value : v1
+    //       });
+    //     });
+    //     arr.push({
+    //       name : k,
+    //       value : tmpArr
+    //     });
+    //   } else {
+    //     uptime = v;
+    //   }
+    // });
+  }
+
+  return {
+    restrict : 'E',
+    link : link
+  };
 }
 
 })(this);

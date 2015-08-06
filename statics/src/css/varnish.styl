@@ -22,13 +22,60 @@ headerContainerCss()
     margin 0
     line-height $HEADER_HEIGHT
 
+varnishStatsCss()
+  display block
+  .item
+    padding 4px
+    border 1px solid #ddd
+    background-color #fff
+    border-radius 4px
+    margin-bottom 15px
+    .name
+      font-size 14px
+      color #333
+    .content
+      background-color #f5f5f5
+      padding 10px
+    ul
+      margin 5px 0 0 0
+      padding 0
+      list-style none
+      li
+        .key
+          color #2f6f9f
+        .value
+          margin-left 10px
+          color #c7254e
+
+vclContainerCss()
+
+  height 100%
+  .wrap
+    height 100%
+    position relative
+    .glyphicons
+      position absolute
+      right 0
+      top 5px
+      color #bc2328
+    .content
+      max-height 100%
+      overflow-y scroll
+    pre
+      border none
+      margin 0
+      padding 0
+
 nodeListCss()
   .panel
+    .col-xs-3, .col-xs-9
+      padding-right 0
     .glyphicons
       width 14px
       margin-right 5px
       color #337ab7
     .panel-body
+      padding-right 30px
       color #666
       .wrap
         padding 4px
@@ -60,29 +107,15 @@ nodeListCss()
             &.key
               text-align right
               margin-right 10px
-      // .statsContainer
-      .vclContainer
-        height 100%
-        .wrap
-          height 100%
-          position relative
-          .glyphicons
-            position absolute
-            right 0
-            top 5px
-            color #bc2328
-          .content
-            max-height 100%
-            overflow-y scroll
-          pre
-            border none
-            margin 0
-            padding 0
+      varnish-stats
+        varnishStatsCss()
 
+      .vclContainer
+        vclContainerCss()
       .loadingContainer
         margin 10px 0
 
-.homePage
+.varnishPage
   margin-left $NAV_WIDTH
   .headerContainer
     headerContainerCss()
