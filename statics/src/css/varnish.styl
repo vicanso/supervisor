@@ -68,8 +68,11 @@ vclContainerCss()
 
 nodeListCss()
   .panel
-    .col-xs-3, .col-xs-9
+    .col-sm-3, .col-sm-9
       padding-right 0
+    @media (max-width: 768px)
+      .col-xs-12
+        margin-bottom 15px
     .glyphicons
       width 14px
       margin-right 5px
@@ -107,8 +110,18 @@ nodeListCss()
             &.key
               text-align right
               margin-right 10px
-      varnish-stats
-        varnishStatsCss()
+      .statsContainer
+        .panel-heading
+          color #333
+          background-color #f5f5f5
+          border-color #ddd
+          padding 10px
+          margin-left 15px
+          margin-bottom 10px
+          .glyphicons.active
+            color #c7254e
+        varnish-stats
+          varnishStatsCss()
 
       .vclContainer
         vclContainerCss()

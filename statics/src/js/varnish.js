@@ -1,7 +1,7 @@
 ;(function(global){
 'use strict';
 
-ctrl.$inject = ['$scope', '$http', 'debug', 'varnishService'];
+ctrl.$inject = ['$scope', '$http', '$timeout', 'debug', 'varnishService'];
 service.$inject = ['$http'];
 varnishStatsDirective.$inject = ['$parse'];
 
@@ -12,7 +12,7 @@ app.controller('VarnishPageController', ctrl);
 
 
 
-function ctrl($scope, $http, debug, varnishService){
+function ctrl($scope, $http, $timeout, debug, varnishService){
   /*jshint validthis:true */
   var self = this;
   debug = debug('jt.varnish');
@@ -32,6 +32,7 @@ function ctrl($scope, $http, debug, varnishService){
   self.search = search;
   self.fullScreen = fullScreen;
   self.showStats = showStats;
+  self.toggleTimingRefresh = toggleTimingRefresh;
 
   self.searchOptions.keyword = 'haproxy-backends';
   return self;
@@ -81,6 +82,10 @@ function ctrl($scope, $http, debug, varnishService){
    * @return {[type]}      [description]
    */
   function showStats(data) {
+    if (data.timer) {
+      $timeout.cancel(data.timer);
+      data.timer = null;
+    }
     if (data.statsStatus === 'loading') {
       return;
     } else if (data.statsStatus === 'success') {
@@ -95,6 +100,24 @@ function ctrl($scope, $http, debug, varnishService){
       data.statsStatus = 'error';
       data.error = res.data.error;
     });
+  }
+
+  function toggleTimingRefresh(data) {
+    var interval = 10 * 1000;
+    if (data.timer) {
+      $timeout.cancel(data.timer);
+      data.timer = null;
+    } else {
+      var fn = function () {
+        varnishService.stats(data.ip, data.port).then(function (res) {
+          data.stats = res.data;
+          data.timer = $timeout(fn, interval);
+        }, function (res) {
+          data.timer = $timeout(fn, interval);
+        });
+      };
+      data.timer = $timeout(fn, interval);
+    }
   }
 }
 
@@ -124,111 +147,61 @@ function service($http) {
 
 function varnishStatsDirective($parse) {
   function link(scope, element, attr) {
-    var getter = $parse(attr.stats);
-    var data = getter(scope);
-    var result = [];
-    var keys = 'cache fetch clientReq backend busy s sess n thread others vsm hcb shm sms bans esi'.split(' ');
-    var htmlArrList = [];
-    var statsCountList = [];
-    for (var i = 0; i < 4; i++) {
-      htmlArrList.push([]);
-      statsCountList.push(0);
-    }
-
-    var getSmallestIndex = function(){
-      var low = 99999;
-      var index = 0;
-      angular.forEach(statsCountList, function (count, i) {
-        if (count < low) {
-          low = count;
-          index = i;
-        }
-      });
-      return index;
-    };
-
-    angular.forEach(keys, function (k) {
-      var v = data[k];
-      var index = getSmallestIndex();
-      var count = statsCountList[index] + 5;
-      var arr = htmlArrList[index];
-      arr.push('<div class="item"><div class="content">');
-      arr.push('<div class="name"><span class="glyphicons glyphicons-stats"></span>' + k + '</div>');
-      arr.push('<ul>')
-
-      angular.forEach(v, function (v1, k1) {
-        var html = '<li>' +
-          '<span class="key">' + k1 + '</span>' +
-          '<span class="value">' + v1 + '</span>' +
-        '</li>';
-        arr.push(html);
-        count++
-      });
-      arr.push('</ul>');
-      arr.push('</div></div>');
-      statsCountList[index] = count;
-    });
-    var html = '';
-    angular.forEach(htmlArrList, function (htmlArr) {
-      html += ('<div class="col-xs-3">' + htmlArr.join('') + '</div>');
-    });
-    element.html(html);
-
-    // resort();
-
-    function resort() {
-      var items = element.find('.item');
-      var heightList = [];
-      var result = [];
-      angular.forEach(items, function (item) {
-        item._height = angular.element(item).height();
-        result.push(item);
-      });
-      result.sort(function(item1, item2){
-        return item2._height - item1._height;
-      });
-      var heightList = [];
-      var sortItems = [];
-      for(var i = 0; i < 4; i++){
-        heightList.push(0);
-        sortItems.push([]);
+    function appendStatsHtml(data) {
+      var keys = 'cache fetch clientReq backend busy s sess n thread others vsm hcb shm sms bans esi'.split(' ');
+      var htmlArrList = [];
+      var statsCountList = [];
+      for (var i = 0; i < 4; i++) {
+        htmlArrList.push([]);
+        statsCountList.push(0);
       }
 
-      angular.forEach(result, function(item) {
-        var index = getLowest();
-        sortItems[index].push(item);
-        heightList[index] += item._height;
-      });
-      element.empty();
-      angular.forEach(sortItems, function (items) {
-        var obj = angular.element('<div class="col-xs-3"></div>');
-        angular.forEach(items, function (item){
-          delete item._height;
-          obj.append(item);
+      var getSmallestIndex = function(){
+        var low = 99999;
+        var index = 0;
+        angular.forEach(statsCountList, function (count, i) {
+          if (count < low) {
+            low = count;
+            index = i;
+          }
         });
-        element.append(obj);
+        return index;
+      };
+
+      angular.forEach(keys, function (k) {
+        var v = data[k];
+        var index = getSmallestIndex();
+        var count = statsCountList[index] + 5;
+        var arr = htmlArrList[index];
+        arr.push('<div class="item"><div class="content">');
+        arr.push('<div class="name"><span class="glyphicons glyphicons-stats"></span>' + k + '</div>');
+        arr.push('<ul>');
+
+        angular.forEach(v, function (v1, k1) {
+          var html = '<li>' +
+            '<span class="key">' + k1 + '</span>' +
+            '<span class="value">' + v1 + '</span>' +
+          '</li>';
+          arr.push(html);
+          count++;
+        });
+        arr.push('</ul>');
+        arr.push('</div></div>');
+        statsCountList[index] = count;
       });
-      element.css('visibility', 'visible');
+      var html = '';
+      angular.forEach(htmlArrList, function (htmlArr) {
+        html += ('<div class="col-sm-3 col-xs-6">' + htmlArr.join('') + '</div>');
+      });
+      element.html(html);
     }
-    // var arr = [];
-    // var uptime;
-    // angular.forEach(res.data, function (v, k) {
-    //   if (k !== 'uptime') {
-    //     var tmpArr = [];
-    //     angular.forEach(v, function (v1, k1) {
-    //       tmpArr.push({
-    //         name : k1,
-    //         value : v1
-    //       });
-    //     });
-    //     arr.push({
-    //       name : k,
-    //       value : tmpArr
-    //     });
-    //   } else {
-    //     uptime = v;
-    //   }
-    // });
+
+
+    scope.$watch(attr.stats, function (v) {
+      if (v) {
+        appendStatsHtml(v);
+      }
+    });
   }
 
   return {

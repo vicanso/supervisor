@@ -7,7 +7,7 @@ mixin Search
       button.btn.btn-default(ng-click='varnishPage.search(varnishPage.searchOptions.keyword)') GO!
 
 mixin Backend
-  .col-xs-3
+  .col-xs-12.col-sm-3
     .wrap: .content
       span.glyphicons.glyphicons-calendar
       | 配置文件更新
@@ -35,24 +35,18 @@ mixin Backend
           .field(ng-if='::backend.host')
             span.key 域名
             span.value(ng-bind='::backend.host')
-  .col-xs-9.vclContainer.hidden(jt-fix-height='full-parent', ng-if='node')
+  .col-xs-12.vclContainer.col-sm-9.hidden(jt-fix-height='full-parent', ng-if='node')
     .wrap
       a.glyphicons.glyphicons-resize-full(href='javascript:;', ng-click='varnishPage.fullScreen(node.vcl)')
       .content
         pre(ng-bind='::node.vcl')
   .clearfix
-  .hidden.mtop15(ng-class='{hidden : !node.statsStatus}')
-    varnish-stats.statsContainer(ng-if='node.statsStatus === "success"', stats='node.stats')
-      //- .col-xs-3.item(ng-repeat='item in node.stats.list')
-      //-   .wrap: .content
-      //-     .name(ng-bind='item.name')
-      //-     ul.backends
-      //-       li(ng-repeat='tmp in item.value')
-      //-         .field
-      //-           span.key(ng-bind='::tmp.name')
-      //-           span.value(ng-bind='::tmp.value')
-    //- .wrap
-    //-   pre(ng-bind='node.stats', ng-show='node.statsStatus === "success"')
+  .hidden.mtop15.statsContainer(ng-class='{hidden : !node.statsStatus}')
+    .panel-heading Varnish性能监控
+      span.mleft10(ng-bind='"uptime:" + node.stats.uptime')
+      .pull-right
+        a.glyphicons.glyphicons-roundabout(href='javascript:;', ng-click='varnishPage.toggleTimingRefresh(node)', ng-class='{active : node.timer}')
+    varnish-stats(ng-if='node.statsStatus === "success"', stats='node.stats')
     .loadingContainer(ng-show='node.statsStatus === "loading"')
       p.text-center
         span.loading &nbsp;

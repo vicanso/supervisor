@@ -32,12 +32,12 @@ function *get(){
   // 用户跟踪cookie
   let track = ctx.cookies.get(config.trackKey);
   if (!track) {
-    ctx.cookies.set(config.trackKey, uuid.v4(), {
+    ctx.cookies.set(config.trackKey, uuid.v4().replace(/-/, ''), {
       signed : false,
       maxAge : 365 * 24 * 3600 * 1000
     });
   }
-
+  yield Promise.resolve();
   ctx.body = {
     anonymous : true,
     hashCode : uuid.v4()
