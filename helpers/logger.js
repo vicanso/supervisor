@@ -3,7 +3,7 @@ const winston = require('winston');
 const _ = require('lodash');
 const logger = new (winston.Logger)({
   transports : [
-    new (winston.transports.Console)()
+    new (winston.transports.Console)({timestamp : true})
   ]
 });
 _.forEach(_.functions(console), function(fn){

@@ -10,10 +10,6 @@ const debug = require('./helpers/debug');
 const urlJoin = require('url-join');
 
 co(function *() {
-  let setting = yield getSetting();
-  _.forEach(setting, function (v, k) {
-    globals.set(k, v);
-  });
   initApp();
 }).catch(function (err) {
   console.error(err);
@@ -76,13 +72,9 @@ function initLogger() {
 function initServer() {
   const koa = require('koa');
   const mount = require('koa-mount');
-  let port = globals.get('config.port');
-  let appUrlPrefix = globals.get('config.appUrlPrefix');
+  let port = config.port;
+  let appUrlPrefix = config.appUrlPrefix;
   let staticUrlPrefix = config.staticUrlPrefix;
-  if (appUrlPrefix) {
-    staticUrlPrefix = urlJoin(appUrlPrefix, staticUrlPrefix);
-  }
-  globals.set('config.staticUrlPrefix', staticUrlPrefix);
   let app = koa();
 
   app.keys = ['secret_secret', 'i like io.js'];
@@ -225,23 +217,8 @@ function *getSetting() {
     // redis : {
     //   host : '10.2.124.163',
     //   port : 6379
-    // },
-    config : {
-      token : '6a3f4389a53c889b623e67f385f28ab8e84e5029',
-      port : 10000,
-      session : {
-        ttl : 3600 * 1000,
-        key : 'vicanso',
-        cookie : {
-          maxAge : null
-        }
-      }
-    }
+    // }
   };
-
-  if (config.env !== 'development') {
-    result.config.appUrlPrefix = '/supervisor';
-  }
 
   // if (config.env !== 'development') {
   //   let get = function *get(key) {

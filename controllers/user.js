@@ -32,7 +32,8 @@ function *get(){
   // 用户跟踪cookie
   let track = ctx.cookies.get(config.trackKey);
   if (!track) {
-    ctx.cookies.set(config.trackKey, uuid.v4().replace(/-/, ''), {
+    let trackUUID = uuid.v4().replace(/-/g, '') + '_' + Date.now();
+    ctx.cookies.set(config.trackKey, trackUUID, {
       signed : false,
       maxAge : 365 * 24 * 3600 * 1000
     });

@@ -1,7 +1,6 @@
 'use strict';
 const crypto = require('crypto');
-const globals = require('../globals');
-
+const config = require('../config');
 exports.admin = admin;
 
 /**
@@ -15,8 +14,8 @@ function *admin(next) {
   let data = ctx.request.body;
   let shasum = crypto.createHash('sha1');
   let key = shasum.update(data['jt-key']).digest('hex');
-  let token = globals.get('config.token') || Date.now();
-  if (key !== token) {
+  let token = config.appSetting.token;
+  if (!token || key !== token) {
     ctx.throw(403);
   } else {
     yield* next;

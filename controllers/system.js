@@ -3,7 +3,6 @@ const config = require('../config');
 const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');
-const globals = require('../globals');
 const v8 = require('v8');
 const bytes = require('bytes');
 const moment = require('moment');

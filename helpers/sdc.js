@@ -1,6 +1,7 @@
 'use strict';
 const _ = require('lodash');
 const util = require('util');
+const config = require('../config');
 let client = null;
 
 exports.init = init;
@@ -11,7 +12,7 @@ _.forEach('gauge gaugeDelta set counter increment decrement timing'.split(' '), 
   exports[fn] = function (name, value) {
     if (client) {
       client[fn](name, value);
-    } else {
+    } else if (config.env === 'development') {
       let str = util.format('statsd %s %s', fn, name);
       if (!_.isUndefined(value)) {
         str += (' ' + value);

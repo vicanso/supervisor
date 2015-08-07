@@ -70,7 +70,7 @@ function getRouterConfigs() {
     viewPath : config.viewPath
   });
   let importerOptions = {
-    prefix : globals.get('config.staticUrlPrefix')
+    prefix : config.staticUrlPrefix
   };
   if (config.env !== 'development') {
     importerOptions.merge = require('../merge');

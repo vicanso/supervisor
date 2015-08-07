@@ -67,7 +67,7 @@ mixin NodeList
           +Backend
           
 block bodyContainer
-  .varnishPage(ng-controller='VarnishPageController as varnishPage')
+  .varnishPage.hidden(ng-controller='VarnishPageController as varnishPage')
     include ./nav
     header.headerContainer
       h3.text-center Varnish
