@@ -48,8 +48,8 @@ mixin Backend
     .panel-heading Varnish性能监控
       span.mleft10(ng-bind='"uptime:" + node.stats.uptime')
       .pull-right
-        a.glyphicons.glyphicons-roundabout(href='javascript:;', ng-click='varnishPage.toggleTimingRefresh(node)', ng-class='{active : node.timer}')
-    varnish-stats(ng-if='node.statsStatus === "success"', stats='node.stats')
+        a.glyphicons.glyphicons-stopwatch(href='javascript:;', ng-click='varnishPage.toggleTimingRefresh(node)', ng-class='{active : node.timer}', title='定时自动刷新')
+    varnish-stats(ng-if='node.statsStatus === "table"', stats='node.stats')
     .loadingContainer(ng-show='node.statsStatus === "loading"')
       p.text-center
         span.loading &nbsp;
@@ -64,7 +64,9 @@ mixin NodeList
         .panel-title
           span(ng-bind='::(node.ip + ":" + node.port)')
           .pull-right
-            a.glyphicons.glyphicons-stats(href='javascript:;', ng-click='varnishPage.showStats(node)')
+            a.glyphicons.glyphicons-list-alt(href='javascript:;', ng-click='varnishPage.showStats(node)', ng-class='{active : node.statsStatus === "table"}')
+            a.glyphicons.glyphicons-charts(href='javascript:;', ng-click='varnishPage.showStats(node)', ng-class='{active : node.statsStatus === "chart"}')
+            
       .panel-body
         .row
           +Backend

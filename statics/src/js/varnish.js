@@ -95,7 +95,7 @@ function ctrl($scope, $http, $timeout, debug, varnishService){
     data.statsStatus = 'loading';
     varnishService.stats(data.ip, data.port).then(function (res) {
       data.stats = res.data;
-      data.statsStatus = 'success';
+      data.statsStatus = 'table';
     }, function (res) {
       data.statsStatus = 'error';
       data.error = res.data.error;

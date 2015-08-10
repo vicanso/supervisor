@@ -77,7 +77,11 @@ nodeListCss()
     .glyphicons
       width 14px
       margin-right 5px
+      margin-left 10px
       color #337ab7
+      &.active
+        color #5cb85c
+        text-decoration none
     .panel-body
       padding-right 30px
       color #666
@@ -119,8 +123,6 @@ nodeListCss()
           padding 10px
           margin-left 15px
           margin-bottom 10px
-          .glyphicons.active
-            color #c7254e
         varnish-stats
           varnishStatsCss()
 
