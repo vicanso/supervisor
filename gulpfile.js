@@ -150,4 +150,18 @@ gulp.task('static-version', ['static-merge', 'static-copy-other'], function(){
     .pipe(gulp.dest('statics/dest'));
 });
 
-gulp.task('default', ['clean:dest', 'clean:build', 'jshint', 'static-copy-other', 'static-merge', 'static-version', 'clean:build', 'version']);
+gulp.task('file-limit', ['static-version'], function () {
+  var limitSize = 2 * 1024;
+  var limit = function (file) {
+    file.contents = null;
+    if (file.stat.size > limitSize) {
+      var size = Math.ceil(file.stat.size / 1024);
+      console.error('Warning, the size of ' + file.history[0] + ' is ' + size + 'KB');
+    }
+  };
+  return gulp.src(['statics/dest/**/*.png', 'statics/dest/**/*.jpg', 'statics/dest/**/*.gif']).pipe(through(limit, function () {
+    this.emit('end');
+  }));
+});
+
+gulp.task('default', ['clean:dest', 'clean:build', 'jshint', 'static-copy-other', 'static-merge', 'static-version', 'clean:build', 'version', 'file-limit']);

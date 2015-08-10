@@ -9,11 +9,7 @@ const globals = require('./globals');
 const debug = require('./helpers/debug');
 const urlJoin = require('url-join');
 
-co(function *() {
-  initApp();
-}).catch(function (err) {
-  console.error(err);
-});
+initApp();
 
 /**
  * [initApp description]
@@ -185,64 +181,6 @@ function initMongodb(uri) {
   let modelPath = path.join(__dirname, 'models');
   require('./helpers/mongodb').init(uri, modelPath);
 
-}
-
-
-function *getSetting() {
-  const etcd = require('./helpers/etcd');
-  const parallel = require('co-parallel');
-  let configs = {
-    // key : etcd中对应的key
-    config : config.app,
-    statsd : 'statsd',
-    mongodb : 'mongodb',
-    redis : 'redis'
-  };
-
-  let result = {
-    // statsd : {
-    //   host : '10.2.124.163',
-    //   port : 8125
-    // },
-    // zipkin : {
-    //   host : '10.2.124.163',
-    //   port : 9410,
-    //   endPoint : {
-    //     host : '127.0.0.1',
-    //     port : 3000,
-    //     service : 'albi-zipkin'
-    //   }
-    // },
-    // mongodb : 'mongodb://10.2.124.163:27017/test',
-    // redis : {
-    //   host : '10.2.124.163',
-    //   port : 6379
-    // }
-  };
-
-  // if (config.env !== 'development') {
-  //   let get = function *get(key) {
-  //     let result;
-  //     try {
-  //       result = yield etcd.get(key);
-  //     } catch (err) {
-  //       console.error('get config:%s fail, error:%s', key, err.message);
-  //     }
-  //     return result;
-  //   };
-  //   let reqs = _.map(configs, get);
-  //   let keys = _.keys(configs);
-  //   let res = yield parallel(reqs);
-  //   _.forEach(res, function (item, index) {
-  //     if (item) {
-  //       result[keys[index]] = item.value;
-  //     }
-  //   });
-  // }
-  yield Promise.resolve();
-  debug('app setting:%j', result);
-
-  return result;
 }
 
 

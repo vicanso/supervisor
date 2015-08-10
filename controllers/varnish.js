@@ -36,10 +36,12 @@ function *list() {
   let query = ctx.query;
   debug('varnish list query:%j', query);
   let arr = yield etcd.list(query.key);
+
   debug('varnish list:%j', arr);
   let fns = arr.map(getVarnishInfo);
   ctx.set('Cache-Control', 'public, max-age=10');
   ctx.body = yield parallel(fns);
+
 }
 
 
@@ -61,9 +63,19 @@ function *getVarnishInfo(options) {
   res = yield httpRequest.get(url);
   config.vcl = res.text;
 
-  res = yield etcd.list(arr[2]);
-  config.backends = _.map(res, function (tmp) {
-    return tmp.value;
+  url = util.format('http://%s:%s/v-servers', ip, config.port);
+  res = yield httpRequest.get(url);
+
+  arr = res.text.split('\n');
+  config.backends = _.map(arr, function (str) {
+    let tmpArr = str.split(',');
+    return {
+      name : tmpArr[0],
+      ip : tmpArr[1],
+      port : parseInt(tmpArr[2]),
+      prefix : tmpArr[4],
+      host : tmpArr[3]
+    };
   });
   return config;
 }

@@ -23,6 +23,9 @@ mixin Backend
       | 后端服务器列表
       ul.backends
         li(ng-repeat='backend in node.backends')
+          .field(ng-if='::backend.name')
+            span.key 名称
+            span.value(ng-bind='::backend.name')
           .field
             span.key 地址
             span.value(ng-bind='::backend.ip')
@@ -67,7 +70,7 @@ mixin NodeList
           +Backend
           
 block bodyContainer
-  .varnishPage.hidden(ng-controller='VarnishPageController as varnishPage')
+  .varnishPage(ng-controller='VarnishPageController as varnishPage')
     include ./nav
     header.headerContainer
       h3.text-center Varnish
