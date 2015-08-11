@@ -2,33 +2,34 @@
 const _ = require('lodash');
 const config = require('../config');
 const debug = require('../helpers/debug');
+const Joi = require('joi');
 
-module.exports = function (params) {
-  if (_.isEmpty(params)) {
-    throw new Error('params is empty');
-  }
+module.exports = function () {
+  let schemaObject = Joi.object().keys({
+    DEBUG : Joi.boolean().optional(),
+    pretty : Joi.boolean().optional(),
+    pattern : Joi.string().optional(),
+    MOCK : Joi.string().optional()
+  })
+  .rename('_debug', 'DEBUG')
+  .rename('_pretty', 'pretty')
+  .rename('_pattern', 'pattern')
+  .rename('_mock', 'MOCK');
   return function *(next) {
     /*jshint validthis:true */
     let ctx = this;
     let state = ctx.state;
     let query = ctx.query;
-    let covert = {
-      'true' : true,
-      'false' : false
-    };
+    let result = Joi.validateThrow(query, schemaObject, {
+      stripUnknown : true
+    });
     if (config.env === 'development') {
       state.pattern = '*';
     }
-    _.forEach(params, function (v, k) {
-      if (_.has(query, v)) {
-        if (query[v]) {
-          v = query[v];
-          state[k] = covert[v] || v;
-        } else {
-          state[k] = true;
-        }
-      }
+    _.forEach(['_debug', '_pretty', '_pattern', '_mock'], function (key) {
+      delete query[key];
     });
+    _.extend(state, result);
     yield* next;
   };
 };

@@ -21,6 +21,7 @@ function ctrl($scope, $http, $timeout, debug, varnishService){
     mode : 'normal',
     value : ''
   };
+
   self.searchOptions = {
     status : ''
   };
@@ -34,7 +35,20 @@ function ctrl($scope, $http, $timeout, debug, varnishService){
   self.showStats = showStats;
   self.toggleTimingRefresh = toggleTimingRefresh;
 
-  self.searchOptions.keyword = 'haproxy-backends';
+  // self.searchOptions.keyword = 'haproxy-backends';
+
+  $timeout(function (argument) {
+    search('haproxy-backends')
+  }, 100);
+
+  $timeout(function (argument) {
+    var node = self.searchOptions.nodes[0];
+    showStats(node);
+    $timeout(function (){
+      toggleTimingRefresh(node);
+    }, 1000);
+  }, 1000);
+
   return self;
   /**
    * [search description]
@@ -147,59 +161,75 @@ function service($http) {
 
 function varnishStatsDirective($parse) {
   function link(scope, element, attr) {
-    function appendStatsHtml(data) {
+    var statsDataList = [];
+    var indexList = [1, 2, 6, 12, 30];
+
+    /**
+     * [arrangeData description]
+     * @param  {[type]} data [description]
+     * @return {[type]}      [description]
+     */
+    function arrangeData(data) {
       var keys = 'cache fetch clientReq backend busy s sess n thread others vsm hcb shm sms bans esi'.split(' ');
-      var htmlArrList = [];
-      var statsCountList = [];
-      for (var i = 0; i < 4; i++) {
-        htmlArrList.push([]);
-        statsCountList.push(0);
+      statsDataList.unshift(data);
+      if (statsDataList.length > 30) {
+        statsDataList.pop();
       }
-
-      var getSmallestIndex = function(){
-        var low = 99999;
-        var index = 0;
-        angular.forEach(statsCountList, function (count, i) {
-          if (count < low) {
-            low = count;
-            index = i;
-          }
-        });
-        return index;
+      var result = {};
+      var getValue = function (k1, k2, index) {
+        var length = statsDataList.length;
+        if (index >= length) {
+          return '--';
+        }
+        return statsDataList[0][k1][k2] - statsDataList[index][k1][k2];
       };
-
-      angular.forEach(keys, function (k) {
-        var v = data[k];
-        var index = getSmallestIndex();
-        var count = statsCountList[index] + 5;
-        var arr = htmlArrList[index];
-        arr.push('<div class="item"><div class="content">');
-        arr.push('<div class="name"><span class="glyphicons glyphicons-stats"></span>' + k + '</div>');
-        arr.push('<ul>');
-
-        angular.forEach(v, function (v1, k1) {
-          var html = '<li>' +
-            '<span class="key">' + k1 + '</span>' +
-            '<span class="value">' + v1 + '</span>' +
-          '</li>';
-          arr.push(html);
-          count++;
+      angular.forEach(keys, function (key) {
+        angular.forEach(data[key], function (v, k) {
+          if (!v) {
+            return;
+          }
+          var arr = [];
+          result[key + '.' + k] = arr;
+          angular.forEach(indexList, function (index) {
+            arr.push(getValue(key, k, index));
+          });
+          arr.push(v);
         });
-        arr.push('</ul>');
-        arr.push('</div></div>');
-        statsCountList[index] = count;
       });
-      var html = '';
-      angular.forEach(htmlArrList, function (htmlArr) {
-        html += ('<div class="col-sm-3 col-xs-6">' + htmlArr.join('') + '</div>');
+      return result;
+    }
+
+    /**
+     * [appendStatsHtml description]
+     * @param  {[type]} data [description]
+     * @return {[type]}      [description]
+     */
+    function appendStatsHtml(data) {
+      var theadHtml = '<thead><th>#</th>';
+      angular.forEach(indexList, function (index) {
+        theadHtml += ('<th>' + (index * 10) + '</th>');
       });
-      element.html(html);
+      theadHtml += '<th>latest</th>';
+      theadHtml += '</thead>';
+      var htmlArr = ['<table class="table">' +
+        theadHtml +
+        '<tbody>'
+      ];
+      angular.forEach(data, function (arr, k) {
+        htmlArr.push('<tr><td>' + k + '</td>');
+        angular.forEach(arr, function function_name(v) {
+          htmlArr.push('<td>' + v + '</td>');
+        });
+        htmlArr.push('</tr>');
+      });
+      htmlArr.push('</tbody></table>');
+      element.html(htmlArr.join(''));
     }
 
 
     scope.$watch(attr.stats, function (v) {
       if (v) {
-        appendStatsHtml(v);
+        appendStatsHtml(arrangeData(v));
       }
     });
   }

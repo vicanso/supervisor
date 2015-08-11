@@ -14,6 +14,7 @@ function picker(field) {
     /*jshint validthis:true */
     let ctx = this;
     let v = ctx.query[field];
+    delete ctx.query[field];
     if (!v) {
       return;
     }
