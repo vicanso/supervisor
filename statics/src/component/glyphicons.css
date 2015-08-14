@@ -1,0 +1,74 @@
+/*需要用到的图标在bootstrap.css找到再添加进来*/
+@font-face {
+  font-family: 'Glyphicons Regular';
+  src: url('../fonts/glyphicons-regular.eot');
+  src: url('../fonts/glyphicons-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-regular.woff2') format('woff2'), url('../fonts/glyphicons-regular.woff') format('woff'), url('../fonts/glyphicons-regular.ttf') format('truetype'), url('../fonts/glyphicons-regular.svg#glyphiconsregular') format('svg');
+}
+.glyphicons {
+  position: relative;
+  top: 3px;
+  display: inline-block;
+  font-family: 'Glyphicons Regular';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  vertical-align: top;
+  speak: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.glyphicons.x05 {
+  font-size: 12px;
+}
+.glyphicons.x2 {
+  font-size: 48px;
+}
+.glyphicons.x3 {
+  font-size: 72px;
+}
+.glyphicons.x4 {
+  font-size: 96px;
+}
+.glyphicons.x5 {
+  font-size: 120px;
+}
+.glyphicons.light:before {
+  color: #f2f2f2;
+}
+.glyphicons.drop:before {
+  text-shadow: -1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+.glyphicons.flip {
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH";
+}
+.glyphicons.flipv {
+  -moz-transform: scaleY(-1);
+  -o-transform: scaleY(-1);
+  -webkit-transform: scaleY(-1);
+  transform: scaleY(-1);
+  filter: FlipV;
+  -ms-filter: "FlipV";
+}
+.glyphicons.rotate90 {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+.glyphicons.rotate180 {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.glyphicons.rotate270 {
+  -webkit-transform: rotate(270deg);
+  -moz-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  transform: rotate(270deg);
+}

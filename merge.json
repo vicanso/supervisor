@@ -1,0 +1,12 @@
+{
+  "path" : "/merge",
+  "except" : [
+    "/component/debug.js",
+    "/component/angular.js",
+    "/component/lodash.js",
+    "/component/jquery.js",
+    "/component/bootstrap.css"
+  ],
+  "files" : [
+  ]
+}

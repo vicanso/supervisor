@@ -1,0 +1,13 @@
+{
+  "name": "albi",
+  "instances": 2,
+  "merge_logs": true,
+  "max_memory_restart": "200M",
+  "script": "app.js",
+  "log_file": "/var/log/albi.log",
+  "error_file": "/var/log/albi-error.log",
+  "out_file": "/var/log/albi-out.log",
+  "env": {
+    "APP_VERSION": "2015-08-13T20:46:17.787"
+  }
+}

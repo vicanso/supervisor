@@ -1,0 +1,30 @@
+@import 'nib'
+@import './constant'
+
+headerContainerCss()
+  height $HEADER_HEIGHT
+  line-height @height
+  background-color #fcfcfc
+  border-bottom 1px solid #cbccce
+  .functions
+    line-height 30px
+    margin-top (($HEADER_HEIGHT - @line-height) / 2)
+    li
+      list-style none
+      display inline-block
+      margin 0 10px
+      &.login a
+        color #27c24c
+      a
+        color #717171
+        font-size 13px
+  h3
+    margin 0
+    line-height $HEADER_HEIGHT
+
+
+
+.homePage
+  margin-left $NAV_WIDTH
+  .headerContainer
+    headerContainerCss()

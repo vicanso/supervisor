@@ -1,0 +1,30 @@
+doctype html
+html(lang='zh-CN', ng-app='jtApp')
+  head
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name="HandheldFriendly", content="True")
+    meta(name="viewport", content="width=device-width, initial-scale=1, user-scalable=no")
+    meta(http-equiv="cleartype", content="on")
+    meta(name='keywords', content='')
+    meta(name='description', content='')
+    meta(name='author',content='小墨鱼 vicanso 腻味 tree')
+    link(rel='icon', href='#{IMG_URL("img/favicon.ico")}')
+    title #{title}
+    include ./inlinejs
+    //CSS_FILES_CONTAINER
+    if pattern
+      - importer.import('/component/debug.js');
+    - importer.import('/component/pure.css', '/component/glyphicons.css', '/component/jquery.js', '/component/angular.js', '/component/lodash.js', '/component/angular-local-storage.js', '/component/sha1.js');
+    - importer.import('/service/const.js', '/service/http-log.js', '/service/debug.js', '/service/user.js', '/js/directive.js');
+    - importer.import('/css/global.css', '/js/global.js');
+
+  body(ng-controller='AppController as app')
+    block bodyContainer
+  include ./globals
+  script.
+    TIMING.end('html');
+    TIMING.start('js');
+  //JS_FILES_CONTAINER
+  script.
+    TIMING.end('js');
