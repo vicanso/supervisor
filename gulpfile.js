@@ -48,9 +48,10 @@ gulp.task('jshint', function() {
 
 gulp.task('version', function(cbf) {
   var version = moment().format('YYYY-MM-DDTHH:mm:ss.SSS');
-  var pm2Json = JSON.parse(fs.readFileSync('./pm2.json'));
-  pm2Json.env.APP_VERSION = version;
-  fs.writeFileSync('./pm2.json', JSON.stringify(pm2Json, null, 2));
+  var file = './package.json';
+  var json = JSON.parse(fs.readFileSync(file));
+  json.appVersion = version;
+  fs.writeFileSync(file, JSON.stringify(json, null, 2));
   cbf();
 });
 

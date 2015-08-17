@@ -35,8 +35,8 @@ function *version() {
  * @return {[type]} [description]
  */
 function *getVersion() {
-  let pm2Json = yield new Promise(function(resolve, reject) {
-    fs.readFile(path.join(__dirname, '../pm2.json'), function (err, data) {
+  let data = yield new Promise(function(resolve, reject) {
+    fs.readFile(path.join(__dirname, '../package.json'), function (err, data) {
       if (err) {
         reject(err);
       } else {
@@ -44,9 +44,9 @@ function *getVersion() {
       }
     });
   });
-  pm2Json = JSON.parse(pm2Json);
+  let json = JSON.parse(data);
   return {
-    code : _.get(pm2Json, 'env.APP_VERSION'),
+    code : json.appVersion,
     exec : config.version
   };
 }

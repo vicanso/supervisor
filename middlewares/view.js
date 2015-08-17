@@ -12,11 +12,11 @@ exports.importer = importer;
 
 /**
  * [render description]
- * @param  {[type]} tempalte [description]
+ * @param  {[type]} template [description]
  * @return {[type]}          [description]
  */
-function render(tempalte) {
-  debug('render tempalte:%s', tempalte);
+function render(template) {
+  debug('render tempalte:%s', template);
   return function *(next) {
     yield* next;
     /*jshint validthis:true */
@@ -26,8 +26,9 @@ function render(tempalte) {
       noCache = true;
     }
     let importer = ctx.state.importer;
-    ctx.render(tempalte, ctx.state, noCache);
-    logComponents(tempalte, importer);
+    ctx.state.TEMPLATE = template;
+    ctx.render(template, ctx.state, noCache);
+    logComponents(template, importer);
     ctx.body = appendJsAndCss(ctx.body, importer);
   };
 }

@@ -19,7 +19,7 @@ function jtDialog($compile){
         showDialog();
       }
     });
-    
+
     scope.destroy = function(){
       element.remove();
       if(mask){

@@ -1,6 +1,12 @@
 ;(function(global){
 'use strict';
-var fn = function($scope, $http, debug, user){
+
+ctrl.$inject = ['$scope', '$http', 'debug', 'user'];
+
+angular.module('jtApp')
+  .controller('HomePageController', ctrl);
+
+function ctrl($scope, $http, debug, user) {
   user.session().then(function(res){
     // user.login('vicanso', 'abcde').success(function(res){
     //   console.dir(res);
@@ -16,10 +22,6 @@ var fn = function($scope, $http, debug, user){
   // }).error(function(err){
 
   // });
-};
-fn.$inject = ['$scope', '$http', 'debug', 'user'];
-
-angular.module('jtApp')
-  .controller('HomePageController', fn);
+}
 
 })(this);

@@ -1,0 +1,10 @@
+extends ./layout
+block bodyContainer
+  .backendPage(ng-controller='BackendPageController')
+    include ./nav
+    header.headerContainer
+      h3.text-center Backend
+  
+  
+  - importer.import('/js/backend.js');
+  - importer.import('/css/backend.css');

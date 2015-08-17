@@ -5,7 +5,6 @@ const config = require('../config');
 const urlJoin = require('url-join');
 const path = require('path');
 const crc32Infos = require('../crc32.json');
-const pm2Json = require('../pm2.json');
 module.exports = function() {
   let appUrlPrefix = config.appUrlPrefix;
   let staticUrlPrefix = urlJoin(appUrlPrefix,  config.staticUrlPrefix);
@@ -13,12 +12,14 @@ module.exports = function() {
   let anchorUrlFn = function(url) {
     return urlJoin(appUrlPrefix, url);
   };
+  let appVersion = config.version;
   return function *(next) {
     /*jshint validthis:true */
     let ctx = this;
     let state = ctx.state;
     state.STATIC_URL_PREFIX = staticUrlPrefix;
     state.APP_URL_PREFIX = appUrlPrefix;
+    state.APP_VERSION = appVersion;
     state.ENV = config.env;
     state._ = _;
     state.moment = moment;
@@ -44,7 +45,7 @@ function getImgUrl(staticUrlPrefix) {
         let ext = path.extname(file);
         file = file.replace(ext, '.' + version + ext);
       } else {
-        file = file + '?v=' + pm2Json.env.APP_VERSION;
+        file = file + '?v=' + config.version;
       }
       return urlJoin(staticUrlPrefix, file);
     }

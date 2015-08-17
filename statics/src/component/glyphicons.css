@@ -1,8 +1,8 @@
 /*需要用到的图标在bootstrap.css找到再添加进来*/
 @font-face {
   font-family: 'Glyphicons Regular';
-  src: url('../fonts/glyphicons-regular.eot');
-  src: url('../fonts/glyphicons-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-regular.woff2') format('woff2'), url('../fonts/glyphicons-regular.woff') format('woff'), url('../fonts/glyphicons-regular.ttf') format('truetype'), url('../fonts/glyphicons-regular.svg#glyphiconsregular') format('svg');
+  src: url('//7xl4ar.com1.z0.glb.clouddn.com/fonts/glyphicons-regular.eot');
+  src: url('//7xl4ar.com1.z0.glb.clouddn.com/fonts/glyphicons-regular.eot?#iefix') format('embedded-opentype'), url('//7xl4ar.com1.z0.glb.clouddn.com/fonts/glyphicons-regular.woff2') format('woff2'), url('//7xl4ar.com1.z0.glb.clouddn.com/fonts/glyphicons-regular.woff') format('woff'), url('//7xl4ar.com1.z0.glb.clouddn.com/fonts/glyphicons-regular.ttf') format('truetype'), url('//7xl4ar.com1.z0.glb.clouddn.com/fonts/glyphicons-regular.svg#glyphiconsregular') format('svg');
 }
 .glyphicons {
   position: relative;
@@ -71,4 +71,8 @@
   -moz-transform: rotate(270deg);
   -ms-transform: rotate(270deg);
   transform: rotate(270deg);
+}
+
+.glyphicons-home:before {
+  content: "\E021";
 }

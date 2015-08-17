@@ -6,7 +6,7 @@ const env = process.env.NODE_ENV || 'development';
 
 exports.env = env;
 
-exports.version = process.env.APP_VERSION || 'unknown';
+exports.version = pkg.appVersion;
 
 
 exports.app = pkg.name;
@@ -38,4 +38,4 @@ exports.appSetting = {
   }
 };
 
-exports.consul = process.env.CONSUL ||  'http://192.168.1.10:8500';
+exports.consul = process.env.CONSUL ||  'http://black:8500';
