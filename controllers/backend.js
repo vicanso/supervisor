@@ -18,7 +18,7 @@ function *backend(){
   let fns = backends.map(function (backend) {
     let url = util.format('http://%s:%s/ping', backend.ServiceAddress, backend.ServicePort);
     return new Promise(function(resolve, reject) {
-      request.get(url).end(function (ree, res) {
+      request.get(url).end(function (err, res) {
         if (err) {
           reject(err);
         } else {
