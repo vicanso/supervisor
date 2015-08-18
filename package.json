@@ -1,5 +1,5 @@
 {
-  "name": "albi",
+  "name": "supervisor",
   "description": "backend framework base on koa",
   "version": "0.0.1",
   "author": {
@@ -64,5 +64,5 @@
     "through": "^2.3.8"
   },
   "readme": "backend framework base on koa",
-  "appVersion": "2015-08-18T21:41:56.901"
+  "appVersion": "2015-08-18T22:24:14.567"
 }

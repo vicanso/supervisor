@@ -16,6 +16,9 @@ function *backend(){
   let backends;
   try {
     backends = yield consul.httpPingServices();
+    backends = _.sortBy(backends, function (backend) {
+      return backend.ServiceName;
+    });
     let pingList = yield getPingResult(backends);
     _.map(backends, function (backend, i) {
       backend.ping = pingList[i];

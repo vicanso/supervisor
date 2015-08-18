@@ -5,7 +5,7 @@ nav.navContainer
     li(class='#{activePage === "home"? "active" : ""}'): a.text-center(href='javascript:;', title='Supervisor') 
       span.glyphicons.glyphicons-home
       | Home
-    li(class='#{activePage === "backend"? "active" : ""}'): a.text-center(href='javascript:;', title='backend')
+    li(class='#{activePage === "backend"? "active" : ""}'): a.text-center(href='#{URL("/backend")}', title='backend')
       span.glyphicons.glyphicons-home
       | Backend
 - importer.import('/css/nav.css');

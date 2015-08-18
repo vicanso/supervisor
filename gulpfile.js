@@ -69,6 +69,8 @@ gulp.task('static-stylus', ['clean:dest'], function(){
     .pipe(stylus({
       use : nib()
     }))
+    .pipe(base64())
+    .pipe(cssmin())
     .pipe(gulp.dest('statics/build'));
 });
 
