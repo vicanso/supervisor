@@ -1,6 +1,11 @@
+- var activePage = viewData.page || 'home';
+- var navList = [{}]
 nav.navContainer
   ul
-    li: a.text-center.logo(href='javascript:;', title='TimTam') 
+    li(class='#{activePage === "home"? "active" : ""}'): a.text-center(href='javascript:;', title='Supervisor') 
       span.glyphicons.glyphicons-home
       | Home
+    li(class='#{activePage === "backend"? "active" : ""}'): a.text-center(href='javascript:;', title='backend')
+      span.glyphicons.glyphicons-home
+      | Backend
 - importer.import('/css/nav.css');

@@ -1,7 +1,7 @@
 'use strict';
 const _ = require('lodash');
-const config = require('../config');
-const debug = require('../helpers/debug');
+const config = localRequire('config');
+const debug = localRequire('helpers/debug');
 const Joi = require('joi');
 
 module.exports = function () {

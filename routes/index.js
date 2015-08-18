@@ -1,11 +1,11 @@
 'use strict';
 const requireTree = require('require-tree');
 const _ = require('lodash');
-const debug = require('../helpers/debug');
+const debug = localRequire('helpers/debug');
 const koaRouter = require('koa-router');
 const jade = require('koa-jade');
-const config = require('../config');
-const globals = require('../globals');
+const config = localRequire('config');
+const globals = localRequire('globals');
 const urlJoin = require('url-join');
 
 module.exports = getRoutes;

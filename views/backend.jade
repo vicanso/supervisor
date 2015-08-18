@@ -1,9 +1,34 @@
 extends ./layout
+
+mixin BackendListView(backends)
+  table.pure-table.pure-table-bordered
+    thead: tr
+      th #
+      th Name
+      th Address
+      th Port
+      th Ping
+      th Node
+    tbody
+      each backend, i in backends
+        tr
+          td #{i + 1}
+          td #{backend.ServiceName}
+          td #{backend.ServiceAddress}
+          td #{backend.ServicePort}
+          td #{backend.ping}
+          td #{backend.Node}
+
 block bodyContainer
   .backendPage(ng-controller='BackendPageController')
     include ./nav
     header.headerContainer
       h3.text-center Backend
+    .backendList
+      if !viewData.backends || !viewData.backends.length
+        p.text-center 暂时没有任何backend的信息
+      else
+        +BackendListView(viewData.backends) 
   
   
   - importer.import('/js/backend.js');

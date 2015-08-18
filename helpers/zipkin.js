@@ -3,7 +3,7 @@ const _ = require('lodash');
 exports.init = init;
 exports.trace = trace;
 exports.childTrace = childTrace;
-let zipkinInitialized = false;
+var zipkinInitialized = false;
 /**
  * [init 初始化]
  * @param  {[type]} options [description]

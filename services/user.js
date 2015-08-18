@@ -1,10 +1,12 @@
 'use strict';
-const mongodb = require('../helpers/mongodb');
+const mongodb = localRequire('helpers/mongodb');
 const moment = require('moment');
-const errors = require('../errors');
-const debug = require('../helpers/debug');
+const errors = localRequire('errors');
+const debug = localRequire('helpers/debug');
 const _ = require('lodash');
 const crypto = require('crypto');
+const Joi = require('joi');
+const util = require('util');
 exports.create = create;
 exports.get = get;
 /**
@@ -13,13 +15,14 @@ exports.get = get;
  * @return {[type]}      [description]
  */
 function *create(data) {
-  let keys = ['account', 'password', 'name'];
-  if (!data || !data.account || !data.password || !data.name) {
-    throw errors.get(11, {
-      params : keys
-    });
-  }
-  data = _.pick(data, keys);
+  let schema = {
+    account : Joi.string(),
+    password : Joi.string(),
+    name : Joi.string()
+  };
+  data = Joi.validateThrow(data, schema, {
+    stripUnknown : true
+  });
   debug('create user:%j', data);
   let User = mongodb.model('User');
   let account = data.account;
@@ -28,8 +31,8 @@ function *create(data) {
     result = yield new User(data).save();
   } catch (e) {
     if (e.code === 11000) {
-      console.info('duplicate key, create user fail, account:%s, name:%s', data.account, data.name);
-      throw errors.get(201);
+      let str = util.format('duplicate key, create user fail, account:%s, name:%s', data.account, data.name);
+      throw errors.get(str);
     } else {
       throw e;
     }
@@ -47,21 +50,19 @@ function *create(data) {
  */
 function *get(account, encryptPwd, hashCode) {
   if (!account || !encryptPwd || !hashCode) {
-    throw errors.get(11, {
-      params : ['account', 'password', 'hashCode']
-    });
+    throw errors.get('account encryptPwd hashCode cat not be null');
   }
   debug('get user:%s password:%s', account, encryptPwd);
   let User = mongodb.model('User');
   let doc = yield User.findOne({account : account});
   if (!doc) {
-    throw errors.get(204);
+    throw errors.get('account is not exist');
   }
   doc = doc.toObject();
   debug('get user:%j', doc);
   let shasum = crypto.createHash('sha1');
   if (shasum.update(doc.password + hashCode).digest('hex') !== encryptPwd) {
-    throw errors.get(204);
+    throw errors.get('login fail, user or password is wrong');
   }
   return doc;
 }

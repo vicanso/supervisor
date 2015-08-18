@@ -1,10 +1,10 @@
 'use strict';
 const _ = require('lodash');
 const requireTree = require('require-tree');
-const debug = require('./debug');
-const errors = require('../errors');
-const sdc = require('./sdc');
-let client = null;
+const debug = localRequire('helpers/debug');
+const errors = localRequire('errors');
+const sdc = localRequire('helpers/sdc');
+var client = null;
 
 exports.init = _.once(init);
 exports.model = model;
@@ -191,7 +191,7 @@ function stats(name, op, type){
  */
 function model(name) {
   if(!client){
-    throw errors.get(10);
+    throw errors.get('the db is not init!');
   }
   return client.model(name);
 }

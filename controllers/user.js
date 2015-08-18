@@ -1,11 +1,11 @@
 'use strict';
-const errors = require('../errors');
-const user = require('../services/user');
+const errors = localRequire('errors');
+const user = localRequire('services/user');
 const _ = require('lodash');
 const uuid = require('node-uuid');
 const crypto = require('crypto');
-const zipkin = require('../helpers/zipkin');
-const config = require('../config');
+const zipkin = localRequire('helpers/zipkin');
+const config = localRequire('config');
 exports.get = get;
 exports.create = create;
 exports.login = login;

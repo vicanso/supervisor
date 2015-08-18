@@ -1,8 +1,9 @@
 'use strict';
-const consul = require('../services/consul');
+const consul = localRequire('services/consul');
 const request = require('superagent');
 const util = require('util');
 const parallel = require('co-parallel');
+const _ = require('lodash');
 module.exports = backend;
 
 /**
@@ -12,13 +13,30 @@ module.exports = backend;
 function *backend(){
   /*jshint validthis:true */
   let ctx = this;
+  let backends;
+  try {
+    backends = yield consul.httpPingServices();
+    let pingList = yield getPingResult(backends);
+    _.map(backends, function (backend, i) {
+      backend.ping = pingList[i];
+    });
+  } catch (err) {
+    console.error(err);
+  } finally {
 
-  let backends = yield consul.httpPingServices();
-  console.dir(backends);
+  }
+  ctx.set('Cache-Control', 'public, max-age=60');
+  ctx.state.viewData = {
+    page : 'backend',
+    backends : backends
+  };
+}
+
+function *getPingResult(backends) {
   let fns = backends.map(function (backend) {
     let url = util.format('http://%s:%s/ping', backend.ServiceAddress, backend.ServicePort);
     return new Promise(function(resolve, reject) {
-      request.get(url).end(function (err, res) {
+      request.get(url).timeout(1000).end(function (err, res) {
         if (err) {
           reject(err);
         } else {
@@ -27,9 +45,6 @@ function *backend(){
       });
     });
   });
-  let result = yield parallel(fns);
-  console.dir(result);
-  ctx.state.viewData = {
-    name : 'vicanso'
-  };
+  return yield parallel(fns);
+
 }

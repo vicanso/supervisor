@@ -1,20 +1,20 @@
 'use strict';
 require('./init');
-const config = require('./config');
+const config = localRequire('config');
 const util = require('util');
 const path = require('path');
 const co = require('co');
 const _ = require('lodash');
-const globals = require('./globals');
-const debug = require('./helpers/debug');
+const globals = localRequire('globals');
+const debug = localRequire('helpers/debug');
 const urlJoin = require('url-join');
 co(function *() {
   initApp();
   if (config.env !== 'development') {
-    yield require('./helpers/consul').register();
+    yield localRequire('helpers/consul').register();
   }
 }).catch(function (err) {
-  console.error(err);
+  console.error('message:' + err.message + ', stack:' + err.stack);
 });
 
 

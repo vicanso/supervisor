@@ -1,10 +1,12 @@
 'use strict';
 // 初始化相关信息，程序启动时调用
-const config = require('./config');
+global.localRequire = localRequire;
+const path = require('path');
+const config = localRequire('config');
 const Joi = require('joi');
 
 if (config.env !== 'development') {
-  require('./helpers/logger');
+  localRequire('helpers/logger');
 }
 
 /**
@@ -22,3 +24,13 @@ Joi.validateThrow = function () {
     return result.value;
   }
 };
+
+/**
+ * [localRequire 加载本地文件（从app目录相对获取文件）]
+ * @param  {[type]} name [description]
+ * @return {[type]}      [description]
+ */
+function localRequire(name) {
+  let file = path.join(__dirname, name);
+  return require(file);
+}

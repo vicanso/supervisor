@@ -1,7 +1,7 @@
 'use strict';
-const debug = require('../helpers/debug');
+const debug = localRequire('helpers/debug');
 const _ = require('lodash');
-const zipkin = require('../helpers/zipkin');
+const zipkin = localRequire('helpers/zipkin');
 let sessionParser = null;
 exports.init = init;
 exports.get = get;

@@ -1,5 +1,5 @@
 'use strict';
-const consul = require('../helpers/consul');
+const consul = localRequire('helpers/consul');
 const _ = require('lodash');
 const parallel = require('co-parallel');
 

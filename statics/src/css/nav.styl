@@ -1,5 +1,5 @@
 @import 'nib'
-@import './constant'
+@import './common'
 .navContainer
   width $NAV_WIDTH
   position fixed
@@ -11,7 +11,7 @@
     margin 0
     padding 0
     li
-      &:nth-child(1) a
+      &.active a
         color #fff
       .glyphicons
         font-size 18px
@@ -27,4 +27,5 @@
       transition background-color 0.5s
       text-decoration none
       &:hover
+        color #fff
         background-color #201b1f

@@ -1,5 +1,5 @@
 'use strict';
-const config = require('../config');
+const config = localRequire('config');
 const debug = require('debug')('jt.' + config.app);
 
 module.exports = debug;

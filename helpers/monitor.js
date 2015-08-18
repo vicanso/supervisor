@@ -3,8 +3,8 @@ const v8 = require('v8');
 const bytes = require('bytes');
 const toobusy = require('toobusy-js');
 const _ = require('lodash');
-const config = require('../config');
-const sdc = require('./sdc');
+const config = localRequire('config');
+const sdc = localRequire('helpers/sdc');
 
 exports.run = _.once(run);
 

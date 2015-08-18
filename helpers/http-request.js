@@ -2,12 +2,12 @@
 const request = require('superagent');
 const _ = require('lodash');
 const util = require('util');
-const sdc = require('./sdc');
+const sdc = localRequire('helpers/sdc');
 
 exports.get = get;
 exports.timeout = 10 * 1000;
-let processing = 0;
-let processedTotal = 0;
+var processing = 0;
+var processedTotal = 0;
 /**
  * [get 请求数据]
  * @param  {[type]} url     [description]

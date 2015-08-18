@@ -38,7 +38,7 @@ function concatFiles(filePath, files) {
 gulp.task('jshint', function() {
   return gulp.src(['*.js', '**/*.js', '!node_modules/*.js', '!node_modules/**/*.js', '!statics/src/component/*.js', '!statics/dest/**/*.js', '!statics/build/**/*.js'])
     .pipe(jshint({
-      predef : ['require', 'module'],
+      predef : ['require', 'module', 'localRequire'],
       node : true,
       esnext : true
     }))

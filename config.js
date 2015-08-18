@@ -1,6 +1,6 @@
 'use strict';
 const path = require('path');
-const pkg = require('./package');
+const pkg = localRequire('package');
 const urlJoin = require('url-join');
 const env = process.env.NODE_ENV || 'development';
 
@@ -15,7 +15,7 @@ exports.port = env === 'development'? 5000 : 80;
 
 exports.trackKey = '_track';
 
-exports.appUrlPrefix = env === 'development'? '' : '/albi';
+exports.appUrlPrefix = env === 'development'? '' : '/supervisor';
 
 // 静态文件前缀
 exports.staticUrlPrefix = '/static';
@@ -38,4 +38,4 @@ exports.appSetting = {
   }
 };
 
-exports.consul = process.env.CONSUL ||  'http://black:8500';
+exports.consul = process.env.CONSUL ||  'http://192.168.1.10:8500';

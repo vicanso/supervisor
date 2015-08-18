@@ -1,6 +1,6 @@
 'use strict';
-const sdc = require('../helpers/sdc');
-const zipkin = require('../helpers/zipkin');
+const sdc = localRequire('helpers/sdc');
+const zipkin = localRequire('helpers/zipkin');
 const _ = require('lodash');
 module.exports = httpStats;
 

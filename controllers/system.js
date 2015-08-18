@@ -1,5 +1,5 @@
 'use strict';
-const config = require('../config');
+const config = localRequire('config');
 const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');

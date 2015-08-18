@@ -1,10 +1,10 @@
 'use strict';
 const _ = require('lodash');
 const moment = require('moment');
-const config = require('../config');
+const config = localRequire('config');
 const urlJoin = require('url-join');
 const path = require('path');
-const crc32Infos = require('../crc32.json');
+const crc32Infos = localRequire('crc32.json');
 module.exports = function() {
   let appUrlPrefix = config.appUrlPrefix;
   let staticUrlPrefix = urlJoin(appUrlPrefix,  config.staticUrlPrefix);
