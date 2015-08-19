@@ -14,6 +14,7 @@ function *backend(){
   /*jshint validthis:true */
   let ctx = this;
   let backends;
+  let error;
   try {
     backends = yield consul.httpPingServices();
     backends = _.sortBy(backends, function (backend) {
@@ -24,14 +25,14 @@ function *backend(){
       backend.ping = pingList[i];
     });
   } catch (err) {
+    error = err;
     console.error(err);
-  } finally {
-
   }
   ctx.set('Cache-Control', 'public, max-age=60');
   ctx.state.viewData = {
     page : 'backend',
-    backends : backends
+    backends : backends,
+    error : error
   };
 }
 
@@ -41,7 +42,8 @@ function *getPingResult(backends) {
     return new Promise(function(resolve, reject) {
       request.get(url).timeout(1000).end(function (err, res) {
         if (err) {
-          reject(err);
+          console.error(err);
+          resolve('unknown');
         } else {
           resolve(res.text);
         }

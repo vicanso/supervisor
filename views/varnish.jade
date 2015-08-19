@@ -1,0 +1,38 @@
+extends ./layout
+
+mixin BackendListView(backends)
+  table.pure-table.pure-table-bordered
+    thead: tr
+      th #
+      th Address
+      th Port
+      th Node
+      th Tags
+      th OP
+    tbody
+      each backend, i in backends
+        tr
+          td #{i + 1}
+          td #{backend.ServiceAddress}
+          td #{backend.ServicePort}
+          td #{backend.Node}
+          td #{backend.ServiceTags}
+          td
+            span.glyphicons.glyphicons-stats(ng-click='')
+block bodyContainer
+  .varnishPage(ng-controller='VarnishPageController')
+    include ./nav
+    header.headerContainer
+      h3.text-center Varnish
+    
+    .varnishList
+      if viewData.error
+        p.text-center 加载varnish信息发生错误
+        +Error(viewData.error)
+      else if !viewData.varnishList || !viewData.varnishList.length
+        p.text-center 暂时没有任何varnish的信息
+      else
+        +BackendListView(viewData.varnishList) 
+  
+  - importer.import('/js/varnish.js');
+  - importer.import('/css/varnish.css');

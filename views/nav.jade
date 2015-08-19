@@ -1,4 +1,4 @@
-- var activePage = viewData.page || 'home';
+- var activePage = (viewData && viewData.page) || 'home';
 - var navList = [{}]
 nav.navContainer
   ul
@@ -6,6 +6,9 @@ nav.navContainer
       span.glyphicons.glyphicons-home
       | Home
     li(class='#{activePage === "backend"? "active" : ""}'): a.text-center(href='#{URL("/backend")}', title='backend')
-      span.glyphicons.glyphicons-home
+      span.glyphicons.glyphicons-server
       | Backend
+    li(class='#{activePage === "varnish"? "active" : ""}'): a.text-center(href='#{URL("/varnish")}', title='varnish')
+      span.glyphicons.glyphicons-magic
+      | Varnish
 - importer.import('/css/nav.css');

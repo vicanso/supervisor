@@ -9,5 +9,14 @@ module.exports = [
     route : '/backend',
     template : 'backend',
     handler : 'backend'
+  },
+  {
+    route : '/varnish',
+    template : 'varnish',
+    handler : 'varnish.view'
+  },
+  {
+    route : '/varnish/stats/:ip/:port',
+    handler : 'varnish.stats'
   }
 ];

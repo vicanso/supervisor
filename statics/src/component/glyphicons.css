@@ -76,3 +76,15 @@
 .glyphicons-home:before {
   content: "\E021";
 }
+
+.glyphicons-server:before {
+  content: "\E464";
+}
+
+.glyphicons-magic:before {
+  content: "\E010";
+}
+
+.glyphicons-stats:before {
+  content: "\E041";
+}

@@ -5,7 +5,7 @@ const util = require('util');
 const sdc = localRequire('helpers/sdc');
 
 exports.get = get;
-exports.timeout = 10 * 1000;
+exports.timeout = 5 * 1000;
 var processing = 0;
 var processedTotal = 0;
 /**

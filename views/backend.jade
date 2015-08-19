@@ -25,7 +25,10 @@ block bodyContainer
     header.headerContainer
       h3.text-center Backend
     .backendList
-      if !viewData.backends || !viewData.backends.length
+      if viewData.error
+        p.text-center 加载backend信息发生错误
+        +Error(viewData.error)
+      else if !viewData.backends || !viewData.backends.length
         p.text-center 暂时没有任何backend的信息
       else
         +BackendListView(viewData.backends) 

@@ -4,12 +4,34 @@ const _ = require('lodash');
 const parallel = require('co-parallel');
 
 exports.httpPingServices = httpPingServices;
+exports.varnishServices = varnishServices;
 
+/**
+ * [httpPingServices description]
+ * @return {[type]} [description]
+ */
 function *httpPingServices() {
+  return yield getServiceByTag('http-ping');
+}
+
+/**
+ * [getVarnishServices description]
+ * @return {[type]} [description]
+ */
+function *varnishServices() {
+  return yield getServiceByTag('varnish');
+}
+
+/**
+ * [getServiceByTag description]
+ * @param  {[type]} tag [description]
+ * @return {[type]}     [description]
+ */
+function *getServiceByTag(tag) {
   let res = yield consul.get('/v1/catalog/services');
   let services = [];
   _.forEach(res.body, function (tags, name) {
-    if (_.indexOf(tags, 'http-ping') !== -1) {
+    if (_.indexOf(tags, tag) !== -1) {
       services.push(name);
     }
   });
