@@ -1,7 +1,7 @@
 ;(function(global){
 'use strict';
 
-ctrl.$inject = ['$scope', '$http', 'debug', 'varnishService'];
+ctrl.$inject = ['$scope', '$http', '$timeout', 'debug', 'varnishService'];
 service.$inject = ['$http'];
 
 var app = angular.module('jtApp');
@@ -9,12 +9,41 @@ app.factory('varnishService', service);
 app.directive('varnishStats', directive);
 app.controller('VarnishPageController', ctrl);
 
-function ctrl($scope, $http, debug, varnishService) {
+function ctrl($scope, $http, $timeout, debug, varnishService) {
   /*jshint validthis:true */
   var self = this;
-  varnishService.stats('172.17.0.13', 80).then(function (res) {
-    console.dir(res);
-  });
+
+  self.stats = {
+    show : false,
+    status : '',
+    timer : null
+  };
+
+  self.showStats = showStats;
+
+
+  /**
+   * [showStats description]
+   * @param  {[type]} ip   [description]
+   * @param  {[type]} port [description]
+   * @return {[type]}      [description]
+   */
+  function showStats(ip, port) {
+    self.stats.show = true;
+    self.stats.status = 'loading';
+    var interval = 10 * 1000;
+    var fn = function () {
+      varnishService.stats(ip, port).then(function (res) {
+        self.stats.status = 'success';
+        self.stats.data = res.data;
+        self.stats.timer = $timeout(fn, interval);
+      }, function (res) {
+        self.stats.timer = $timeout(fn, interval);
+      });
+    };
+    fn();
+  }
+
   return self;
 }
 
@@ -38,9 +67,10 @@ function service($http) {
 }
 
 
-function directive(argument) {
+function directive() {
   function link(scope, element, attr) {
-
+    var statsDataList = [];
+    var indexList = [1, 2, 6, 12, 30];
     scope.$watch(attr.stats, function(v) {
       if (v) {
         appendStatsHtml(arrangeData(v));
@@ -97,7 +127,7 @@ function directive(argument) {
       });
       theadHtml += '<th>latest</th>';
       theadHtml += '</thead>';
-      var htmlArr = ['<table class="table">' +
+      var htmlArr = ['<table class="pure-table pure-table-bordered">' +
         theadHtml +
         '<tbody>'
       ];

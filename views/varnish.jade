@@ -18,9 +18,9 @@ mixin BackendListView(backends)
           td #{backend.Node}
           td #{backend.ServiceTags}
           td
-            span.glyphicons.glyphicons-stats(ng-click='')
+            a.glyphicons.glyphicons-stats(href='javascript:;', ng-click='varnishPage.showStats("#{backend.ServiceAddress}", #{backend.ServicePort})')
 block bodyContainer
-  .varnishPage(ng-controller='VarnishPageController')
+  .varnishPage(ng-controller='VarnishPageController as varnishPage')
     include ./nav
     header.headerContainer
       h3.text-center Varnish
@@ -33,6 +33,9 @@ block bodyContainer
         p.text-center 暂时没有任何varnish的信息
       else
         +BackendListView(viewData.varnishList) 
+    .varnishStatsContainer.hidden(ng-class='{hidden : !varnishPage.stats.show}')
+      p.text-center(ng-show='varnishPage.stats.status === "loading"')  正在加载数据，请稍候...
+      varnish-stats(stats='varnishPage.stats.data', ng-if='varnishPage.stats.status === "success"')
   
   - importer.import('/js/varnish.js');
   - importer.import('/css/varnish.css');

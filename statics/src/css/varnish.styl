@@ -2,11 +2,19 @@
 @import './common'
 
 
+
 .varnishPage
   margin-left $NAV_WIDTH
   .headerContainer
     headerContainerCss()
+
   .varnishList
     margin 15px
+    table
+      width 100%
+  .varnishStatsContainer
+    margin 15px
+    varnish-stats
+      display block
     table
       width 100%

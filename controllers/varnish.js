@@ -50,12 +50,12 @@ function *stats() {
   };
   let params = Joi.validateThrow(ctx.params, schema);
   debug('get varnish stats, params:%j', params);
-  // let url = util.format('http://%s:%s/v-stats', params.ip, params.port);
-  // let res = yield httpRequest.get(url);
-  // let data = _.get(res, 'body');
-  // if (!data) {
-  //   throw errors.get('Can not get varnish stats!');
-  // }
+  let url = util.format('http://%s:%s/v-stats', params.ip, params.port);
+  let res = yield httpRequest.get(url);
+  let statsData = _.get(res, 'body');
+  if (!statsData) {
+    throw errors.get('Can not get varnish stats!');
+  }
   let result = convertStatsData(statsData);
   ctx.set('Cache-Control', 'public, max-age=10');
   ctx.body = result;
@@ -245,4 +245,4 @@ function convertStatsData(data) {
 
 
 
-var statsData = {"createdAt":1439972924196,"uptime":19333,"sess_conn":0,"sess_drop":0,"sess_fail":0,"sess_pipe_overflow":0,"client_req_400":0,"client_req_411":0,"client_req_413":0,"client_req_417":0,"client_req":0,"cache_hit":0,"cache_hitpass":0,"cache_miss":0,"backend_conn":1,"backend_unhealthy":0,"backend_busy":0,"backend_fail":0,"backend_reuse":0,"backend_toolate":0,"backend_recycle":0,"backend_retry":0,"fetch_head":0,"fetch_length":0,"fetch_chunked":0,"fetch_eof":0,"fetch_bad":0,"fetch_close":0,"fetch_oldhttp":0,"fetch_zero":0,"fetch_1xx":0,"fetch_204":0,"fetch_304":0,"fetch_failed":0,"pools":2,"threads":200,"threads_limited":0,"threads_created":200,"threads_destroyed":0,"threads_failed":0,"thread_queue_len":0,"busy_sleep":0,"busy_wakeup":0,"sess_queued":0,"sess_dropped":0,"n_object":0,"n_vampireobject":0,"n_objectcore":0,"n_objecthead":0,"n_waitinglist":0,"n_backend":3,"n_expired":0,"n_lru_nuked":0,"n_lru_moved":0,"losthdr":0,"s_sess":0,"s_req":0,"s_pipe":0,"s_pass":0,"s_fetch":0,"s_synth":0,"s_req_hdrbytes":0,"s_req_bodybytes":0,"s_resp_hdrbytes":0,"s_resp_bodybytes":0,"s_pipe_hdrbytes":0,"s_pipe_in":0,"s_pipe_out":0,"sess_closed":0,"sess_pipeline":0,"sess_readahead":0,"sess_herd":0,"shm_records":18320,"shm_writes":18320,"shm_flushes":0,"shm_cont":0,"shm_cycles":0,"sms_nreq":0,"sms_nobj":0,"sms_nbytes":0,"sms_balloc":0,"sms_bfree":0,"backend_req":1,"n_vcl":2,"n_vcl_avail":2,"n_vcl_discard":0,"bans":1,"bans_completed":1,"bans_obj":0,"bans_req":0,"bans_added":1,"bans_deleted":0,"bans_tested":0,"bans_obj_killed":0,"bans_lurker_tested":0,"bans_tests_tested":0,"bans_lurker_tests_tested":0,"bans_lurker_obj_killed":0,"bans_dups":0,"bans_lurker_contention":0,"bans_persisted_bytes":13,"bans_persisted_fragmentation":0,"n_purges":0,"n_obj_purged":0,"exp_mailed":0,"exp_received":0,"hcb_nolock":0,"hcb_lock":0,"hcb_insert":0,"esi_errors":0,"esi_warnings":0,"vmods":2,"n_gzip":0,"n_gunzip":0,"vsm_free":972032,"vsm_used":83962576,"vsm_cooling":0,"vsm_overflow":0,"vsm_overflowed":0};
+// var statsData = {"createdAt":1439972924196,"uptime":19333,"sess_conn":0,"sess_drop":0,"sess_fail":0,"sess_pipe_overflow":0,"client_req_400":0,"client_req_411":0,"client_req_413":0,"client_req_417":0,"client_req":0,"cache_hit":0,"cache_hitpass":0,"cache_miss":0,"backend_conn":1,"backend_unhealthy":0,"backend_busy":0,"backend_fail":0,"backend_reuse":0,"backend_toolate":0,"backend_recycle":0,"backend_retry":0,"fetch_head":0,"fetch_length":0,"fetch_chunked":0,"fetch_eof":0,"fetch_bad":0,"fetch_close":0,"fetch_oldhttp":0,"fetch_zero":0,"fetch_1xx":0,"fetch_204":0,"fetch_304":0,"fetch_failed":0,"pools":2,"threads":200,"threads_limited":0,"threads_created":200,"threads_destroyed":0,"threads_failed":0,"thread_queue_len":0,"busy_sleep":0,"busy_wakeup":0,"sess_queued":0,"sess_dropped":0,"n_object":0,"n_vampireobject":0,"n_objectcore":0,"n_objecthead":0,"n_waitinglist":0,"n_backend":3,"n_expired":0,"n_lru_nuked":0,"n_lru_moved":0,"losthdr":0,"s_sess":0,"s_req":0,"s_pipe":0,"s_pass":0,"s_fetch":0,"s_synth":0,"s_req_hdrbytes":0,"s_req_bodybytes":0,"s_resp_hdrbytes":0,"s_resp_bodybytes":0,"s_pipe_hdrbytes":0,"s_pipe_in":0,"s_pipe_out":0,"sess_closed":0,"sess_pipeline":0,"sess_readahead":0,"sess_herd":0,"shm_records":18320,"shm_writes":18320,"shm_flushes":0,"shm_cont":0,"shm_cycles":0,"sms_nreq":0,"sms_nobj":0,"sms_nbytes":0,"sms_balloc":0,"sms_bfree":0,"backend_req":1,"n_vcl":2,"n_vcl_avail":2,"n_vcl_discard":0,"bans":1,"bans_completed":1,"bans_obj":0,"bans_req":0,"bans_added":1,"bans_deleted":0,"bans_tested":0,"bans_obj_killed":0,"bans_lurker_tested":0,"bans_tests_tested":0,"bans_lurker_tests_tested":0,"bans_lurker_obj_killed":0,"bans_dups":0,"bans_lurker_contention":0,"bans_persisted_bytes":13,"bans_persisted_fragmentation":0,"n_purges":0,"n_obj_purged":0,"exp_mailed":0,"exp_received":0,"hcb_nolock":0,"hcb_lock":0,"hcb_insert":0,"esi_errors":0,"esi_warnings":0,"vmods":2,"n_gzip":0,"n_gunzip":0,"vsm_free":972032,"vsm_used":83962576,"vsm_cooling":0,"vsm_overflow":0,"vsm_overflowed":0};
