@@ -64,7 +64,7 @@ gulp.task('clean:build', ['static-version'], function(cbf){
 });
 
 
-gulp.task('static-stylus', ['clean:dest'], function(){
+gulp.task('static-stylus', ['clean:dest', 'static-css'], function(){
   return gulp.src('statics/src/**/*.styl')
     .pipe(stylus({
       use : nib()

@@ -1,8 +1,7 @@
 - var activePage = (viewData && viewData.page) || 'home';
-- var navList = [{}]
 nav.navContainer
   ul
-    li(class='#{activePage === "home"? "active" : ""}'): a.text-center(href='javascript:;', title='Supervisor') 
+    li(class='#{activePage === "home"? "active" : ""}'): a.text-center(href='#{URL("/")}', title='Supervisor') 
       span.glyphicons.glyphicons-home
       | Home
     li(class='#{activePage === "backend"? "active" : ""}'): a.text-center(href='#{URL("/backend")}', title='backend')
