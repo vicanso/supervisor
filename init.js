@@ -14,7 +14,7 @@ if (config.env !== 'development') {
  * @param  {[type]} argument [description]
  * @return {[type]}          [description]
  */
-Joi.validateThrow = function () {
+Joi.validateThrow = function() {
   let result = Joi.validate.apply(Joi, arguments);
   let err = result.error;
   if (err) {

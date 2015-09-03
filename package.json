@@ -38,6 +38,7 @@
     "koa-static-serve": "0.0.3",
     "koa-timeout": "^0.1.1",
     "lodash": "^3.10.1",
+    "mkdirp": "^0.5.1",
     "moment": "^2.10.3",
     "node-uuid": "^1.4.3",
     "require-tree": "^1.0.1",
@@ -65,5 +66,5 @@
     "through": "^2.3.8"
   },
   "readme": "backend framework base on koa",
-  "appVersion": "2015-09-03T21:47:39.149"
+  "appVersion": "2015-09-03T22:00:07.811"
 }
