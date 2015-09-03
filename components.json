@@ -8,7 +8,6 @@
       "/css/home.css"
     ],
     "js": [
-      "/component/debug.js",
       "/component/jquery.js",
       "/component/angular.js",
       "/component/lodash.js",
@@ -22,7 +21,7 @@
       "/js/global.js",
       "/js/home.js"
     ],
-    "modifiedAt": "2015-08-15T08:07:31.543"
+    "modifiedAt": "2015-08-20T21:29:19.134"
   },
   "backend": {
     "css": [
@@ -33,7 +32,6 @@
       "/css/backend.css"
     ],
     "js": [
-      "/component/debug.js",
       "/component/jquery.js",
       "/component/angular.js",
       "/component/lodash.js",
@@ -47,7 +45,7 @@
       "/js/global.js",
       "/js/backend.js"
     ],
-    "modifiedAt": "2015-08-18T20:54:38.457"
+    "modifiedAt": "2015-08-20T21:29:22.364"
   },
   "varnish": {
     "css": [
@@ -58,7 +56,6 @@
       "/css/varnish.css"
     ],
     "js": [
-      "/component/debug.js",
       "/component/jquery.js",
       "/component/angular.js",
       "/component/lodash.js",
@@ -72,6 +69,6 @@
       "/js/global.js",
       "/js/varnish.js"
     ],
-    "modifiedAt": "2015-08-19T11:28:29.017"
+    "modifiedAt": "2015-08-20T21:29:24.041"
   }
 }
