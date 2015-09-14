@@ -21,6 +21,7 @@
     "bytes": "^2.1.0",
     "co": "^4.6.0",
     "co-parallel": "^1.0.0",
+    "consul-simple-client": "0.0.1",
     "debug": "^2.2.0",
     "joi": "^6.6.1",
     "jtfileimporter": "^0.2.0",
@@ -66,5 +67,5 @@
     "through": "^2.3.8"
   },
   "readme": "backend framework base on koa",
-  "appVersion": "2015-09-03T22:00:07.811"
+  "appVersion": "2015-09-14T21:41:36.324"
 }

@@ -8,12 +8,12 @@ const _ = require('lodash');
 const globals = localRequire('globals');
 const debug = localRequire('helpers/debug');
 const urlJoin = require('url-join');
-co(function *() {
+co(function*() {
   initApp();
   if (config.env !== 'development') {
-    yield localRequire('helpers/consul').register();
+    yield localRequire('services/consul').register();
   }
-}).catch(function (err) {
+}).catch(function(err) {
   console.error('message:' + err.message + ', stack:' + err.stack);
 });
 
@@ -25,36 +25,6 @@ co(function *() {
  */
 function initApp() {
   initServer();
-
-  // mongodb 初始化连接
-  let mongodbUri = globals.get('mongodb');
-  if (mongodbUri) {
-    initMongodb(mongodbUri);
-  }
-
-
-  // statsd 初始化
-  let statsdConfig = globals.get('statsd');
-  if (statsdConfig) {
-    statsdConfig.prefix = statsdConfig.prefix || config.app;
-    require('./helpers/sdc').init(statsdConfig);
-  }
-
-
-  // redis session初始化
-  let redisConfig = globals.get('redis');
-  if (redisConfig) {
-    require('./middlewares/session').init(redisConfig, globals.get('config.session'));
-  }
-
-
-  // zipkin 初始化
-  let zipkinConfig = globals.get('zipkin');
-  if (zipkinConfig) {
-    require('./helpers/zipkin').init(zipkinConfig);
-  }
-
-
   require('./helpers/monitor').run(60 * 1000);
 }
 
@@ -78,36 +48,39 @@ function initServer() {
   app.use(require('./middlewares/error'));
 
   // http response默认为不缓存，并添加X-
-  app.use(function *(next) {
+  app.use(function*(next) {
     /*jshint validthis:true */
     let ctx = this;
 
     let url = ctx.url;
-    if (appUrlPrefix && url.substring(0, appUrlPrefix.length) === appUrlPrefix) {
+    if (appUrlPrefix && url.substring(0, appUrlPrefix.length) ===
+      appUrlPrefix) {
       ctx.url = url.substring(appUrlPrefix.length) || '/';
     }
 
     let processList = ctx.headers['x-process'] || 'unknown';
-    ctx.set('X-Process', processList + ', node-' + (process.env.HOSTNAME || 'unknown'));
+    ctx.set('X-Process', processList + ', node-' + (process.env.HOSTNAME ||
+      'unknown'));
     ctx.set('Cache-Control', 'must-revalidate, max-age=0');
-    yield* next;
+    yield * next;
   });
 
   // healthy check
-  app.use(mount('/ping', function *() {
+  app.use(mount('/ping', function*() {
     yield Promise.resolve();
     this.body = config.version;
   }));
   let logType = 'dev';
   if (config.env !== 'development') {
-    logType = ':remote-addr - :cookie[' + config.trackKey + '] ":method :url HTTP/:http-version" :status :length ":referrer" ":user-agent"';
+    logType = ':remote-addr - :cookie[' + config.trackKey +
+      '] ":method :url HTTP/:http-version" :status :length ":referrer" ":user-agent"';
   }
   app.use(require('koa-log')(logType));
 
   app.use(require('./middlewares/http-stats')({
-    time : [300, 500, 1000, 3000],
-    size : [1024, 10240, 51200, 102400],
-    cookie : [config.trackKey]
+    time: [300, 500, 1000, 3000],
+    size: [1024, 10240, 51200, 102400],
+    cookie: [config.trackKey]
   }));
 
   // 超时，单位ms
@@ -120,8 +93,8 @@ function initServer() {
 
   // 限制并发请求数
   app.use(require('koa-connection-limit')({
-    mid : 100,
-    high : 500
+    mid: 100,
+    high: 500
   }));
 
   let staticParser;
@@ -131,7 +104,7 @@ function initServer() {
     maxAge = 0;
   }
   let serve = require('koa-static-serve')(config.staticPath, {
-    maxAge : maxAge
+    maxAge: maxAge
   }, staticParser);
   app.use(mount(staticUrlPrefix, serve));
 
@@ -166,14 +139,4 @@ function initServer() {
 
   app.listen(port);
   console.info('server listen on:%s', port);
-}
-
-/**
- * [initMongodb description]
- * @return {[type]}     [description]
- */
-function initMongodb(uri) {
-  let modelPath = path.join(__dirname, 'models');
-  require('./helpers/mongodb').init(uri, modelPath);
-
 }
