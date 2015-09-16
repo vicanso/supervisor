@@ -16,10 +16,6 @@ function init() {
       timestamp: true,
       colorize: true
     }));
-    transports.push(new UDPLogger({
-      timestamp: true,
-      name: config.app
-    }));
   } else {
     let logPath = '/var/log/' + config.app;
     mkdirp.sync(logPath);
@@ -33,6 +29,11 @@ function init() {
       name: 'error-file',
       timestamp: true,
       level: 'error'
+    }));
+
+    transports.push(new UDPLogger({
+      timestamp: true,
+      name: config.app
     }));
   }
   const logger = new(winston.Logger)({

@@ -43,4 +43,4 @@ exports.appSetting = {
 exports.consul = process.env.CONSUL || 'http://localhost:8500';
 
 
-exports.udpLog = process.env.UDP_LOG || 'udp://127.0.0.1:6000';
+exports.udpLog = process.env.UDP_LOG || 'udp://localhost:6000';
