@@ -1,4 +1,4 @@
-FROM vicanso/node
+FROM vicanso/node:4.0.0
 
 MAINTAINER "vicansocanbico@gmail.com"
 
