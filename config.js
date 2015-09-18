@@ -1,5 +1,6 @@
 'use strict';
 const path = require('path');
+const url = require('url');
 const pkg = localRequire('package');
 const urlJoin = require('url-join');
 const env = process.env.NODE_ENV || 'development';
@@ -42,5 +43,4 @@ exports.appSetting = {
 
 exports.consul = process.env.CONSUL || 'http://localhost:8500';
 
-
-exports.udpLog = process.env.UDP_LOG || 'udp://localhost:6000';
+exports.udpLog = url.parse(process.env.UDP_LOG || 'udp://localhost:6000');
