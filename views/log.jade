@@ -1,0 +1,9 @@
+extends ./layout
+block bodyContainer
+  .logPage(ng-controller='LogPageController as logPage')
+    .logViewContaienr
+      jt-log-list(ng-repeat='logView in logPage.logViews')
+  
+  
+  - importer.import('/component/socket.io.js', '/js/log.js');
+  - importer.import('/css/log.css');

@@ -70,5 +70,30 @@
       "/js/varnish.js"
     ],
     "modifiedAt": "2015-08-20T21:29:24.041"
+  },
+  "log": {
+    "css": [
+      "/component/pure.css",
+      "/component/glyphicons.css",
+      "/css/global.css",
+      "/css/log.css"
+    ],
+    "js": [
+      "/component/debug.js",
+      "/component/jquery.js",
+      "/component/angular.js",
+      "/component/lodash.js",
+      "/component/angular-local-storage.js",
+      "/component/sha1.js",
+      "/service/const.js",
+      "/service/http-log.js",
+      "/service/debug.js",
+      "/service/user.js",
+      "/js/directive.js",
+      "/js/global.js",
+      "/component/socket.io.js",
+      "/js/log.js"
+    ],
+    "modifiedAt": "2015-09-21T14:00:23.262"
   }
 }

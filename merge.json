@@ -1,13 +1,14 @@
 {
-  "path" : "/merge",
-  "except" : [
+  "path": "/merge",
+  "except": [
     "/component/debug.js",
     "/component/angular.js",
     "/component/lodash.js",
     "/component/jquery.js",
-    "/component/pure.css"
+    "/component/pure.css",
+    "/component/socket.io.js"
   ],
-  "files" : [
+  "files": [
     [
       "/component/glyphicons.css",
       "/css/global.css",
