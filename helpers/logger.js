@@ -2,15 +2,25 @@
 const config = localRequire('config');
 const jtlogger = require('jtlogger');
 const path = require('path');
-
+const consul = localRequire('services/consul');
+const _ = require('lodash');
+const url = require('url');
+let transports = [];
 if (config.env === 'production') {
-  jtlogger.init([{
+  transports.push({
     type: 'file',
+    timestamp: true,
     filename: path.join('/var/log', config.app, 'out.log')
-  }, {
-    type: 'udp',
-    host: config.udpLog.hostname,
-    port: config.udpLog.port,
-    tag: config.app
-  }]);
+  });
+  if (config.udpLog) {
+    let urlInfo = url.parse(config.udpLog);
+    transports.push({
+      type: 'udp',
+      host: urlInfo.hostname,
+      port: urlInfo.port,
+      tag: config.app,
+      timestamp: true
+    });
+  }
+  jtlogger.init(transports);
 }

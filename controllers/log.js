@@ -11,6 +11,7 @@ function* veiw() {
   let ctx = this;
   yield Promise.resolve();
   ctx.state.viewData = {
-    name: 'vicanso'
+    name: 'vicanso',
+    page: 'log'
   };
 }

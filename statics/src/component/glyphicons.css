@@ -88,3 +88,7 @@
 .glyphicons-stats:before {
   content: "\E041";
 }
+
+.glyphicons-random:before {
+  content: "\E084";
+}

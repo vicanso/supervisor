@@ -10,4 +10,8 @@ nav.navContainer
     li(class='#{activePage === "varnish"? "active" : ""}'): a.text-center(href='#{URL("/varnish")}', title='varnish')
       span.glyphicons.glyphicons-magic
       | Varnish
+    
+    li(class='#{activePage === "log"? "active" : ""}'): a.text-center(href='#{URL("/log")}', title='log')
+      span.glyphicons.glyphicons-random
+      | Log
 - importer.import('/css/nav.css');

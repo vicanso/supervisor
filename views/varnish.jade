@@ -13,12 +13,12 @@ mixin BackendListView(backends)
       each backend, i in backends
         tr
           td #{i + 1}
-          td #{backend.ServiceAddress}
-          td #{backend.ServicePort}
-          td #{backend.Node}
-          td #{backend.ServiceTags}
+          td #{backend.ip}
+          td #{backend.port}
+          td #{backend.id}
+          td #{backend.tags}
           td
-            a.glyphicons.glyphicons-stats(href='javascript:;', ng-click='varnishPage.showStats("#{backend.ServiceAddress}", #{backend.ServicePort})')
+            a.glyphicons.glyphicons-stats(href='javascript:;', ng-click='varnishPage.showStats("#{backend.ip}", #{backend.port})')
 block bodyContainer
   .varnishPage(ng-controller='VarnishPageController as varnishPage')
     include ./nav

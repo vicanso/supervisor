@@ -15,6 +15,7 @@ const consul = new ConsulClient({
 exports.register = register;
 exports.httpPingServices = httpPingServices;
 exports.varnishServices = varnishServices;
+exports.udpLogServices = udpLogServices;
 
 /**
  * [register 注册服务]
@@ -57,4 +58,8 @@ function* httpPingServices() {
  */
 function* varnishServices() {
   return yield consul.listByTags('varnish');
+}
+
+function* udpLogServices() {
+  return yield consul.listByTags('udp-log');
 }

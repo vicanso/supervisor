@@ -1,6 +1,10 @@
 extends ./layout
 block bodyContainer
   .logPage(ng-controller='LogPageController as logPage')
+    include ./nav
+    header.headerContainer
+      h3.text-center Log
+  
     .logViewContaienr
       jt-log-list(ng-repeat='logView in logPage.logViews')
   

@@ -13,11 +13,11 @@ mixin BackendListView(backends)
       each backend, i in backends
         tr
           td #{i + 1}
-          td #{backend.ServiceName}
-          td #{backend.ServiceAddress}
-          td #{backend.ServicePort}
+          td #{backend.name}
+          td #{backend.ip}
+          td #{backend.port}
           td #{backend.ping}
-          td #{backend.Node}
+          td #{backend.id}
 
 block bodyContainer
   .backendPage(ng-controller='BackendPageController')

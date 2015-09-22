@@ -8,6 +8,7 @@
       "/css/home.css"
     ],
     "js": [
+      "/component/debug.js",
       "/component/jquery.js",
       "/component/angular.js",
       "/component/lodash.js",
@@ -21,7 +22,7 @@
       "/js/global.js",
       "/js/home.js"
     ],
-    "modifiedAt": "2015-09-18T22:13:55.946"
+    "modifiedAt": "2015-09-22T21:27:52.739"
   },
   "backend": {
     "css": [
@@ -32,6 +33,7 @@
       "/css/backend.css"
     ],
     "js": [
+      "/component/debug.js",
       "/component/jquery.js",
       "/component/angular.js",
       "/component/lodash.js",
@@ -45,7 +47,7 @@
       "/js/global.js",
       "/js/backend.js"
     ],
-    "modifiedAt": "2015-08-20T21:29:22.364"
+    "modifiedAt": "2015-09-22T21:28:28.844"
   },
   "varnish": {
     "css": [
@@ -56,6 +58,7 @@
       "/css/varnish.css"
     ],
     "js": [
+      "/component/debug.js",
       "/component/jquery.js",
       "/component/angular.js",
       "/component/lodash.js",
@@ -69,13 +72,14 @@
       "/js/global.js",
       "/js/varnish.js"
     ],
-    "modifiedAt": "2015-08-20T21:29:24.041"
+    "modifiedAt": "2015-09-22T21:32:03.231"
   },
   "log": {
     "css": [
       "/component/pure.css",
       "/component/glyphicons.css",
       "/css/global.css",
+      "/css/nav.css",
       "/css/log.css"
     ],
     "js": [
@@ -94,6 +98,6 @@
       "/component/socket.io.js",
       "/js/log.js"
     ],
-    "modifiedAt": "2015-09-21T14:00:23.262"
+    "modifiedAt": "2015-09-22T21:40:55.038"
   }
 }

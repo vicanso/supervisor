@@ -1,4 +1,3 @@
-;
 (function(global) {
   'use strict';
 
@@ -12,18 +11,23 @@
   app.controller('LogPageController', ctrl);
 
   function ctrl($scope, $http, debug, logService) {
+    /*jshint validthis:true */
     var self = this;
-    self.logViews = [{}];
+    self.logViews = [];
 
-    logService.init('http://localhost:6020');
-
-    subscribe('test', 0);
+    // logService.init('http://localhost:6020');
+    //
+    // subscribe('test', 0);
 
     return self;
 
 
     function subscribe(topic, index) {
       var logView = self.logViews[index];
+      if (!logView) {
+        logView = {};
+        self.logViews[index] = logView;
+      }
       logView.topic = topic;
       logView.logs = [];
       var logs = logView.logs;
@@ -109,7 +113,7 @@
 
       refreshLogs();
 
-      function refreshLogs(logs) {
+      function refreshLogs() {
         var logs = scope.logView.logs;
         var index = _.findLastIndex(logs, function(log) {
           return log.id === lastId;
@@ -134,7 +138,7 @@
 
       function format(str, includeDate) {
         var date = new Date(str);
-        var str = '';
+        str = '';
         var year = date.getFullYear();
 
         var month = date.getMonth() + 1;
