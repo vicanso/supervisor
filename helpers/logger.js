@@ -2,8 +2,6 @@
 const config = localRequire('config');
 const jtlogger = require('jtlogger');
 const path = require('path');
-const consul = localRequire('services/consul');
-const _ = require('lodash');
 const url = require('url');
 let transports = [];
 if (config.env === 'production') {

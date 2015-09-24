@@ -3,10 +3,10 @@ const requireTree = require('require-tree');
 const _ = require('lodash');
 const debug = localRequire('helpers/debug');
 const koaRouter = require('koa-router');
-const jade = require('koa-jade');
+const Jade = require('koa-jade');
 const config = localRequire('config');
-const globals = localRequire('globals');
 const urlJoin = require('url-join');
+const globals = localRequire('globals');
 
 module.exports = getRoutes;
 
@@ -14,23 +14,30 @@ module.exports = getRoutes;
  * [getRoutes 获取路由处理列表]
  * @return {[type]} [description]
  */
-function getRoutes() {
+function getRoutes(interval) {
   let routerConfigs = getRouterConfigs();
   let router = koaRouter();
   let routeList = [];
+  resetRoutePerformance();
+  let timer = setInterval(resetRoutePerformance, interval);
+  timer.unref();
   _.forEach(routerConfigs, function(routerConfig) {
     let middlewareArr = routerConfig.middleware || [];
     let routes = routerConfig.route;
     if (!routes) {
+      console.error('*************start*************');
       console.error('route is undefined, ' + JSON.stringify(routerConfig));
+      console.error('**************end**************');
       return;
     }
     if (!_.isArray(routes)) {
       routes = [routes];
     }
-    _.forEach(routes, function (tmp) {
+    _.forEach(routes, function(tmp) {
       if (_.indexOf(routeList, tmp) !== -1) {
+        console.error('*************start*************');
         console.error('route:%s is repetitionary', tmp);
+        console.error('**************end**************');
       } else {
         routeList.push(tmp);
       }
@@ -41,12 +48,25 @@ function getRoutes() {
     }
     let handler = routerConfig.handler;
     if (!handler) {
+      console.error('*************start*************');
       console.error('handler is undefined, ' + JSON.stringify(routerConfig));
+      console.error('**************end**************');
       return;
     }
     _.forEach(routes, function(route) {
       _.forEach(methods, function(method) {
         method = method.toLowerCase();
+        middlewareArr.unshift(function*(next) {
+          let routePerformance = globals.get(
+            'performance.route');
+          let key = method.toUpperCase() + route;
+          if (!routePerformance[key]) {
+            routePerformance[key] = 1;
+          } else {
+            routePerformance[key]++;
+          }
+          yield * next;
+        });
         let params = [route].concat(middlewareArr);
         params.push(handler);
         router[method].apply(router, params);
@@ -67,11 +87,11 @@ function getRouterConfigs() {
   let routes = _.flatten(_.values(routesInfos));
   debug('routes:%j', routes);
   let arr = [];
-  let jadeRender = jade.middleware({
-    viewPath : config.viewPath
-  });
+  let jadeRender = (new Jade({
+    viewPath: config.viewPath
+  })).middleware;
   let importerOptions = {
-    prefix : urlJoin(config.appUrlPrefix, config.staticUrlPrefix)
+    prefix: urlJoin(config.appUrlPrefix, config.staticUrlPrefix)
   };
   if (config.env !== 'development') {
     importerOptions.merge = require('../merge');
@@ -101,4 +121,14 @@ function getRouterConfigs() {
     arr.push(result);
   });
   return arr;
+}
+
+/**
+ * [resetRoutePerformance description]
+ */
+function resetRoutePerformance() {
+  globals.set('performance.route-old', globals.get('performance.route'));
+  globals.set('performance.route', {
+    createdAt: (new Date()).toISOString()
+  });
 }

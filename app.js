@@ -8,25 +8,17 @@ const _ = require('lodash');
 const globals = localRequire('globals');
 const debug = localRequire('helpers/debug');
 const urlJoin = require('url-join');
+const errors = localRequire('errors');
 co(function*() {
-  initApp();
+  localRequire('helpers/monitor').run(60 * 1000);
+  initServer();
   if (config.env !== 'development') {
     yield localRequire('services/consul').register();
   }
 }).catch(function(err) {
-  console.error('message:' + err.message + ', stack:' + err.stack);
+  console.error(err);
 });
 
-
-/**
- * [initApp description]
- * @param  {[type]} argument [description]
- * @return {[type]}          [description]
- */
-function initApp() {
-  initServer();
-  require('./helpers/monitor').run(60 * 1000);
-}
 
 
 /**
@@ -68,7 +60,12 @@ function initServer() {
   // healthy check
   app.use(mount('/ping', function*() {
     yield Promise.resolve();
-    this.body = config.version;
+    if (globals.get('restart')) {
+      throw errors.get('the server will restart soon!');
+    } else {
+      this.body = 'OK';
+    }
+
   }));
   let logType = 'dev';
   if (config.env !== 'development') {
@@ -78,9 +75,20 @@ function initServer() {
   app.use(require('koa-log')(logType));
 
   app.use(require('./middlewares/http-stats')({
-    time: [300, 500, 1000, 3000],
-    size: [1024, 10240, 51200, 102400],
-    cookie: [config.trackKey]
+    time: {
+      v: [300, 500, 1000, 3000],
+      desc: ['puma', 'tiger', 'deer', 'rabbit', 'turtle']
+    },
+    size: {
+      v: [10240, 51200, 102400, 307200, 1024000],
+      desc: ['10KB', '50KB', '100KB', '300KB', '1MB', '>1MB'],
+    },
+    status: {
+      v: [199, 299, 399, 499, 999],
+      desc: ['10x', '20x', '30x', '40x', '50x']
+    },
+    cookie: [config.trackKey],
+    interval: 30 * 60 * 1000
   }));
 
   // 超时，单位ms
@@ -134,7 +142,7 @@ function initServer() {
 
 
 
-  app.use(require('./routes')());
+  app.use(require('./routes')(30 * 60 * 1000));
 
 
   app.listen(port);
