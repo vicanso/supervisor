@@ -1,6 +1,7 @@
 'use strict';
 const crypto = require('crypto');
 const config = localRequire('config');
+
 exports.admin = admin;
 
 /**
@@ -8,7 +9,7 @@ exports.admin = admin;
  * @param  {Function} next [description]
  * @return {[type]}        [description]
  */
-function *admin(next) {
+function* admin(next) {
   /*jshint validthis:true */
   let ctx = this;
   let data = ctx.request.body;
@@ -18,6 +19,6 @@ function *admin(next) {
   if (!token || key !== token) {
     ctx.throw(403);
   } else {
-    yield* next;
+    yield * next;
   }
 }

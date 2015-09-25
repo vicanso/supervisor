@@ -9,6 +9,7 @@ const globals = localRequire('globals');
 const debug = localRequire('helpers/debug');
 const urlJoin = require('url-join');
 const errors = localRequire('errors');
+
 co(function*() {
   localRequire('helpers/monitor').run(60 * 1000);
   initServer();

@@ -1,12 +1,14 @@
 'use strict';
 const _ = require('lodash');
-let globals = {
+
+var globals = {
   // 是否重启，如果设置为true，/ping则返回error
   restart: false,
   // 当前连接数
   connectingTotal: 0,
   performance: {}
 };
+
 exports.get = get;
 exports.set = set;
 

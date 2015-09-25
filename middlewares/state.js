@@ -5,15 +5,16 @@ const config = localRequire('config');
 const urlJoin = require('url-join');
 const path = require('path');
 const crc32Infos = localRequire('crc32.json');
+
 module.exports = function() {
   let appUrlPrefix = config.appUrlPrefix;
-  let staticUrlPrefix = urlJoin(appUrlPrefix,  config.staticUrlPrefix);
+  let staticUrlPrefix = urlJoin(appUrlPrefix, config.staticUrlPrefix);
   let imgUrlFn = getImgUrl(staticUrlPrefix);
   let anchorUrlFn = function(url) {
     return urlJoin(appUrlPrefix, url);
   };
   let appVersion = config.version;
-  return function *(next) {
+  return function*(next) {
     /*jshint validthis:true */
     let ctx = this;
     let state = ctx.state;
@@ -25,7 +26,7 @@ module.exports = function() {
     state.moment = moment;
     state.IMG_URL = imgUrlFn;
     state.URL = anchorUrlFn;
-    yield* next;
+    yield * next;
   };
 };
 

@@ -8,18 +8,20 @@ const Joi = require('joi');
 const errors = localRequire('errors');
 const debug = localRequire('helpers/debug');
 const httpRequest = localRequire('helpers/http-request');
+
 exports.view = view;
 exports.stats = stats;
+
 /**
  * [view description]
  * @return {[type]} [description]
  */
-function *view() {
+function* view() {
   /*jshint validthis:true */
   let ctx = this;
   let varnishList;
   let error;
-  try{
+  try {
     varnishList = yield consul.varnishServices();
   } catch (err) {
     error = err;
@@ -28,9 +30,9 @@ function *view() {
   debug('varnish list:%j', varnishList);
   ctx.set('Cache-Control', 'public, max-age=60');
   ctx.state.viewData = {
-    page : 'varnish',
-    varnishList : varnishList,
-    error : error
+    page: 'varnish',
+    varnishList: varnishList,
+    error: error
   };
 }
 
@@ -39,12 +41,12 @@ function *view() {
  * [stats description]
  * @return {[type]} [description]
  */
-function *stats() {
+function* stats() {
   /*jshint validthis:true */
   let ctx = this;
   let schema = {
     ip: Joi.string().ip({
-        version: ['ipv4', 'ipv6']
+      version: ['ipv4', 'ipv6']
     }),
     port: Joi.number().integer()
   };

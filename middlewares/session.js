@@ -2,9 +2,13 @@
 const debug = localRequire('helpers/debug');
 const _ = require('lodash');
 const zipkin = localRequire('helpers/zipkin');
-let sessionParser = null;
+
+
+
 exports.init = init;
 exports.get = get;
+
+var sessionParser = null;
 
 /**
  * [init 初始化session redis client]
@@ -31,19 +35,19 @@ function init(redisConfig, sessionConfig) {
  * @param  {Function} next [description]
  * @return {[type]}        [description]
  */
-function *get(next) {
+function* get(next) {
   /*jshint validthis:true */
   let ctx = this;
   if (!sessionParser) {
-    yield* next;
+    yield * next;
   } else {
     let options = ctx.zipkinTrace;
     let done = zipkin.childTrace('session', options).done;
-    let fn = function *() {
+    let fn = function*() {
       done();
-      yield* next;
+      yield * next;
     };
-    yield* sessionParser.call(ctx, fn());
+    yield * sessionParser.call(ctx, fn());
 
   }
 }

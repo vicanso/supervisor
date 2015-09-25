@@ -7,21 +7,23 @@ const _ = require('lodash');
 const crypto = require('crypto');
 const Joi = require('joi');
 const util = require('util');
+
 exports.create = create;
 exports.get = get;
+
 /**
  * [create 创建用户]
  * @param  {[type]} data [description]
  * @return {[type]}      [description]
  */
-function *create(data) {
+function* create(data) {
   let schema = {
-    account : Joi.string(),
-    password : Joi.string(),
-    name : Joi.string()
+    account: Joi.string(),
+    password: Joi.string(),
+    name: Joi.string()
   };
   data = Joi.validateThrow(data, schema, {
-    stripUnknown : true
+    stripUnknown: true
   });
   debug('create user:%j', data);
   let User = mongodb.model('User');
@@ -31,7 +33,9 @@ function *create(data) {
     result = yield new User(data).save();
   } catch (e) {
     if (e.code === 11000) {
-      let str = util.format('duplicate key, create user fail, account:%s, name:%s', data.account, data.name);
+      let str = util.format(
+        'duplicate key, create user fail, account:%s, name:%s', data.account,
+        data.name);
       throw errors.get(str);
     } else {
       throw e;
@@ -48,13 +52,15 @@ function *create(data) {
  * @param  {[type]} hashCode   [description]
  * @return {[type]}            [description]
  */
-function *get(account, encryptPwd, hashCode) {
+function* get(account, encryptPwd, hashCode) {
   if (!account || !encryptPwd || !hashCode) {
     throw errors.get('account encryptPwd hashCode cat not be null');
   }
   debug('get user:%s password:%s', account, encryptPwd);
   let User = mongodb.model('User');
-  let doc = yield User.findOne({account : account});
+  let doc = yield User.findOne({
+    account: account
+  });
   if (!doc) {
     throw errors.get('account is not exist');
   }

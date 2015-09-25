@@ -9,8 +9,8 @@ module.exports = picker;
  * @return {[type]}       [description]
  */
 function picker(field) {
-  return function *picker(next) {
-    yield *next;
+  return function* picker(next) {
+    yield * next;
     /*jshint validthis:true */
     let ctx = this;
     let v = ctx.query[field];
@@ -25,7 +25,7 @@ function picker(field) {
     }
     let arr = v.split(',');
     let data = ctx.body;
-    let fn = function (item) {
+    let fn = function(item) {
       return _[pickerFn](item, arr);
     };
     if (_.isArray(data)) {

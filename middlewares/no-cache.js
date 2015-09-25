@@ -1,6 +1,7 @@
 'use strict';
 const checker = require('koa-query-checker');
 const noCacheQuery = checker('cache=false');
+
 module.exports = noCache;
 
 /**
@@ -8,13 +9,14 @@ module.exports = noCache;
  * @param  {Function} next [description]
  * @return {[type]}        [description]
  */
-function *noCache(next) {
+function* noCache(next) {
   /*jshint validthis:true */
   let ctx = this;
   let method = ctx.method;
-  if ((method !== 'GET' && method !== 'HEAD') || ctx.get('cache-control') === 'no-cache') {
-    yield* next;
+  if ((method !== 'GET' && method !== 'HEAD') || ctx.get('cache-control') ===
+    'no-cache') {
+    yield * next;
   } else {
-    yield* noCacheQuery.call(this, next);
+    yield * noCacheQuery.call(this, next);
   }
 }

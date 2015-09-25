@@ -27,11 +27,11 @@ function init(uri, options, modelPath) {
   const mongoose = require('mongoose');
   const Schema = mongoose.Schema;
   options = _.extend({
-    db : {
-      native_parser : true
+    db: {
+      native_parser: true
     },
-    server : {
-      poolSize : 5
+    server: {
+      poolSize: 5
     }
   }, options);
   client = mongoose.createConnection(uri, options);
@@ -57,7 +57,7 @@ function initModels(modelPath) {
   const mongoose = require('mongoose');
   const Schema = mongoose.Schema;
   let models = requireTree(modelPath);
-  _.forEach(models, function(model, name){
+  _.forEach(models, function(model, name) {
     name = name.charAt(0).toUpperCase() + name.substring(1);
     if (model.name) {
       name = model.name;
@@ -69,12 +69,12 @@ function initModels(modelPath) {
         schema.index(indexOptions);
       });
     }
-    let hook = function (type) {
-      _.forEach(model[type], function (fn, key) {
+    let hook = function(type) {
+      _.forEach(model[type], function(fn, key) {
         if (!_.isArray(fn)) {
           fn = [fn];
         }
-        _.forEach(fn, function (fn) {
+        _.forEach(fn, function(fn) {
           schema[type](key, fn);
         });
       });
@@ -110,16 +110,16 @@ function addStats(schema, name) {
     'mapReduce',
     'save'
   ];
-  _.forEach(opList, function(op){
+  _.forEach(opList, function(op) {
     initStatsDict(name, op);
-    schema.pre(op, function(next){
+    schema.pre(op, function(next) {
       debug('mongoose collection:%s pre %s', name, op);
       sdc.increment('mongodb.processing.' + name + '.' + op);
       this._start = Date.now();
       stats(name, op, 'pre');
       next();
     });
-    schema.post(op, function(){
+    schema.post(op, function() {
       let use = Date.now() - this._start;
       delete this._start;
       sdc.decrement('mongodb.processing.' + name + '.' + op);
@@ -139,18 +139,19 @@ function addStats(schema, name) {
  * @return {[type]}      [description]
  */
 let statsDict = {
-  all : {
-    total : 0,
-    doing : 0
+  all: {
+    total: 0,
+    doing: 0
   }
 };
+
 function initStatsDict(name, op) {
   if (!statsDict[name]) {
     statsDict[name] = {};
   }
   statsDict[name][op] = {
-    total : 0,
-    doing : 0
+    total: 0,
+    doing: 0
   };
 }
 
@@ -163,20 +164,20 @@ function initStatsDict(name, op) {
  * @param  {[type]} type [description]
  * @return {[type]}      [description]
  */
-function stats(name, op, type){
+function stats(name, op, type) {
   let tmp = statsDict[name][op];
   let all = statsDict.all;
-  switch(type){
+  switch (type) {
     case 'pre':
       tmp.doing++;
       tmp.total++;
       all.doing++;
       all.total++;
-    break;
+      break;
     default:
       tmp.doing--;
       all.doing--;
-    break;
+      break;
   }
   if (all.total % 10 === 0) {
     console.info('mongoose stats:%j', statsDict);
@@ -190,7 +191,7 @@ function stats(name, op, type){
  * @return {[type]}      [description]
  */
 function model(name) {
-  if(!client){
+  if (!client) {
     throw errors.get('the db is not init!');
   }
   return client.model(name);

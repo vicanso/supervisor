@@ -71,7 +71,6 @@ function httpStats(options) {
       sdc.timing('http.use', use);
 
       let httpPerformance = globals.get('performance.http');
-
       let statusDesc = getDesc('status', ctx.status);
       sdc.decrement('http.processing');
       if (statusDesc) {
@@ -84,8 +83,9 @@ function httpStats(options) {
         sdc.increment('http.timeLevel.' + timeDesc);
         httpPerformance.time[timeDesc]++;
       }
-      let sizeDesc = getDesc('size', ctx.length);
-      httpPerformance.resSizeTotal += ctx.length;
+      let resLength = ctx.length || 0;
+      let sizeDesc = getDesc('size', resLength);
+      httpPerformance.resSizeTotal += resLength;
       if (sizeDesc) {
         sdc.increment('http.sizeLevel.' + sizeDesc);
         httpPerformance.size[sizeDesc]++;

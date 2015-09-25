@@ -9,7 +9,6 @@ exports.env = env;
 
 exports.version = pkg.appVersion;
 
-
 exports.app = pkg.name;
 
 exports.port = env === 'development' ? 5000 : 80;

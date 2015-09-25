@@ -7,6 +7,7 @@ const path = require('path');
 const fs = require('fs');
 const moment = require('moment');
 const componentsFile = path.join(__dirname, '../components.json');
+
 exports.render = render;
 exports.importer = importer;
 
@@ -17,8 +18,8 @@ exports.importer = importer;
  */
 function render(template) {
   debug('render tempalte:%s', template);
-  return function *(next) {
-    yield* next;
+  return function*(next) {
+    yield * next;
     /*jshint validthis:true */
     let ctx = this;
     let noCache = false;
@@ -40,13 +41,13 @@ function render(template) {
  */
 function importer(options) {
   debug('importer options:%j', options);
-  return function *(next){
+  return function*(next) {
     /*jshint validthis:true */
     let ctx = this;
     let importer = new FileImporter();
     let state = ctx.state;
 
-    _.forEach(options, function(v, k){
+    _.forEach(options, function(v, k) {
       if (!state.DEBUG || k !== 'merge') {
         importer[k] = v;
       }
@@ -55,7 +56,7 @@ function importer(options) {
       importer.versionMode = 0;
     }
     state.importer = importer;
-    yield* next;
+    yield * next;
   };
 }
 
@@ -66,7 +67,7 @@ function importer(options) {
  * @param  {[type]} importer [description]
  * @return {[type]}          [description]
  */
-function appendJsAndCss(html, importer){
+function appendJsAndCss(html, importer) {
   html = html.replace('<!--CSS_FILES_CONTAINER-->', importer.exportCss());
   html = html.replace('<!--JS_FILES_CONTAINER-->', importer.exportJs());
   return html;
@@ -79,16 +80,19 @@ function appendJsAndCss(html, importer){
  * @param  {[type]} importer [description]
  * @return {[type]}          [description]
  */
-function logComponents(template, importer){
+function logComponents(template, importer) {
 
   let components = {};
-  if(fs.existsSync(componentsFile)){
+  if (fs.existsSync(componentsFile)) {
     components = JSON.parse(fs.readFileSync(componentsFile, 'utf8') || '{}');
   }
   let data = components[template] || {};
+
   function isRejected(fileUrl) {
-    return fileUrl.substring(0, 7) === 'http://' || fileUrl.substring(0, 8) === 'https://' || fileUrl.substring(0, 2) === '//';
+    return fileUrl.substring(0, 7) === 'http://' || fileUrl.substring(0, 8) ===
+      'https://' || fileUrl.substring(0, 2) === '//';
   }
+
   function isDifference(arr1, arr2) {
     let str1 = '';
     let str2 = '';
@@ -101,13 +105,13 @@ function logComponents(template, importer){
     return str1 !== str2;
   }
 
-  let jsFiles = _.filter(importer.getFiles('js'), function(file){
+  let jsFiles = _.filter(importer.getFiles('js'), function(file) {
     return !isRejected(file);
   });
-  let cssFiles = _.filter(importer.getFiles('css'), function(file){
+  let cssFiles = _.filter(importer.getFiles('css'), function(file) {
     return !isRejected(file);
   });
-  if(isDifference(data.js, jsFiles) || isDifference(data.css, cssFiles)){
+  if (isDifference(data.js, jsFiles) || isDifference(data.css, cssFiles)) {
     data.css = cssFiles;
     data.js = jsFiles;
     data.modifiedAt = moment().format('YYYY-MM-DDTHH:mm:ss.SSS');

@@ -34,7 +34,7 @@ function* register() {
   if (config.appUrlPrefix) {
     tags.push('prefix:' + config.appUrlPrefix);
   }
-  tags.push('http-ping');
+  tags.push('http-ping', 'http-stats');
   yield consul.register({
     id: hostName,
     service: config.app,
