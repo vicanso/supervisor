@@ -29,6 +29,7 @@
       "/component/pure.css",
       "/component/glyphicons.css",
       "/css/global.css",
+      "/css/widget.css",
       "/css/nav.css",
       "/css/backend.css"
     ],
@@ -47,7 +48,7 @@
       "/js/global.js",
       "/js/backend.js"
     ],
-    "modifiedAt": "2015-09-22T21:28:28.844"
+    "modifiedAt": "2015-09-26T11:20:21.825"
   },
   "varnish": {
     "css": [

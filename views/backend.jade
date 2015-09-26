@@ -9,6 +9,7 @@ mixin BackendListView(backends)
       th Port
       th Ping
       th Node
+      th OP
     tbody
       each backend, i in backends
         tr
@@ -18,12 +19,19 @@ mixin BackendListView(backends)
           td #{backend.port}
           td #{backend.ping}
           td #{backend.id}
-
+          
 block bodyContainer
   .backendPage(ng-controller='BackendPageController')
     include ./nav
     header.headerContainer
       h3.text-center Backend
+    
+    .backendSelector
+      - var currentBackendType = viewData.currentBackendType;
+      each backendType in viewData.backendTypeList
+        - var url = URL('/backend/' + backendType);
+        - var itemCssClass = backendType === currentBackendType? "pure-button-primary" : "";
+        a.pure-button(href='#{url}', class='#{itemCssClass}') #{backendType}
     .backendList
       if viewData.error
         p.text-center 加载backend信息发生错误

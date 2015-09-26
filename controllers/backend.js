@@ -16,6 +16,13 @@ function* backend() {
   let ctx = this;
   let backends;
   let error;
+  let backendTypeList = [
+    'http-ping',
+    'http-stats',
+    'production',
+    'test'
+  ];
+  let currentBackendType = 'http-ping';
   try {
     backends = yield consul.httpPingServices();
     backends = _.sortBy(backends, function(backend) {
@@ -35,6 +42,8 @@ function* backend() {
   ctx.state.viewData = {
     page: 'backend',
     backends: backends,
+    currentBackendType: currentBackendType,
+    backendTypeList: backendTypeList,
     error: error
   };
 }
