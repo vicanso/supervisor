@@ -16,6 +16,9 @@ exports.register = register;
 exports.httpPingServices = httpPingServices;
 exports.varnishServices = varnishServices;
 exports.udpLogServices = udpLogServices;
+exports.httpStatsServices = httpStatsServices;
+
+
 
 /**
  * [register 注册服务]
@@ -53,13 +56,27 @@ function* httpPingServices() {
 }
 
 /**
- * [getVarnishServices description]
+ * [varnishServices description]
  * @return {[type]} [description]
  */
 function* varnishServices() {
   return yield consul.listByTags('varnish');
 }
 
+/**
+ * [udpLogServices description]
+ * @return {[type]} [description]
+ */
 function* udpLogServices() {
   return yield consul.listByTags('udp-log');
+}
+
+
+/**
+ * [httpStatsServices description]
+ * @param  {[type]} argument [description]
+ * @return {[type]}          [description]
+ */
+function* httpStatsServices() {
+  return yield consul.listByTags('http-stats');
 }

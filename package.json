@@ -21,7 +21,7 @@
     "bytes": "^2.1.0",
     "co": "^4.6.0",
     "co-parallel": "^1.0.0",
-    "consul-simple-client": "0.0.2",
+    "consul-simple-client": "0.0.4",
     "debug": "^2.2.0",
     "joi": "^6.6.1",
     "jtfileimporter": "^0.2.0",

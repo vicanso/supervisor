@@ -1,6 +1,6 @@
 extends ./layout
 
-mixin BackendListView(backends)
+mixin BackendListPingView(backends)
   table.pure-table.pure-table-bordered
     thead: tr
       th #
@@ -10,23 +10,29 @@ mixin BackendListView(backends)
       th Ping
       th Node
       th OP
+      th CreatedAt
     tbody
       each backend, i in backends
+        - var node = backend.id;
         tr
           td #{i + 1}
           td #{backend.name}
           td #{backend.ip}
           td #{backend.port}
           td #{backend.ping}
-          td #{backend.id}
-          
+          td #{node}
+          td(ng-switch='backendPage.status["#{node}"]')
+            span(ng-switch-when='doing') ...
+            span.glyphicons.glyphicons-ok-2(ng-switch-when='success')
+            a.glyphicons.glyphicons-remove-2(href='javascript:;', ng-click='backendPage.deregister("#{node}")', ng-switch-default)
+          td(ng-bind='#{backend.createdAt}| date : "yyyy-MM-dd HH:mm:ss"')
 block bodyContainer
-  .backendPage(ng-controller='BackendPageController')
-    include ./nav
-    header.headerContainer
-      h3.text-center Backend
+  .backendPage(ng-controller='BackendPageController as backendPage')
+    //- include ./nav
+    //- header.headerContainer
+    //-   h3.text-center Backend
     
-    .backendSelector
+    .backendSelector.hidden
       - var currentBackendType = viewData.currentBackendType;
       each backendType in viewData.backendTypeList
         - var url = URL('/backend/' + backendType);
@@ -39,7 +45,7 @@ block bodyContainer
       else if !viewData.backends || !viewData.backends.length
         p.text-center 暂时没有任何backend的信息
       else
-        +BackendListView(viewData.backends) 
+        +BackendListPingView(viewData.backends) 
   
   
   - importer.import('/js/backend.js');

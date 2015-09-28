@@ -4,10 +4,6 @@ module.exports = [{
   template: 'home',
   handler: 'home'
 }, {
-  route: '/backend',
-  template: 'backend',
-  handler: 'backend'
-}, {
   route: '/varnish',
   template: 'varnish',
   handler: 'varnish.view'

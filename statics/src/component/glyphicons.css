@@ -92,3 +92,11 @@
 .glyphicons-random:before {
   content: "\E084";
 }
+
+.glyphicons-remove-2:before {
+  content: "\E208";
+}
+
+.glyphicons-ok-2:before {
+  content: "\E207";
+}
