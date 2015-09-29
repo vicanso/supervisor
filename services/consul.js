@@ -17,7 +17,12 @@ exports.httpPingServices = httpPingServices;
 exports.varnishServices = varnishServices;
 exports.udpLogServices = udpLogServices;
 exports.httpStatsServices = httpStatsServices;
+exports.deregister = deregister;
 
+
+function* deregister(node) {
+  return yield consul.deregister(node);
+}
 
 
 /**

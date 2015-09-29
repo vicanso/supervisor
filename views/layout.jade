@@ -24,6 +24,7 @@ html(lang='zh-CN', ng-app='jtApp')
   body(ng-controller='AppController as app')
     block bodyContainer
   include ./globals
+  block scriptTemplate
   script.
     TIMING.end('html');
     TIMING.start('js');

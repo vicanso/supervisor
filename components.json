@@ -4,6 +4,7 @@
       "/component/pure.css",
       "/component/glyphicons.css",
       "/css/global.css",
+      "/css/widget.css",
       "/css/nav.css",
       "/css/home.css"
     ],
@@ -22,7 +23,7 @@
       "/js/global.js",
       "/js/home.js"
     ],
-    "modifiedAt": "2015-09-22T21:27:52.739"
+    "modifiedAt": "2015-09-29T20:41:43.687"
   },
   "backend": {
     "css": [
@@ -30,6 +31,7 @@
       "/component/glyphicons.css",
       "/css/global.css",
       "/css/widget.css",
+      "/css/nav.css",
       "/css/backend.css"
     ],
     "js": [
@@ -47,7 +49,7 @@
       "/js/global.js",
       "/js/backend.js"
     ],
-    "modifiedAt": "2015-09-28T10:09:59.804"
+    "modifiedAt": "2015-09-29T20:43:53.877"
   },
   "varnish": {
     "css": [

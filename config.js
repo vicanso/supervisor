@@ -40,6 +40,6 @@ exports.appSetting = {
   }
 };
 
-exports.consul = process.env.CONSUL || 'http://192.168.2.1:8500';
+exports.consul = process.env.CONSUL || 'http://black:8500';
 
 exports.udpLog = process.env.UDP_LOG || 'udp://127.0.0.1:6000';

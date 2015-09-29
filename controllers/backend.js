@@ -8,12 +8,13 @@ const moment = require('moment');
 const debug = localRequire('helpers/debug');
 exports.view = view;
 exports.deregister = deregister;
+exports.list = list;
 
 function* deregister() {
   /*jshint validthis:true */
   let ctx = this;
   let id = ctx.params.id;
-
+  yield consul.deregister(id);
   ctx.body = null;
 }
 
@@ -24,40 +25,35 @@ function* deregister() {
 function* view() {
   /*jshint validthis:true */
   let ctx = this;
-  let backends;
+  // let backends;
   let backendTypeList = [
     'http-ping',
     'http-stats',
-    'production',
-    'test'
+    'production'
   ];
-  let currentBackendType = ctx.params.type || 'http-ping';
-  let error;
-  try {
-    switch (currentBackendType) {
-      case 'http-ping':
-        backends = yield getPingBackends();
-        break;
-      case 'http-stats':
-        backends = yield getStatsBackends();
-        break;
-      default:
-        throw new Error(currentBackendType + ' is not support');
-    }
-  } catch (e) {
-    error = e;
-  } finally {
-
-  }
-
-  ctx.set('Cache-Control', 'public, max-age=60');
+  ctx.set('Cache-Control', 'public, max-age=600');
   ctx.state.viewData = {
     page: 'backend',
-    backends: backends,
-    currentBackendType: currentBackendType,
-    backendTypeList: backendTypeList,
-    error: error
+    backendTypeList: backendTypeList
   };
+}
+
+function* list() {
+  /*jshint validthis:true */
+  let ctx = this;
+  let backends;
+  let currentBackendType = ctx.params.type;
+  switch (currentBackendType) {
+  case 'http-ping':
+    backends = yield getPingBackends();
+    break;
+  case 'http-stats':
+    backends = yield getStatsBackends();
+    break;
+  default:
+    throw new Error(currentBackendType + ' is not support');
+  }
+  ctx.body = backends;
 }
 
 /**
@@ -67,7 +63,7 @@ function* view() {
 function* getPingBackends() {
   let backends = yield consul.httpPingServices();
   let pingList = yield getPingResult(backends);
-  _.map(backends, function(backend, i) {
+  _.map(backends, function (backend, i) {
     backend.ping = pingList[i];
   });
   debug('ping backends:%j', backends);
@@ -81,12 +77,12 @@ function* getPingBackends() {
  * @return {[type]}          [description]
  */
 function* getPingResult(backends) {
-  let fns = backends.map(function(backend) {
+  let fns = backends.map(function (backend) {
     let url = util.format('http://%s:%s/ping', backend.ip,
       backend.port);
     debug('get ping %s', url);
-    return new Promise(function(resolve, reject) {
-      request.get(url).timeout(1000).end(function(err, res) {
+    return new Promise(function (resolve, reject) {
+      request.get(url).timeout(1000).end(function (err, res) {
         if (err) {
           console.error(err);
           resolve('unknown');
@@ -107,7 +103,7 @@ function* getPingResult(backends) {
 function* getStatsBackends() {
   let backends = yield consul.httpStatsServices();
   let statsList = yield getStatsResult(backends);
-  _.map(backends, function(backend, i) {
+  _.map(backends, function (backend, i) {
     backend.stats = statsList[i];
   });
   debug('ping backends:%j', backends);
@@ -121,12 +117,12 @@ function* getStatsBackends() {
  * @return {[type]}          [description]
  */
 function* getStatsResult(backends) {
-  let fns = backends.map(function(backend) {
+  let fns = backends.map(function (backend) {
     let url = util.format('http://%s:%s/sys/stats', backend.ip,
       backend.port);
     debug('get stats %s', url);
-    return new Promise(function(resolve, reject) {
-      request.get(url).timeout(1000).end(function(err, res) {
+    return new Promise(function (resolve, reject) {
+      request.get(url).timeout(1000).end(function (err, res) {
         if (err) {
           console.error(err);
           // resolve({});
