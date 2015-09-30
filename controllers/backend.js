@@ -30,7 +30,7 @@ function* view() {
     'http-stats'
   ];
   let currentBackendType = ctx.params.type || backendTypeList[0];
-  // let backends;
+  yield Promise.resolve();
   ctx.set('Cache-Control', 'public, max-age=600');
   ctx.state.viewData = {
     page: 'backend',

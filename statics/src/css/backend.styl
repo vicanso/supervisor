@@ -1,8 +1,8 @@
 @import 'nib'
 @import './common'
 
-body
-  visibility hidden
+// body
+//   visibility hidden
 
 .backendPage
   margin-left $NAV_WIDTH
@@ -20,13 +20,15 @@ body
       margin-right 5px
       padding 0.5em 1.5em
 
-  http-stats
-    display block
-    .code
-      padding 1em
-      border 1px solid #eee
-      overflow-x auto
-      -webkit-overflow-scrolling touch
-      background-color rgb(250, 250, 250)
-      font-family Consolas, Courier, monospace
-      color #333
+  .statsContainer
+    margin 15px
+    http-stats
+      display block
+      .code
+        padding 1em
+        border 1px solid #eee
+        overflow-x auto
+        -webkit-overflow-scrolling touch
+        background-color rgb(250, 250, 250)
+        font-family Consolas, Courier, monospace
+        color #333

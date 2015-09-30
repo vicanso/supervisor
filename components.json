@@ -56,6 +56,7 @@
       "/component/pure.css",
       "/component/glyphicons.css",
       "/css/global.css",
+      "/css/widget.css",
       "/css/nav.css",
       "/css/varnish.css"
     ],
@@ -74,13 +75,14 @@
       "/js/global.js",
       "/js/varnish.js"
     ],
-    "modifiedAt": "2015-09-22T21:32:03.231"
+    "modifiedAt": "2015-09-30T20:40:43.385"
   },
   "log": {
     "css": [
       "/component/pure.css",
       "/component/glyphicons.css",
       "/css/global.css",
+      "/css/widget.css",
       "/css/nav.css",
       "/css/log.css"
     ],
@@ -100,6 +102,6 @@
       "/component/socket.io.js",
       "/js/log.js"
     ],
-    "modifiedAt": "2015-09-22T21:40:55.038"
+    "modifiedAt": "2015-09-30T20:40:45.415"
   }
 }

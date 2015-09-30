@@ -1,4 +1,3 @@
-;
 (function (global) {
   'use strict';
 
@@ -116,7 +115,8 @@
         backend.jqObj.remove();
         delete backend.jqObj;
       } else {
-        var html = '<div><http-stats></http-stats></div>';
+        var html =
+          '<div class="statsContainer"><http-stats></http-stats></div>';
         var obj = angular.element(html);
         $compile(obj.contents())(backend.stats);
         $element.append(obj);

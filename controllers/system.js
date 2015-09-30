@@ -16,6 +16,8 @@ exports.restart = restart;
 exports.statistics = statistics;
 exports.httpLog = httpLog;
 exports.exception = exception;
+exports.pause = pause;
+exports.resume = resume;
 
 /**
  * [version 返回代码版本与执行版本]
@@ -49,7 +51,6 @@ function getVersion() {
       }
     });
   });
-
 }
 
 /**
@@ -63,8 +64,36 @@ function* restart() {
   yield Promise.resolve();
   let str = util.format('%s will restart soon.', config.app);
   console.info(str);
-  ctx.body = str;
+  ctx.body = null;
   checkToRestart(2);
+}
+
+/**
+ * [pause description]
+ * @return {[type]} [description]
+ */
+function* pause() {
+  /*jshint validthis:true */
+  let ctx = this;
+  globals.set('status', 'pause');
+  let str = util.format('%s will pause.', config.app);
+  console.info(str);
+  yield Promise.resolve();
+  ctx.body = null;
+}
+
+/**
+ * [resume description]
+ * @return {[type]} [description]
+ */
+function* resume() {
+  /*jshint validthis:true */
+  let ctx = this;
+  globals.set('status', 'running');
+  let str = util.format('%s will resume.', config.app);
+  console.info(str);
+  yield Promise.resolve();
+  ctx.body = null;
 }
 
 /**
@@ -108,7 +137,6 @@ function* stats() {
   if (performance.http) {
     performance.http.resSizeTotalDesc = bytes(performance.http.resSizeTotal);
   }
-
 
   let result = _.extend({
     version: version,

@@ -1,5 +1,4 @@
 'use strict';
-
 module.exports = [{
   route: '/sys/version',
   handler: 'system.version'
@@ -12,6 +11,16 @@ module.exports = [{
   middleware: 'authority.admin',
   handler: 'system.restart'
 }, {
+  route: '/sys/pause',
+  method: 'post',
+  middleware: 'authority.admin',
+  handler: 'system.pause'
+}, {
+  route: '/sys/resume',
+  method: 'post',
+  middleware: 'authority.admin',
+  handler: 'system.resume'
+}, {
   route: '/sys/statistics',
   method: 'post',
   handler: 'system.statistics'
@@ -19,4 +28,8 @@ module.exports = [{
   route: '/sys/http-log',
   method: 'post',
   handler: 'system.httpLog'
+}, {
+  route: '/sys/exception',
+  method: 'post',
+  handler: 'system.exception'
 }];
