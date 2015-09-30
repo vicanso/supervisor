@@ -10,13 +10,13 @@ const debug = localRequire('helpers/debug');
 const urlJoin = require('url-join');
 const errors = localRequire('errors');
 
-co(function*() {
+co(function* () {
   localRequire('helpers/monitor').run(60 * 1000);
   initServer();
   if (config.env !== 'development') {
     yield localRequire('services/consul').register();
   }
-}).catch(function(err) {
+}).catch(function (err) {
   console.error(err);
 });
 
@@ -41,7 +41,7 @@ function initServer() {
   app.use(require('./middlewares/error'));
 
   // http response默认为不缓存，并添加X-
-  app.use(function*(next) {
+  app.use(function* (next) {
     /*jshint validthis:true */
     let ctx = this;
 
@@ -59,10 +59,10 @@ function initServer() {
   });
 
   // healthy check
-  app.use(mount('/ping', function*() {
+  app.use(mount('/ping', function* () {
     yield Promise.resolve();
-    if (globals.get('restart')) {
-      throw errors.get('the server will restart soon!');
+    if (globals.get('status') !== 'running') {
+      throw errors.get('the server is not running now!');
     } else {
       this.body = 'OK';
     }

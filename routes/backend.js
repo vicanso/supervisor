@@ -4,7 +4,7 @@ module.exports = [{
   method: 'post',
   handler: 'backend.deregister'
 }, {
-  route: '/backend',
+  route: ['/backend', '/backend/:type'],
   template: 'backend',
   handler: 'backend.view'
 }, {

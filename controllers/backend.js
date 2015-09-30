@@ -25,16 +25,20 @@ function* deregister() {
 function* view() {
   /*jshint validthis:true */
   let ctx = this;
-  // let backends;
   let backendTypeList = [
     'http-ping',
-    'http-stats',
-    'production'
+    'http-stats'
   ];
+  let currentBackendType = ctx.params.type || backendTypeList[0];
+  // let backends;
   ctx.set('Cache-Control', 'public, max-age=600');
   ctx.state.viewData = {
     page: 'backend',
-    backendTypeList: backendTypeList
+    currentBackendType: currentBackendType,
+    backendTypeList: backendTypeList,
+    globals: {
+      type: currentBackendType
+    }
   };
 }
 

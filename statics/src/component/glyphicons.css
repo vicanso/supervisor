@@ -100,3 +100,7 @@
 .glyphicons-ok-2:before {
   content: "\E207";
 }
+
+.glyphicons-charts:before {
+  content: "\E042";
+}
